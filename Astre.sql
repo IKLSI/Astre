@@ -57,9 +57,7 @@ CREATE TABLE Semestre (
 
 CREATE TABLE TypeModule (
 	codTypMod SERIAL PRIMARY KEY,
-	nomTypMod VARCHAR(20),
-	coeffNum INTEGER,
-	coeffDen INTEGER
+	nomTypMod VARCHAR(20)
 );
 
 -- creation de la table Module
