@@ -16,7 +16,7 @@ drop table if exists CategorieHeure 		CASCADE ;
 
 CREATE TABLE CategorieIntervenant (
 	codCatInter        SERIAL PRIMARY KEY,
-	nomCat             VARCHAR(20) CHECK (categorie IN ('contractuel','vacataire','enseignant chercheur')) NOT NULL,
+	nomCat             VARCHAR(20),
 	service            INTEGER,
 	maxHeure           INTEGER
 );
@@ -104,11 +104,11 @@ CREATE TABLE Affectation (
 	PRIMARY KEY(codInter,codCatHeure),
 
 	/*Spécifique a ressource*/
-	nbSem INTEGER CHECK (codeCatHeure=1),
-	nbGrp INTEGER CHECK (codeCatHeure=1),
+	nbSem INTEGER CHECK (codCatHeure=1),
+	nbGrp INTEGER CHECK (codCatHeure=1),
 
 	/*Spécifique a sae/stage*/
-	nbH INTEGER CHECK (codeCatHeure = 2 OR codeCatHeure = 3)
+	nbH INTEGER CHECK (codCatHeure = 2 OR codCatHeure = 3)
 );
 
 CREATE OR REPLACE FUNCTION getService()
