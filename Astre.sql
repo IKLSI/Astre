@@ -5,48 +5,51 @@
 -- suppression des tables si elles existent déjà
 -- NB : cela supprime donc les éventuels tuples contenus
 
-drop table if exists Intervenant 			cascade ;
-drop table if exists Module 				cascade ;
-drop table if exists Semestre 				cascade ;
-drop table if exists Affectation 			cascade ;
-drop table if exists CategorieIntervenant 	cascade ;
-drop table if exists CategorieHeure 		cascade ;
+drop table if exists Intervenant 			CASCADE ;
+drop table if exists Module 				CASCADE ;
+drop table if exists Semestre 				CASCADE ;
+drop table if exists Affectation 			CASCADE ;
+drop table if exists CategorieIntervenant 	CASCADE ;
+drop table if exists CategorieHeure 		CASCADE ;
 
 
 -- creation de la table Intervenant
 
 CREATE TABLE Intervenant (
-	codInter     INTEGER PRIMARY KEY,
-	nom			 VARCHAR(40),
-	prenom       VARCHAR(40),
-	codeCatInter REFERENCES CategorieIntervenant(codeCatInter),
-	hServ        INTEGER,
-	maxHeure     INTEGER,
-	ratioTP      INTEGER
+	codInter        INTEGER SERIAL PRIMARY KEY,
+	nom			    VARCHAR(40),
+	prenom          VARCHAR(40),
+	codeCatInter    INTEGER REFERENCES CategorieIntervenant(codeCatInter),
+	hServ           INTEGER,
+	maxHeure        INTEGER,
+	ratioTPInterNum INTEGER,
+	ratioTPInterDen INTEGER
 );
 
 -- creation de la table CategorieIntervenant
 
 CREATE TABLE CategorieIntervenant (
-	codCatInter INTEGER PRIMARY KEY,
-	nomCat       VARCHAR(20) CHECK (categorie IN ('contractuel','vacataire','enseignant chercheur')) NOT NULL,
-	service      INTEGER,
-	maxHeures    INTEGER,
-	ratioTP      INTEGER
+	codCatInter        INTEGER SERIAL PRIMARY KEY,
+	nomCat             VARCHAR(20) CHECK (categorie IN ('contractuel','vacataire','enseignant chercheur')) NOT NULL,
+	service            INTEGER,
+	maxHeures          INTEGER,
+	ratioTPCatInterNum INTEGER,
+	ratioTPCatInterDen INTEGER
 );
 
 -- creation de la table CategorieHeure
 
 CREATE TABLE CategorieHeure (
-	codCatHeure INTEGER PRIMARY KEY,
+	codCatHeure INTEGER SERIAL PRIMARY KEY,
 	nomCatHeure VARCHAR(20),
-	coeff FLOAT CHECK (coeffInter BETWEEN 1/2 and 1)
+	coeffNum    INTEGER,
+	coeffDen    INTEGER CHECK (coeffNum/coeffDen BETWEEN 0.5 AND 1)
 );
 
 -- creation de la table Semestre
 
 CREATE TABLE Semestre (
-	codSem    INTEGER PRIMARY KEY,
+	codSem     VARCHAR(2) PRIMARY KEY,
 	nbGrpTD    INTEGER,
 	nbGrpTP    INTEGER,
 	nbEtd      INTEGER,
@@ -54,31 +57,49 @@ CREATE TABLE Semestre (
 );
 
 CREATE TABLE TypeModule (
-	codTypMod INTEGER PRIMARY KEY,
+	codTypMod INTEGER SERIAL PRIMARY KEY,
 	nomTypMod VARCHAR(20)
 );
 
 -- creation de la table Module
 
 CREATE TABLE Module (
-	codMod VARCHAR(5) PRIMARY KEY,
-	typeMod INTEGER REFERENCES ,
-	numSem INTEGER REFERENCES Semestre(numSem),
-	code VARCHAR(5),
-	libLong VARCHAR(50),
-	libCourt VARCHAR(20),
-	hCM INTEGER,
-	hTD INTEGER,
-	hTP INTEGER,
-	hSom INTEGER
+	codMod    VARCHAR(5) SERIAL PRIMARY KEY,
+	codTypMod INTEGER REFERENCES TypeModule(codTypMod),
+	numSem    INTEGER REFERENCES Semestre(numSem),
+	code      VARCHAR(5),
+	
+	libLong   VARCHAR(50),
+	libCourt  VARCHAR(20),
+
+	valid BOOLEAN,
+
+	/*Spécifique a ressource*/
+	nbHParSemaineTD   INTEGER CHECK (codTypMod=1),
+	nbHParSemaineTP   INTEGER CHECK (codTypMod=1),
+	nbHParSemaineHTut INTEGER CHECK (codTypMod=1),
+
+	/*Spécifique a sae*/
+	nbHPnSaeParSemestre INTEGER CHECK (codTypMod=2),
+	nbHPnTutParSemestre INTEGER CHECK (codTypMod=2),
+
+	/*Spécifique a stage*/
+	nbHREH INTEGER CHECK (codTypMod=3),
+	nbHTut INTEGER CHECK (codTypMod=3)
 );
 
 -- creation de la table Affectation
 
 CREATE TABLE Affectation (
-	codInter INTEGER REFERENCES Intervenant(codeInter),
-	codeCatHeure INTEGER REFERENCES CategorieHeure(codeCatHeure),
-	nbGrp INTEGER,
-	nbSemaine INTEGER,
-	PRIMARY KEY(codeInter,codeCatHeure)
+	codInter INTEGER SERIAL REFERENCES Intervenant(codeInter),
+	codeCatHeure INTEGER SERIAL REFERENCES CategorieHeure(codeCatHeure),
+	commentaire TEXT,
+	PRIMARY KEY(codeInter,codeCatHeure),
+
+	/*Spécifique a ressource*/
+	nbSem INTEGER CHECK (codeCatHeure=1),
+	nbGrp INTEGER CHECK (codeCatHeure=1),
+
+	/*Spécifique a sae/stage*/
+	nbH INTEGER CHECK (codeCatHeure = 2 OR codeCatHeure = 3)
 );
