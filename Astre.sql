@@ -132,6 +132,18 @@ END;
 $$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION verifHP(integer)
+	RETURNS BOOLEAN AS
+$$
+DECLARE
+	valVerif INTEGER;
+BEGIN
+	SELECT COUNT(codCatHeure) INTO valVerif FROM CategorieHeure WHERE codCatHeure = $1 AND nomCatHeure = 'HP';
+	RETURN valVerif = 1;
+END;
+$$
+LANGUAGE plpgsql;
+
 -- creation de la table Affectation
 
 CREATE TABLE Affectation (
@@ -142,7 +154,7 @@ CREATE TABLE Affectation (
 	PRIMARY KEY(codInter,codCatHeure,codMod),
 
 	/*Spécifique a ressource*/
-	nbSem INTEGER CHECK (getCodTypMod(codMod)=1 OR nbSem = NULL),
+	nbSem INTEGER CHECK (getCodTypMod(codMod)=1 AND verifHP(codCatHeure) OR nbSem = NULL),
 	nbGrp INTEGER CHECK (getCodTypMod(codMod)=1 OR nbGrp = NULL),
 
 	/*Spécifique a sae/stage*/
