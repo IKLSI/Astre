@@ -66,7 +66,6 @@ CREATE TABLE Module (
 	codMod    VARCHAR(5) PRIMARY KEY,
 	codTypMod INTEGER REFERENCES TypeModule(codTypMod),
 	codSem    VARCHAR(2) REFERENCES Semestre(codSem),
-	code      VARCHAR(5),
 	
 	libLong   VARCHAR(50),
 	libCourt  VARCHAR(20),
@@ -90,7 +89,7 @@ CREATE TABLE Module (
 -- creation de la table Affectation
 
 CREATE TABLE Affectation (
-	codMod INTEGER REFERENCES Module(codMod),
+	codMod VARCHAR(5) REFERENCES Module(codMod),
 	codInter INTEGER REFERENCES Intervenant(codInter),
 	codCatHeure INTEGER REFERENCES CategorieHeure(codCatHeure),
 	commentaire TEXT,
