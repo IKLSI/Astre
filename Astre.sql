@@ -11,26 +11,9 @@ drop table if exists Semestre 				CASCADE ;
 drop table if exists Affectation 			CASCADE ;
 drop table if exists CategorieIntervenant 	CASCADE ;
 drop table if exists CategorieHeure 		CASCADE ;
+drop table if exists TypeModule 	        CASCADE ;
 
 -- creation de la table CategorieIntervenant
-
-CREATE TABLE CategorieIntervenant (
-	codCatInter        SERIAL PRIMARY KEY,
-	nomCat             VARCHAR(20),
-	service            INTEGER,
-	maxHeure           INTEGER
-);
-
--- creation de la table Intervenant
-
-CREATE TABLE Intervenant (
-	codInter        SERIAL PRIMARY KEY,
-	nom             VARCHAR(40),
-	prenom          VARCHAR(40),
-	codCatInter    INTEGER REFERENCES CategorieIntervenant(codCatInter),
-	hServ           INTEGER DEFAULT getService(),
-	maxHeure        INTEGER DEFAULT getMaxHeure(),
-);
 
 CREATE TABLE CategorieIntervenant (
 	codCatInter        SERIAL PRIMARY KEY,
@@ -41,6 +24,17 @@ CREATE TABLE CategorieIntervenant (
 	ratioTPCatInterDen INTEGER
 );
 
+-- creation de la table Intervenant
+
+CREATE TABLE Intervenant (
+	codInter        SERIAL PRIMARY KEY,
+	nom             VARCHAR(40),
+	prenom          VARCHAR(40),
+	codCatInter    INTEGER REFERENCES CategorieIntervenant(codCatInter),
+	hServ           INTEGER DEFAULT getService(),
+	maxHeure        INTEGER DEFAULT getMaxHeure()
+);
+
 -- creation de la table CategorieHeure
 
 CREATE TABLE CategorieHeure (
@@ -48,7 +42,7 @@ CREATE TABLE CategorieHeure (
 	nomCatHeure VARCHAR(20),
 	coeffNum    INTEGER,
 	coeffDen    INTEGER,
-	CONSTRAINT check_coeff_range CHECK (coeffNum::NUMERIC / coeffDen BETWEEN 0.5 AND 1)
+	CONSTRAINT check_coeff CHECK (coeffNum::NUMERIC / coeffDen BETWEEN 0.5 AND 1)
 );
 
 -- creation de la table Semestre
@@ -73,7 +67,7 @@ CREATE TABLE TypeModule (
 CREATE TABLE Module (
 	codMod    VARCHAR(5) PRIMARY KEY,
 	codTypMod INTEGER REFERENCES TypeModule(codTypMod),
-	codSem    INTEGER REFERENCES Semestre(codSem),
+	codSem    VARCHAR(2) REFERENCES Semestre(codSem),
 	code      VARCHAR(5),
 	
 	libLong   VARCHAR(50),
