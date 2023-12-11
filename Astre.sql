@@ -30,7 +30,7 @@ CREATE TABLE Intervenant (
 
 CREATE TABLE CategorieIntervenant (
 	codCatInter        INTEGER SERIAL PRIMARY KEY,
-	nomCat             VARCHAR(20) CHECK (categorie IN ('contractuel','vacataire','enseignant chercheur')) NOT NULL,
+	nomCat             VARCHAR(20) NOT NULL,
 	service            INTEGER,
 	maxHeures          INTEGER,
 	ratioTPCatInterNum INTEGER,
@@ -43,7 +43,8 @@ CREATE TABLE CategorieHeure (
 	codCatHeure INTEGER SERIAL PRIMARY KEY,
 	nomCatHeure VARCHAR(20),
 	coeffNum    INTEGER,
-	coeffDen    INTEGER CHECK (coeffNum/coeffDen BETWEEN 0.5 AND 1)
+	coeffDen    INTEGER,
+	CONSTRAINT CHECK (coeffNum/coeffDen BETWEEN 0.5 AND 1)
 );
 
 -- creation de la table Semestre
@@ -57,14 +58,14 @@ CREATE TABLE Semestre (
 );
 
 CREATE TABLE TypeModule (
-	codTypMod INTEGER SERIAL PRIMARY KEY,
+	codTypMod SERIAL PRIMARY KEY,
 	nomTypMod VARCHAR(20)
 );
 
 -- creation de la table Module
 
 CREATE TABLE Module (
-	codMod    VARCHAR(5) SERIAL PRIMARY KEY,
+	codMod    VARCHAR(5) PRIMARY KEY,
 	codTypMod INTEGER REFERENCES TypeModule(codTypMod),
 	numSem    INTEGER REFERENCES Semestre(numSem),
 	code      VARCHAR(5),
@@ -91,7 +92,7 @@ CREATE TABLE Module (
 -- creation de la table Affectation
 
 CREATE TABLE Affectation (
-	codInter INTEGER SERIAL REFERENCES Intervenant(codeInter),
+	codInter SERIAL REFERENCES Intervenant(codeInter),
 	codeCatHeure INTEGER SERIAL REFERENCES CategorieHeure(codeCatHeure),
 	commentaire TEXT,
 	PRIMARY KEY(codeInter,codeCatHeure),
