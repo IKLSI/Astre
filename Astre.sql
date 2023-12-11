@@ -15,44 +15,38 @@ drop table if exists CategorieHeure 		CASCADE ;
 -- creation de la table CategorieIntervenant
 
 CREATE TABLE CategorieIntervenant (
-	codCatInter        INTEGER SERIAL PRIMARY KEY,
+	codCatInter        SERIAL PRIMARY KEY,
 	nomCat             VARCHAR(20) CHECK (categorie IN ('contractuel','vacataire','enseignant chercheur')) NOT NULL,
 	service            INTEGER,
-	maxHeures          INTEGER,
-	ratioTPCatInterNum INTEGER,
-	ratioTPCatInterDen INTEGER
+	maxHeure           INTEGER
 );
 
 -- creation de la table Intervenant
 
 CREATE TABLE Intervenant (
-	codInter        INTEGER SERIAL PRIMARY KEY,
+	codInter        SERIAL PRIMARY KEY,
 	nom             VARCHAR(40),
 	prenom          VARCHAR(40),
 	codeCatInter    INTEGER REFERENCES CategorieIntervenant(codeCatInter),
-	hServ           INTEGER DEFAULT (SELECT service FROM CategorieIntervenant c WHERE codCatInter == c.codCatInter),
-	maxHeure        INTEGER,
+	hServ           INTEGER DEFAULT getService(),
+	maxHeure        INTEGER DEFAULT ,
 	ratioTPInterNum INTEGER,
 	ratioTPInterDen INTEGER
 );
 
-
-<<<<<<< HEAD
 CREATE TABLE CategorieIntervenant (
-	codCatInter        INTEGER SERIAL PRIMARY KEY,
+	codCatInter        SERIAL PRIMARY KEY,
 	nomCat             VARCHAR(20) NOT NULL,
 	service            INTEGER,
 	maxHeures          INTEGER,
 	ratioTPCatInterNum INTEGER,
 	ratioTPCatInterDen INTEGER
 );
-=======
->>>>>>> 7d3a350de687b27db5a1cb19dc096296d21fbb74
 
 -- creation de la table CategorieHeure
 
 CREATE TABLE CategorieHeure (
-	codCatHeure INTEGER SERIAL PRIMARY KEY,
+	codCatHeure SERIAL PRIMARY KEY,
 	nomCatHeure VARCHAR(20),
 	coeffNum    INTEGER,
 	coeffDen    INTEGER,
@@ -104,10 +98,10 @@ CREATE TABLE Module (
 -- creation de la table Affectation
 
 CREATE TABLE Affectation (
-	codInter SERIAL REFERENCES Intervenant(codeInter),
-	codeCatHeure INTEGER SERIAL REFERENCES CategorieHeure(codeCatHeure),
+	codInter INTEGER REFERENCES Intervenant(codInter),
+	codCatHeure INTEGER REFERENCES CategorieHeure(codCatHeure),
 	commentaire TEXT,
-	PRIMARY KEY(codeInter,codeCatHeure),
+	PRIMARY KEY(codInter,codCatHeure),
 
 	/*Spécifique a ressource*/
 	nbSem INTEGER CHECK (codeCatHeure=1),
@@ -116,3 +110,27 @@ CREATE TABLE Affectation (
 	/*Spécifique a sae/stage*/
 	nbH INTEGER CHECK (codeCatHeure = 2 OR codeCatHeure = 3)
 );
+
+CREATE OR REPLACE FUNCTION getService()
+    RETURNS INTEGER AS
+$$
+DECLARE
+    valService INTEGER;
+BEGIN
+    SELECT service INTO valService FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter;
+    RETURN valService;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION getMaxHeure()
+    RETURNS INTEGER AS
+$$
+DECLARE
+    valmaxHeure INTEGER;
+BEGIN
+    SELECT maxHeure INTO valmaxHeure FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter;
+    RETURN valMaxHeure;
+END;
+$$
+LANGUAGE plpgsql;
