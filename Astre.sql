@@ -27,12 +27,12 @@ CREATE TABLE CategorieIntervenant (
 -- creation de la table Intervenant
 
 CREATE TABLE Intervenant (
-	codInter        SERIAL PRIMARY KEY,
-	nom             VARCHAR(40),
-	prenom          VARCHAR(40),
-	codCatInter    INTEGER REFERENCES CategorieIntervenant(codCatInter),
-	hServ           INTEGER DEFAULT getService(),
-	maxHeure        INTEGER DEFAULT getMaxHeure()
+	codInter    SERIAL PRIMARY KEY,
+	nom         VARCHAR(40),
+	prenom      VARCHAR(40),
+	codCatInter INTEGER REFERENCES CategorieIntervenant(codCatInter),
+	hServ       INTEGER DEFAULT getService(),
+	maxHeure    INTEGER DEFAULT getMaxHeure()
 );
 
 -- creation de la table CategorieHeure
@@ -98,11 +98,11 @@ CREATE TABLE Affectation (
 	PRIMARY KEY(codInter,codCatHeure),
 
 	/*Spécifique a ressource*/
-	nbSem INTEGER CHECK (codCatHeure=1),
-	nbGrp INTEGER CHECK (codCatHeure=1),
+	nbSem INTEGER CHECK (getCodTypMod()=1),
+	nbGrp INTEGER CHECK (getCodTypMod()=1),
 
 	/*Spécifique a sae/stage*/
-	nbH INTEGER CHECK (codCatHeure = 2 OR codCatHeure = 3)
+	nbH INTEGER CHECK (getCodTypMod() = 2 OR getCodTypMod() = 3)
 );
 
 CREATE OR REPLACE FUNCTION getService()
@@ -125,6 +125,18 @@ DECLARE
 BEGIN
     SELECT maxHeure INTO valmaxHeure FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter;
     RETURN valMaxHeure;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION getCodTypMod()
+    RETURNS INTEGER AS
+$$
+DECLARE
+    valcodTypMod INTEGER;
+BEGIN
+    SELECT codTypMod INTO valcodTypMod FROM Module WHERE codMod = NEW.codMod;
+    RETURN valcodTypMod;
 END;
 $$
 LANGUAGE plpgsql;
