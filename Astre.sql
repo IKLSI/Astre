@@ -92,6 +92,7 @@ CREATE TABLE Module (
 -- creation de la table Affectation
 
 CREATE TABLE Affectation (
+	codMod INTEGER REFERENCES Module(codMod),
 	codInter INTEGER REFERENCES Intervenant(codInter),
 	codCatHeure INTEGER REFERENCES CategorieHeure(codCatHeure),
 	commentaire TEXT,
