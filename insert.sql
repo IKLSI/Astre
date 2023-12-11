@@ -40,7 +40,7 @@ VALUES ('S1', 3, 6, 85, 15),
 
 
 -- Insertion de données dans la table Intervenants
-INSERT INTO Intervenant (nom, prenom, codeCatInter, hServ, maxHeure)
+INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure)
 VALUES ('Boukachour', 'Hadhoum'  , 1, 192, 364),
        ('Colignon'  , 'Thomas'   , 2, 120, 187),
        ('Dubocage'  , 'Tiphaine' , 2, 120, 187),
@@ -54,16 +54,16 @@ VALUES ('Boukachour', 'Hadhoum'  , 1, 192, 364),
 
 
 -- Insertion de données dans la table Module
-INSERT INTO Module (codSem, codTypMod, codMod, libLong, libCourt, valid, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineHTut)
-VALUES ('S1' , 1, 'R1.01', 'Initiation au développement'           , 'Init Dev' , false,4,2,1),
-       ('S1' , 1, 'R1.02', 'Développement interfaces Web'          , 'Dev Web'  , false,4,2,1),
-       ('S2' , 1, 'R2.01', 'Développement orienté objets'          , 'Dev Objet', false,4,2,1),
-       ('S2' , 1, 'R2.02', 'Développement d''applications avec IHM', 'Dev IHM'  , false,2,2,0),
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineHTut)
+VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev' , false,4,2,1),
+       ('R1.02', 'S1' , 1, 'Développement interfaces Web'          , 'Dev Web'  , false,4,2,1),
+       ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet', false,4,2,1),
+       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'  , false,2,2,0);
        
 -- Insertion de données dans la table Module
 INSERT INTO Module (codSem, codTypMod, codMod, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre)
 VALUES ('S1' , 2, 'S1.1', 'Implémentation d''un besoin client'    , 'SAE-01'   , false,6,0),
-       ('S2' , 2, 'S2.2', 'Développement d''une application'      , 'SAE-02'   , false,8,0);
+       ('S2' , 2, 'S2.2', 'Développement d''une application'      , 'SAE-02'   , false,8,0),
        ('S3' , 2, 'S3.1', 'Développement d''une application'      , 'Dev appli', false,40,38);
 
 

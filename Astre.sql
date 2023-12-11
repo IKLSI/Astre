@@ -21,7 +21,8 @@ CREATE TABLE CategorieIntervenant (
 	service            INTEGER,
 	maxHeures          INTEGER,
 	ratioTPCatInterNum INTEGER,
-	ratioTPCatInterDen INTEGER
+	ratioTPCatInterDen INTEGER,
+	CONSTRAINT check_coeff CHECK (ratioTPCatInterNum::NUMERIC / ratioTPCatInterDen BETWEEN 0.5 AND 1)
 );
 
 -- creation de la table Intervenant
@@ -41,8 +42,7 @@ CREATE TABLE CategorieHeure (
 	codCatHeure SERIAL PRIMARY KEY,
 	nomCatHeure VARCHAR(20),
 	coeffNum    INTEGER,
-	coeffDen    INTEGER,
-	CONSTRAINT check_coeff CHECK (coeffNum::NUMERIC / coeffDen BETWEEN 0.5 AND 1)
+	coeffDen    INTEGER
 );
 
 -- creation de la table Semestre
@@ -73,17 +73,17 @@ CREATE TABLE Module (
 	valid BOOLEAN,
 
 	/*Spécifique a ressource*/
-	nbHParSemaineTD   INTEGER CHECK (codTypMod=1),
-	nbHParSemaineTP   INTEGER CHECK (codTypMod=1),
-	nbHParSemaineHTut INTEGER CHECK (codTypMod=1),
+	nbHParSemaineTD   INTEGER CHECK (codTypMod=1 OR nbHParSemaineTD = NULL),
+	nbHParSemaineTP   INTEGER CHECK (codTypMod=1 OR nbHParSemaineTP = NULL),
+	nbHParSemaineHTut INTEGER CHECK (codTypMod=1 OR nbHParSemaineHTut = NULL),
 
 	/*Spécifique a sae*/
-	nbHPnSaeParSemestre INTEGER CHECK (codTypMod=2),
-	nbHPnTutParSemestre INTEGER CHECK (codTypMod=2),
+	nbHPnSaeParSemestre INTEGER CHECK (codTypMod=2 OR nbHPnSaeParSemestre = NULL),
+	nbHPnTutParSemestre INTEGER CHECK (codTypMod=2 OR nbHPnTutParSemestre = NULL),
 
 	/*Spécifique a stage*/
-	nbHREH INTEGER CHECK (codTypMod=3),
-	nbHTut INTEGER CHECK (codTypMod=3)
+	nbHREH INTEGER CHECK (codTypMod=3 OR nbHREH = NULL),
+	nbHTut INTEGER CHECK (codTypMod=3 OR nbHTut = NULL)
 );
 
 -- creation de la table Affectation
@@ -100,40 +100,40 @@ CREATE TABLE Affectation (
 	nbGrp INTEGER CHECK (getCodTypMod()=1),
 
 	/*Spécifique a sae/stage*/
-	nbH INTEGER CHECK (getCodTypMod() = 2 OR getCodTypMod() = 3)
+	nbH INTEGER CHECK (getCodTypMod() = 2 OR getCodTypMod() = 3 OR nbH = NULL)
 );
 
-CREATE OR REPLACE FUNCTION getService()
+CREATE OR REPLACE FUNCTION getService(integer)
     RETURNS INTEGER AS
 $$
 DECLARE
     valService INTEGER;
 BEGIN
-    SELECT service INTO valService FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter;
+    SELECT service INTO valService FROM CategorieIntervenant WHERE codCatInter = $1;
     RETURN valService;
 END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION getMaxHeure()
+CREATE OR REPLACE FUNCTION getMaxHeure(integer)
     RETURNS INTEGER AS
 $$
 DECLARE
     valmaxHeure INTEGER;
 BEGIN
-    SELECT maxHeure INTO valmaxHeure FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter;
+    SELECT maxHeure INTO valmaxHeure FROM CategorieIntervenant WHERE codCatInter = $1;
     RETURN valMaxHeure;
 END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION getCodTypMod()
+CREATE OR REPLACE FUNCTION getCodTypMod(integer)
     RETURNS INTEGER AS
 $$
 DECLARE
     valcodTypMod INTEGER;
 BEGIN
-    SELECT codTypMod INTO valcodTypMod FROM Module WHERE codMod = NEW.codMod;
+    SELECT codTypMod INTO valcodTypMod FROM Module WHERE codMod = $1;
     RETURN valcodTypMod;
 END;
 $$
