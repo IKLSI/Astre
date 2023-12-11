@@ -27,11 +27,9 @@ CREATE TABLE Intervenant (
 	codInter        SERIAL PRIMARY KEY,
 	nom             VARCHAR(40),
 	prenom          VARCHAR(40),
-	codeCatInter    INTEGER REFERENCES CategorieIntervenant(codeCatInter),
+	codCatInter    INTEGER REFERENCES CategorieIntervenant(codCatInter),
 	hServ           INTEGER DEFAULT getService(),
-	maxHeure        INTEGER DEFAULT ,
-	ratioTPInterNum INTEGER,
-	ratioTPInterDen INTEGER
+	maxHeure        INTEGER DEFAULT getMaxHeure(),
 );
 
 CREATE TABLE CategorieIntervenant (
@@ -50,7 +48,7 @@ CREATE TABLE CategorieHeure (
 	nomCatHeure VARCHAR(20),
 	coeffNum    INTEGER,
 	coeffDen    INTEGER,
-	CONSTRAINT CHECK (coeffNum/coeffDen BETWEEN 0.5 AND 1)
+	CONSTRAINT check_coeff_range CHECK (coeffNum::NUMERIC / coeffDen BETWEEN 0.5 AND 1)
 );
 
 -- creation de la table Semestre
@@ -65,7 +63,9 @@ CREATE TABLE Semestre (
 
 CREATE TABLE TypeModule (
 	codTypMod SERIAL PRIMARY KEY,
-	nomTypMod VARCHAR(20)
+	nomTypMod VARCHAR(20),
+	coeffNum INTEGER,
+	coeffDen INTEGER
 );
 
 -- creation de la table Module
@@ -73,7 +73,7 @@ CREATE TABLE TypeModule (
 CREATE TABLE Module (
 	codMod    VARCHAR(5) PRIMARY KEY,
 	codTypMod INTEGER REFERENCES TypeModule(codTypMod),
-	numSem    INTEGER REFERENCES Semestre(numSem),
+	codSem    INTEGER REFERENCES Semestre(codSem),
 	code      VARCHAR(5),
 	
 	libLong   VARCHAR(50),
