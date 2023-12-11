@@ -5,13 +5,17 @@
 -- suppression des tables si elles existent déjà
 -- NB : cela supprime donc les éventuels tuples contenus
 
-drop table if exists Intervenant 			CASCADE ;
-drop table if exists Module 				CASCADE ;
-drop table if exists Semestre 				CASCADE ;
-drop table if exists Affectation 			CASCADE ;
-drop table if exists CategorieIntervenant 	CASCADE ;
-drop table if exists CategorieHeure 		CASCADE ;
-drop table if exists TypeModule 	        CASCADE ;
+DROP TABLE IF EXISTS Intervenant 			CASCADE ;
+DROP TABLE IF EXISTS Module 				CASCADE ;
+DROP TABLE IF EXISTS Semestre 				CASCADE ;
+DROP TABLE IF EXISTS Affectation 			CASCADE ;
+DROP TABLE IF EXISTS CategorieIntervenant 	CASCADE ;
+DROP TABLE IF EXISTS CategorieHeure 		CASCADE ;
+DROP TABLE IF EXISTS TypeModule 	        CASCADE ;
+
+DROP FUNCTION IF EXISTS getService  (integer) CASCADE;
+DROP FUNCTION IF EXISTS getMaxHeure (integer) CASCADE;
+DROP FUNCTION IF EXISTS getCodTypMod(integer) CASCADE;
 
 -- creation de la table CategorieIntervenant
 
@@ -19,7 +23,7 @@ CREATE TABLE CategorieIntervenant (
 	codCatInter        SERIAL PRIMARY KEY,
 	nomCat             VARCHAR(20) NOT NULL,
 	service            INTEGER,
-	maxHeures          INTEGER,
+	maxHeure           INTEGER,
 	ratioTPCatInterNum INTEGER,
 	ratioTPCatInterDen INTEGER,
 	CONSTRAINT check_coeff CHECK (ratioTPCatInterNum::NUMERIC / ratioTPCatInterDen BETWEEN 0.5 AND 1)
@@ -32,9 +36,39 @@ CREATE TABLE Intervenant (
 	nom         VARCHAR(40),
 	prenom      VARCHAR(40),
 	codCatInter INTEGER REFERENCES CategorieIntervenant(codCatInter),
-	hServ       INTEGER DEFAULT getService(),
-	maxHeure    INTEGER DEFAULT getMaxHeure()
+	hServ       INTEGER,
+	maxHeure    INTEGER 
 );
+
+/*Ajout d'un trigger s'executant avant un insert sur Intervenant qui initialise hServ a service de 
+sa categorie d'intervenant. Cela sert a mettre service en valeur par defaut de hServ.*/
+
+CREATE OR REPLACE FUNCTION default_hServ()
+RETURNS TRIGGER AS $$
+BEGIN
+	NEW.hServ := (SELECT service FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter);
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER default_hServ_trigger
+BEFORE INSERT ON Intervenant
+FOR EACH ROW EXECUTE FUNCTION default_hServ();
+
+/*Ajout d'un trigger s'executant avant un insert sur Intervenant qui initialise maxHeure a maxHeure de 
+sa categorie d'intervenant. Cela sert a mettre service en valeur par defaut de maxHeure.*/
+
+CREATE OR REPLACE FUNCTION default_maxHeure()
+RETURNS TRIGGER AS $$
+BEGIN
+	NEW.maxHeure := (SELECT maxHeure FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter);
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER default_maxHeure_trigger
+BEFORE INSERT ON Intervenant
+FOR EACH ROW EXECUTE FUNCTION default_maxHeure();
 
 -- creation de la table CategorieHeure
 
@@ -86,6 +120,18 @@ CREATE TABLE Module (
 	nbHTut INTEGER CHECK (codTypMod=3 OR nbHTut = NULL)
 );
 
+CREATE OR REPLACE FUNCTION getCodTypMod(integer)
+	RETURNS INTEGER AS
+$$
+DECLARE
+	valcodTypMod INTEGER;
+BEGIN
+	SELECT codTypMod INTO valcodTypMod FROM Module WHERE codMod = $1;
+	RETURN valcodTypMod;
+END;
+$$
+LANGUAGE plpgsql;
+
 -- creation de la table Affectation
 
 CREATE TABLE Affectation (
@@ -96,45 +142,15 @@ CREATE TABLE Affectation (
 	PRIMARY KEY(codInter,codCatHeure,codMod),
 
 	/*Spécifique a ressource*/
-	nbSem INTEGER CHECK (getCodTypMod()=1),
-	nbGrp INTEGER CHECK (getCodTypMod()=1),
+	nbSem INTEGER CHECK (getCodTypMod(codMod)=1 OR nbSem = NULL),
+	nbGrp INTEGER CHECK (getCodTypMod(codMod)=1 OR nbGrp = NULL),
 
 	/*Spécifique a sae/stage*/
-	nbH INTEGER CHECK (getCodTypMod() = 2 OR getCodTypMod() = 3 OR nbH = NULL)
+	nbH INTEGER CHECK (getCodTypMod(codMod) = 2 OR getCodTypMod(codMod) = 3 OR nbH = NULL)
 );
 
-CREATE OR REPLACE FUNCTION getService(integer)
-    RETURNS INTEGER AS
-$$
-DECLARE
-    valService INTEGER;
-BEGIN
-    SELECT service INTO valService FROM CategorieIntervenant WHERE codCatInter = $1;
-    RETURN valService;
-END;
-$$
-LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION getMaxHeure(integer)
-    RETURNS INTEGER AS
-$$
-DECLARE
-    valmaxHeure INTEGER;
-BEGIN
-    SELECT maxHeure INTO valmaxHeure FROM CategorieIntervenant WHERE codCatInter = $1;
-    RETURN valMaxHeure;
-END;
-$$
-LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION getCodTypMod(integer)
-    RETURNS INTEGER AS
-$$
-DECLARE
-    valcodTypMod INTEGER;
-BEGIN
-    SELECT codTypMod INTO valcodTypMod FROM Module WHERE codMod = $1;
-    RETURN valcodTypMod;
-END;
-$$
-LANGUAGE plpgsql;
+
+
+
