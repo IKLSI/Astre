@@ -12,20 +12,6 @@ drop table if exists Affectation 			CASCADE ;
 drop table if exists CategorieIntervenant 	CASCADE ;
 drop table if exists CategorieHeure 		CASCADE ;
 
-
--- creation de la table Intervenant
-
-CREATE TABLE Intervenant (
-	codInter        INTEGER SERIAL PRIMARY KEY,
-	nom			    VARCHAR(40),
-	prenom          VARCHAR(40),
-	codeCatInter    INTEGER REFERENCES CategorieIntervenant(codeCatInter),
-	hServ           INTEGER,
-	maxHeure        INTEGER,
-	ratioTPInterNum INTEGER,
-	ratioTPInterDen INTEGER
-);
-
 -- creation de la table CategorieIntervenant
 
 CREATE TABLE CategorieIntervenant (
@@ -36,6 +22,21 @@ CREATE TABLE CategorieIntervenant (
 	ratioTPCatInterNum INTEGER,
 	ratioTPCatInterDen INTEGER
 );
+
+-- creation de la table Intervenant
+
+CREATE TABLE Intervenant (
+	codInter        INTEGER SERIAL PRIMARY KEY,
+	nom             VARCHAR(40),
+	prenom          VARCHAR(40),
+	codeCatInter    INTEGER REFERENCES CategorieIntervenant(codeCatInter),
+	hServ           INTEGER DEFAULT (SELECT service FROM CategorieIntervenant c WHERE codCatInter == c.codCatInter),
+	maxHeure        INTEGER,
+	ratioTPInterNum INTEGER,
+	ratioTPInterDen INTEGER
+);
+
+
 
 -- creation de la table CategorieHeure
 
