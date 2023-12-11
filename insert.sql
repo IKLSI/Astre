@@ -1,4 +1,4 @@
--- Insertion de données dans la table Intervenants
+-- Insertion de données dans la table CategorieIntervenant
 INSERT INTO CategorieIntervenant (nomCat, service, maxHeures, ratioTPCatInterNum, ratioTPCatInterDen)
 VALUES ('info_ec' , 192, 364, 1,1),
        ('vaca_pro', 120, 187, 2,3),
@@ -6,8 +6,18 @@ VALUES ('info_ec' , 192, 364, 1,1),
        ('vaca_ret', 80 , 96 , 2,3),
        ('info_sd' , 384, 576, 1,1);
 
+
+
 -- Insertion de données dans la table TypeModule
-INSERT INTO TypeModule (nomTypMod, coeffNum, coeffDen)
+INSERT INTO TypeModule (nomTypMod)
+VALUES ('Ressources'),
+       ('SAE'       ),
+       ('Stage'     );
+
+
+
+-- Insertion de données dans la table CategorieHeure
+INSERT INTO CategorieHeure (nomCatHeure, coeffNum, coeffDen)
 VALUES ('CM'   , 3,2),
        ('TD'   , 1,1),
        ('TP'   , 1,1),
@@ -16,8 +26,21 @@ VALUES ('CM'   , 3,2),
        ('H saé', 1,1),
        ('HP'   , 1,1);
 
+
+
+-- Insertion de données dans la table Semestre
+INSERT INTO Semestre (codSem, nbGrpTD, nbGrpTP, nbEtd, nbSemaines)
+VALUES ('S1', 3, 6, 85, 15),
+       ('S2', 3, 6, 65, 16),
+       ('S3', 2, 4, 48, 15),
+       ('S4', 2, 4, 48, 16),
+       ('S5', 2, 4, 42, 15),
+       ('S6', 2, 4, 42, 16);
+
+
+
 -- Insertion de données dans la table Intervenants
-INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure)
+INSERT INTO Intervenant (nom, prenom, codeCatInter, hServ, maxHeure)
 VALUES ('Boukachour', 'Hadhoum'  , 1, 192, 364),
        ('Colignon'  , 'Thomas'   , 2, 120, 187),
        ('Dubocage'  , 'Tiphaine' , 2, 120, 187),
@@ -30,10 +53,37 @@ VALUES ('Boukachour', 'Hadhoum'  , 1, 192, 364),
 
 
 
+-- Insertion de données dans la table Module
+INSERT INTO Module (codSem, codTypMod, codMod, libLong, libCourt, valid, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineHTut)
+VALUES ('S1' , 1, 'R1.01', 'Initiation au développement'           , 'Init Dev' , false,4,2,1),
+       ('S1' , 1, 'R1.02', 'Développement interfaces Web'          , 'Dev Web'  , false,4,2,1),
+       ('S2' , 1, 'R2.01', 'Développement orienté objets'          , 'Dev Objet', false,4,2,1),
+       ('S2' , 1, 'R2.02', 'Développement d''applications avec IHM', 'Dev IHM'  , false,2,2,0),
+       
+-- Insertion de données dans la table Module
+INSERT INTO Module (codSem, codTypMod, codMod, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre)
+VALUES ('S1' , 2, 'S1.1', 'Implémentation d''un besoin client'    , 'SAE-01'   , false,6,0),
+       ('S2' , 2, 'S2.2', 'Développement d''une application'      , 'SAE-02'   , false,8,0);
+       ('S3' , 2, 'S3.1', 'Développement d''une application'      , 'Dev appli', false,40,38);
+
+
+-- Insertion de données dans la table Module
+INSERT INTO Module (codSem, codTypMod, codMod, libLong, libCourt, valid, nbHREH, nbHTut)
+VALUES ('S4' , 3, 'S4.ST', 'Stage'                                 , 'Stage'    , false,10,2);
+
+
+
+-- Insertion de données dans la table Affectation
+INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbSem, nbGrp)
+VALUES('R1.01',7,1,'3 Cm d''une heure 30.', 6,1),
+      ('R1.01',7,2,NULL, 14,2);
+
+-- Insertion de données dans la table Affectation
+INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbH)
+VALUES('S3.1',1,6,NULL,10);
 
 /*
 Catégorie Nom Prénom hServ hMax Coef TP S1 S3 S5 sTot S2 S4 S6 sTot Total
-
 info_ec Boukachour Hadhoum 192 364 1 106.5 18.0 0.0 124.5 0.0 0.0 0.0 0.0 124.5
 vaca_pro Colignon Thomas 120 187 2/3 40.3 0.0 0.0 40.3 0.0 0.0 0.0 0.0 40.3
 vaca_pro Dubocage Tiphaine 120 187 2/3 40.3 0.0 0.0 40.3 0.0 0.0 0.0 0.0 40.3
