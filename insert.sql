@@ -7,14 +7,14 @@ VALUES ('info_ec' , 192, 364, 1,1),
        ('info_sd' , 384, 576, 1,1);
 
 -- Insertion de données dans la table TypeModule
-INSERT INTO TypeModule (nomTypMod, coeffNum, coeffDen)
-VALUES ('CM'   , 3,2),
-       ('TD'   , 1,1),
-       ('TP'   , 1,1),
-       ('H tut', 1,1),
-       ('REH'  , 1,1),
-       ('H saé', 1,1),
-       ('HP'   , 1,1);
+INSERT INTO TypeModule (nomTypMod)
+VALUES ('CM'),
+       ('TD'),
+       ('TP'),
+       ('H tut'),
+       ('REH'),
+       ('H saé'),
+       ('HP');
 
 -- Insertion de données dans la table Intervenants
 INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure)

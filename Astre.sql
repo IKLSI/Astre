@@ -93,7 +93,7 @@ CREATE TABLE Affectation (
 	codInter INTEGER REFERENCES Intervenant(codInter),
 	codCatHeure INTEGER REFERENCES CategorieHeure(codCatHeure),
 	commentaire TEXT,
-	PRIMARY KEY(codInter,codCatHeure),
+	PRIMARY KEY(codInter,codCatHeure,codMod),
 
 	/*Spécifique a ressource*/
 	nbSem INTEGER CHECK (getCodTypMod()=1),
