@@ -1,5 +1,5 @@
 -- Insertion de données dans la table CategorieIntervenant
-INSERT INTO CategorieIntervenant (nomCat, service, maxHeures, ratioTPCatInterNum, ratioTPCatInterDen)
+INSERT INTO CategorieIntervenant (nomCat, service, maxHeure, ratioTPCatInterNum, ratioTPCatInterDen)
 VALUES ('info_ec' , 192, 364, 1,1),
        ('vaca_pro', 120, 187, 2,3),
        ('vac_sd'  , 90 , 187, 1,1),
