@@ -13,9 +13,12 @@ DROP TABLE IF EXISTS CategorieIntervenant 	CASCADE ;
 DROP TABLE IF EXISTS CategorieHeure 		CASCADE ;
 DROP TABLE IF EXISTS TypeModule 	        CASCADE ;
 
-DROP FUNCTION IF EXISTS getService  (integer) CASCADE;
-DROP FUNCTION IF EXISTS getMaxHeure (integer) CASCADE;
-DROP FUNCTION IF EXISTS getCodTypMod(integer) CASCADE;
+DROP FUNCTION IF EXISTS getService  (INTEGER) CASCADE;
+DROP FUNCTION IF EXISTS getMaxHeure (INTEGER) CASCADE;
+DROP FUNCTION IF EXISTS verifTypMod(INTEGER) CASCADE;
+DROP FUNCTION IF EXISTS getAffectation(VARCHAR) CASCADE;
+
+DROP VIEW IF EXISTS affectation_final CASCADE;
 
 -- creation de la table CategorieIntervenant
 
@@ -94,6 +97,18 @@ CREATE TABLE TypeModule (
 	nomTypMod VARCHAR(20)
 );
 
+CREATE OR REPLACE FUNCTION verifTypMod(VARCHAR,VARCHAR)
+	RETURNS BOOLEAN AS
+$$
+DECLARE
+	valnomTypMod VARCHAR;
+BEGIN
+	SELECT nomTypMod INTO valnomTypMod FROM Module m JOIN TypeModule t ON m.codTypMod = t.codTypMod WHERE codMod = $1;
+	RETURN valnomTypMod = $2;
+END;
+$$
+LANGUAGE plpgsql;
+
 -- creation de la table Module
 
 CREATE TABLE Module (
@@ -107,33 +122,21 @@ CREATE TABLE Module (
 	valid BOOLEAN,
 
 	/*Spécifique a ressource*/
-	nbHParSemaineTD   INTEGER CHECK (codTypMod=1 OR nbHParSemaineTD = NULL),
-	nbHParSemaineTP   INTEGER CHECK (codTypMod=1 OR nbHParSemaineTP = NULL),
-	nbHParSemaineCM   INTEGER CHECK (codTypMod=1 OR nbHParSemaineCM = NULL),
-	nbHParSemaineHTut INTEGER CHECK (codTypMod=1 OR nbHParSemaineHTut = NULL),
+	nbHParSemaineTD   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTD = NULL),
+	nbHParSemaineTP   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTP = NULL),
+	nbHParSemaineCM   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineCM = NULL),
+	nbHParSemaineHTut INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineHTut = NULL),
 
 	/*Spécifique a sae*/
-	nbHPnSaeParSemestre INTEGER CHECK (codTypMod=2 OR nbHPnSaeParSemestre = NULL),
-	nbHPnTutParSemestre INTEGER CHECK (codTypMod=2 OR nbHPnTutParSemestre = NULL),
+	nbHPnSaeParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnSaeParSemestre = NULL),
+	nbHPnTutParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnTutParSemestre = NULL),
 
 	/*Spécifique a stage*/
-	nbHREH INTEGER CHECK (codTypMod=3 OR nbHREH = NULL),
-	nbHTut INTEGER CHECK (codTypMod=3 OR nbHTut = NULL)
+	nbHREH INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
+	nbHTut INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHTut = NULL)
 );
 
-CREATE OR REPLACE FUNCTION getCodTypMod(integer)
-	RETURNS INTEGER AS
-$$
-DECLARE
-	valcodTypMod INTEGER;
-BEGIN
-	SELECT codTypMod INTO valcodTypMod FROM Module WHERE codMod = $1;
-	RETURN valcodTypMod;
-END;
-$$
-LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION verifHP(integer)
+CREATE OR REPLACE FUNCTION verifHP(INTEGER)
 	RETURNS BOOLEAN AS
 $$
 DECLARE
@@ -148,19 +151,63 @@ LANGUAGE plpgsql;
 -- creation de la table Affectation
 
 CREATE TABLE Affectation (
+	codAffec SERIAL PRIMARY KEY,
 	codMod VARCHAR(5) REFERENCES Module(codMod),
 	codInter INTEGER REFERENCES Intervenant(codInter),
 	codCatHeure INTEGER REFERENCES CategorieHeure(codCatHeure),
 	commentaire TEXT,
-	PRIMARY KEY(codInter,codCatHeure,codMod),
 
 	/*Spécifique a ressource*/
-	nbSem INTEGER CHECK (getCodTypMod(codMod)=1 AND verifHP(codCatHeure) OR nbSem = NULL),
-	nbGrp INTEGER CHECK (getCodTypMod(codMod)=1 OR nbGrp = NULL),
+	nbSem INTEGER CHECK (verifTypMod(codMod,'Ressources') AND verifHP(codCatHeure) OR nbSem = NULL),
+	nbGrp INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbGrp = NULL),
 
 	/*Spécifique a sae/stage*/
-	nbH INTEGER CHECK (getCodTypMod(codMod) = 2 OR getCodTypMod(codMod) = 3 OR nbH = NULL)
+	nbH INTEGER CHECK (verifTypMod(codMod,'SAE') OR verifTypMod(codMod,'Stage') OR nbH = NULL)
 );
+
+CREATE OR REPLACE VIEW affectation_final AS 
+SELECT m.codMod,i.codInter,i.nom,c.nomCatHeure,
+		a.nbSem,a.nbGrp,
+		nbH,
+		ROUND(
+		CASE
+			WHEN m.codTypMod = 1 THEN COALESCE(a.nbSem,1)*COALESCE(a.nbGrp,1)*
+				CASE 
+					WHEN c.nomCatHeure =  'TD' THEN m.nbHParSemaineTD
+					WHEN c.nomCatHeure =  'TP' THEN m.nbHParSemaineTP
+					WHEN c.nomCatHeure =  'CM' THEN m.nbHParSemaineCM
+					ELSE 1
+				END
+			ELSE COALESCE(nbH,1)
+		END *(c.coeffNum::NUMERIC/c.coeffDen::NUMERIC),1) AS "tot eqtd"
+FROM Affectation a JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
+				   JOIN Module      m    ON a.codMod      = m.codMod
+				   JOIN Intervenant i    ON i.codInter    = a.codInter;
+
+CREATE OR REPLACE FUNCTION getAffectation(codMod VARCHAR)
+RETURNS TABLE (
+    nom VARCHAR,
+    nomCatHeure VARCHAR,
+    nbSem INTEGER,
+    nbGrp INTEGER,
+    nbH INTEGER,
+    "tot eqtd" NUMERIC
+) AS
+$$
+BEGIN
+    RETURN QUERY SELECT
+        affectation_final.nom,
+        affectation_final.nomCatHeure,
+        CASE WHEN COUNT(affectation_final.nbSem) > 0 THEN affectation_final.nbSem END,
+        CASE WHEN COUNT(affectation_final.nbGrp) > 0 THEN affectation_final.nbGrp END,
+        CASE WHEN COUNT(affectation_final.nbH) > 0 THEN affectation_final.nbH END,
+        "tot eqtd"
+    FROM affectation_final
+    WHERE affectation_final.codMod = getAffectation.codMod;
+END;
+$$
+LANGUAGE plpgsql;
+
 
 
 

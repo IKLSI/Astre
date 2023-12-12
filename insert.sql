@@ -51,16 +51,27 @@ VALUES ('Boukachour', 'Hadhoum'  , 1, 192, 364),
 
 -- Insertion de données dans la table Module ressource
 INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineHTut,nbHParSemaineCM)
-VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev' , false,4,2,1,6),
-	   ('R1.02', 'S1' , 1, 'Développement interfaces Web'          , 'Dev Web'  , false,4,2,1,0),
-	   ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet', false,4,2,1,0),
-	   ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'  , false,2,2,0,0);
+VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev'      , false,4,2,1,6),
+       ('R1.02', 'S1' , 1, 'Développement interfaces Web'          , 'Dev Web'       , false,4,2,1,0),
+       ('R1.03', 'S1' , 1, 'Introduction Architecture'             , 'Archi'         , false,4,2,1,0),
+       ('R1.04', 'S1' , 1, 'Introduction Système'                  , 'Système'       , false,4,2,1,0),
+       ('R1.05', 'S1' , 1, 'Introduction Base de données'          , 'Bado'          , false,4,2,1,0),
+       ('R1.06', 'S1' , 1, 'Mathématiques discrètes'               , 'Maths '        , false,4,2,1,0),
+       ('R1.07', 'S1' , 1, 'Outils mathématiques fondamentaux'     , 'Outils num'    , false,4,2,1,0),
+       ('R1.08', 'S1' , 1, 'Gestion de projet et des organisations', 'GPO'           , false,4,2,1,0),
+       ('R1.09', 'S1' , 1, 'Économie durable et numérique'         , 'Économie'      , false,4,2,1,0),
+       ('R1.10', 'S1' , 1, 'Anglais Technique'                     , 'Anglais Pro'   , false,4,2,1,0),
+       ('R1.11', 'S1' , 1, 'Bases de la communication'             , 'Communication' , false,4,2,1,0),
+       ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet'     , false,4,2,1,0),
+       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,2,2,0,0);
+
+ 
 	 
 -- Insertion de données dans la table Module SAÉ
 INSERT INTO Module (codSem, codTypMod, codMod, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre)
 VALUES ('S1' , 2, 'S1.1', 'Implémentation d''un besoin client'    , 'SAE-01'   , false,6 ,0 ),
-	   ('S2' , 2, 'S2.2', 'Développement d''une application'      , 'SAE-02'   , false,8 ,0 ),
-	   ('S3' , 2, 'S3.1', 'Développement d''une application'      , 'Dev appli', false,40,38);
+       ('S2' , 2, 'S2.2', 'Développement d''une application'      , 'SAE-02'   , false,8 ,0 ),
+       ('S3' , 2, 'S3.1', 'Développement d''une application'      , 'Dev appli', false,40,38);
 
 
 -- Insertion de données dans la table Module stage
@@ -68,15 +79,46 @@ INSERT INTO Module (codSem, codTypMod, codMod, libLong, libCourt, valid, nbHREH,
 VALUES ('S4' , 3, 'S4.ST', 'Stage'                                 , 'Stage'    ,false ,10,2);
 
 
+-- Insertion de données dans la table Affectation SAE / STAGE
+INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbH)
+VALUES('S3.1',1,6,            NULL,   10), 
+      ('S3.1',1,7,            NULL,    8),
+
+      ('S3.1',6,6,            NULL,    5),
+      ('S3.1',6,7,            NULL,    7),
+
+      ('S3.1',1,6,            NULL,   10),
+      ('S3.1',1,7,            NULL,    8),
+
+      ('S3.1',1,6,            NULL,   10),
+      ('S3.1',1,7,            NULL,    8),
+
+      ('S3.1',1,6,            NULL,    5),
+      ('S3.1',1,7,            NULL,    7),
+
+      ('S4.ST',6,7,           NULL,    3);
+
+
 
 -- Insertion de données dans la table Affectation
 INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbSem, nbGrp)
-VALUES('R1.01',7,1,'3 cm d''1h30.', 6, 1),
-	  ('R1.01',7,2,           NULL, 14,2);
+VALUES('R1.01',7,1,'3 cm d''1h30.',  6, 1),  
+      ('R1.01',7,2,           NULL, 14, 2),  
+      ('R1.01',7,3,           NULL, 14, 2),  
+      ('R1.01',7,7,          'TP0',  1, 6),  
+      ('R1.01',7,7,   'DS MACHINE',  1, 5),  
 
--- Insertion de données dans la table Affectation
-INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbH)
-VALUES('S3.1',1,6,            NULL,   10);
+      ('R1.01',8,2,           NULL, 14, 2), 
+      ('R1.01',8,7,           'TP0', 1, 6),
+      ('R1.01',8,7,     'DS PAPIER', 1, 3),
+
+      ('R1.01',2,3,           NULL, 14, 2),
+      ('R1.01',2,7,   'DS MACHINE',  1, 3), 
+
+      ('R1.01',3,3,           NULL, 14, 2),
+      ('R1.01',3,7,   'DS MACHINE',  1, 3), 
+
+      ('R1.01',1,7,    'DS PAPIER', 1, 5);
 
 /*
 Catégorie Nom Prénom hServ hMax Coef TP S1 S3 S5 sTot S2 S4 S6 sTot Total
@@ -92,25 +134,23 @@ info_sd Nivet Laurence 384 576 1 75.0 12.0 0.0 87.0 0.0 0.0 0.0 0.0 87.0
 */
 
 /*Faire la somme en equivalent TD de toute les affectation des intervenants en fonction de chaque semestre*/
-SELECT i.*
+/*SELECT i.*
 FROM Intervenant i JOIN Affectation a    ON i.codInter    = a.codInter
 				   JOIN Module      m    ON a.codMod      = m.codMod
 				   JOIN Semestre    s    ON m.codSem      = s.codSem
-				   JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
-;
+				   JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure*/
 
-/*Tot Semestres*/
-SELECT i.nom,i.prenom,c.nomCatHeure,m.codMod,
-		CASE
-			WHEN m.codTypMod = 1 THEN COALESCE(a.nbSem,1)*COALESCE(a.nbGrp,1)*(c.coeffNum/c.coeffDen)
-			ELSE COALESCE(nbH,1)*(c.coeffNum/c.coeffDen)
-		END AS "tot eqtd"
-FROM Affectation a JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
-				   JOIN Module      m    ON a.codMod      = m.codMod
-				   JOIN Intervenant i    ON i.codInter    = a.codInter;
 
+/*Affectation par module*/
+
+
+SELECT * FROM affectation_final;
+
+SELECT * FROM getAffectation('R1.01');
 /*sTot impaire*/
 
 /*sTot paire*/
 
 /*Total*/
+
+
