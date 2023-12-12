@@ -1,0 +1,12 @@
+.panneau {
+	-fx-background-color : #7F23A7;
+}
+
+.btn {
+	-fx-background-color : rgba(150, 81, 180, 0.5);
+	-fx-text-fill : white;
+}
+
+.btn:hover {
+	-fx-background-color : #D09AE8;
+}
