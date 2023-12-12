@@ -75,8 +75,8 @@ FOR EACH ROW EXECUTE FUNCTION default_maxHeure();
 CREATE TABLE CategorieHeure (
 	codCatHeure SERIAL PRIMARY KEY,
 	nomCatHeure VARCHAR(20),
-	coeffNum    INTEGER,
-	coeffDen    INTEGER
+	coeffNum    INTEGER NOT NULL,
+	coeffDen    INTEGER NOT NULL
 );
 
 -- creation de la table Semestre
@@ -109,6 +109,7 @@ CREATE TABLE Module (
 	/*Spécifique a ressource*/
 	nbHParSemaineTD   INTEGER CHECK (codTypMod=1 OR nbHParSemaineTD = NULL),
 	nbHParSemaineTP   INTEGER CHECK (codTypMod=1 OR nbHParSemaineTP = NULL),
+	nbHParSemaineCM   INTEGER CHECK (codTypMod=1 OR nbHParSemaineCM = NULL),
 	nbHParSemaineHTut INTEGER CHECK (codTypMod=1 OR nbHParSemaineHTut = NULL),
 
 	/*Spécifique a sae*/
@@ -139,7 +140,7 @@ DECLARE
 	valVerif INTEGER;
 BEGIN
 	SELECT COUNT(codCatHeure) INTO valVerif FROM CategorieHeure WHERE codCatHeure = $1 AND nomCatHeure = 'HP';
-	RETURN valVerif = 1;
+	RETURN valVerif > 0;
 END;
 $$
 LANGUAGE plpgsql;
