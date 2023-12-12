@@ -144,9 +144,7 @@ FROM Intervenant i JOIN Affectation a    ON i.codInter    = a.codInter
 /*Affectation par module*/
 
 
-SELECT * FROM affectation_final;
 
-SELECT * FROM getAffectation('R1.01');
 /*sTot impaire*/
 
 /*sTot paire*/

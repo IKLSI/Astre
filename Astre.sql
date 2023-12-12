@@ -16,7 +16,6 @@ DROP TABLE IF EXISTS TypeModule 	        CASCADE ;
 DROP FUNCTION IF EXISTS getService  (INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS getMaxHeure (INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS verifTypMod(INTEGER) CASCADE;
-DROP FUNCTION IF EXISTS getAffectation(VARCHAR) CASCADE;
 
 DROP VIEW IF EXISTS affectation_final CASCADE;
 
@@ -183,34 +182,3 @@ SELECT m.codMod,i.codInter,i.nom,c.nomCatHeure,
 FROM Affectation a JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
 				   JOIN Module      m    ON a.codMod      = m.codMod
 				   JOIN Intervenant i    ON i.codInter    = a.codInter;
-
-CREATE OR REPLACE FUNCTION getAffectation(codMod VARCHAR)
-RETURNS TABLE (
-    nom VARCHAR,
-    nomCatHeure VARCHAR,
-    nbSem INTEGER,
-    nbGrp INTEGER,
-    nbH INTEGER,
-    "tot eqtd" NUMERIC
-) AS
-$$
-BEGIN
-    RETURN QUERY SELECT
-        affectation_final.nom,
-        affectation_final.nomCatHeure,
-        CASE WHEN COUNT(affectation_final.nbSem) > 0 THEN affectation_final.nbSem END,
-        CASE WHEN COUNT(affectation_final.nbGrp) > 0 THEN affectation_final.nbGrp END,
-        CASE WHEN COUNT(affectation_final.nbH) > 0 THEN affectation_final.nbH END,
-        "tot eqtd"
-    FROM affectation_final
-    WHERE affectation_final.codMod = getAffectation.codMod;
-END;
-$$
-LANGUAGE plpgsql;
-
-
-
-
-
-
-
