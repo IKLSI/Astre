@@ -15,9 +15,18 @@ DROP TABLE IF EXISTS TypeModule 	        CASCADE ;
 
 DROP FUNCTION IF EXISTS getService  (INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS getMaxHeure (INTEGER) CASCADE;
-DROP FUNCTION IF EXISTS verifTypMod(INTEGER) CASCADE;
+DROP FUNCTION IF EXISTS verifTypMod (INTEGER) CASCADE;
+DROP FUNCTION IF EXISTS delAffectationModFonc (INTEGER) CASCADE;
+DROP FUNCTION IF EXISTS delAffectationInterFonc (INTEGER) CASCADE;
+
+DROP TRIGGER IF EXISTS default_hServ_trigger
+DROP TRIGGER IF EXISTS delAffectationInter
+DROP TRIGGER IF EXISTS delAffectationMod
 
 DROP VIEW IF EXISTS affectation_final CASCADE;
+DROP VIEW IF EXISTS inter CASCADE;
+DROP VIEW IF EXISTS intervenant_final CASCADE;
+
 
 -- creation de la table CategorieIntervenant
 
@@ -165,7 +174,7 @@ CREATE TABLE Affectation (
 );
 
 CREATE OR REPLACE VIEW affectation_final AS 
-SELECT m.codMod,i.codInter,i.nom,c.nomCatHeure,
+SELECT  m.codMod,i.codInter,i.nom,c.nomCatHeure,
 		a.nbSem,a.nbGrp,
 		nbH,
 		ROUND(
@@ -182,3 +191,62 @@ SELECT m.codMod,i.codInter,i.nom,c.nomCatHeure,
 FROM Affectation a JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
 				   JOIN Module      m    ON a.codMod      = m.codMod
 				   JOIN Intervenant i    ON i.codInter    = a.codInter;
+
+CREATE OR REPLACE VIEW inter AS
+SELECT  i.nom,s.codSem,
+	    ROUND(SUM(CASE WHEN a.nomCatHeure = 'TP' THEN (c.ratioTPCatInterNum::NUMERIC/c.ratioTPCatInterDen::NUMERIC) ELSE 1 END * a."tot eqtd"),1) AS "tot sem"
+FROM affectation_final a JOIN Module            m ON a.codMod      = m.codMod
+						 JOIN Semestre          s ON m.codSem      = s.codSem
+						 JOIN Intervenant i ON i.codInter = a.codInter
+						 JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter
+GROUP BY i.nom,s.codSem;
+
+CREATE OR REPLACE VIEW intervenant_final AS
+SELECT  c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
+		MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END) AS S1,
+		MAX(CASE WHEN s.codSem = 'S2' THEN "tot sem" END) AS S2,
+		MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END) AS S3,
+		MAX(CASE WHEN s.codSem = 'S4' THEN "tot sem" END) AS S4,
+		MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END) AS S5,
+		MAX(CASE WHEN s.codSem = 'S6' THEN "tot sem" END) AS S6
+FROM Intervenant i JOIN affectation_final a ON i.codInter    = a.codInter
+				   JOIN Module            m ON a.codMod      = m.codMod
+				   JOIN inter             s ON m.codSem      = s.codSem
+				   JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter
+GROUP BY c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen;
+
+CREATE OR REPLACE FUNCTION delAffectationModFonc()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Supprimer les tuples dans la table Produit avec le même numMagasin
+  DELETE FROM Affectation
+  WHERE codMod = OLD.codMod;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION delAffectationInterFonc()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Supprimer les tuples dans la table Produit avec le même numMagasin
+  DELETE FROM Affectation
+  WHERE codInter = OLD.codInter;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger
+CREATE TRIGGER delAffectationInter
+BEFORE DELETE ON Intervenant
+FOR EACH ROW
+EXECUTE FUNCTION delAffectationInterFonc();
+
+
+
+-- Création du trigger
+CREATE TRIGGER delAffectationMod
+BEFORE DELETE ON Module
+FOR EACH ROW
+EXECUTE FUNCTION delAffectationModFonc();

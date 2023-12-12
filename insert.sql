@@ -37,7 +37,7 @@ VALUES ('S1', 3, 6, 85, 15),
 
 -- Insertion de données dans la table Intervenants
 INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure)
-VALUES ('Boukachour', 'Hadhoum'  , 1, 192, 364),
+VALUES ('boukachour', 'Hadhoum'  , 1, 192, 364),
 	   ('Colignon'  , 'Thomas'   , 2, 120, 187),
 	   ('Dubocage'  , 'Tiphaine' , 2, 120, 187),
 	   ('Hervé'     , 'Nathalie' , 3,  90, 187),
@@ -142,8 +142,6 @@ FROM Intervenant i JOIN Affectation a    ON i.codInter    = a.codInter
 
 
 /*Affectation par module*/
-
-
 
 /*sTot impaire*/
 
