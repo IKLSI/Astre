@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# Set the path to the JavaFX SDK
-FX_PATH="/Users/KLS/Downloads/FX/javafx-sdk-21.0.1/lib/"
+FX_PATH="./lib/javafx-sdk-21.0.1/lib/"
 
-# Compile Java files
-javac --module-path "$FX_PATH" --add-modules javafx.graphics,javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.swing,javafx.web *.java
+javac --module-path "$FX_PATH" --add-modules javafx.controls,javafx.fxml -encoding utf8 "@compile.list" -d ./bin
 
-# Run the Java application
-java --module-path "$FX_PATH" --add-modules javafx.graphics,javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.swing,javafx.web Essai
+cd bin
 
-# Pause to keep the terminal open (optional)
-read -p "Press Enter to exit"
+FX_PATH="../lib/javafx-sdk-21.0.1/lib/"
+
+java --module-path "$FX_PATH" --add-modules javafx.controls,javafx.fxml App

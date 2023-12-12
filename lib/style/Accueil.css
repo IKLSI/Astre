@@ -1,0 +1,15 @@
+.background {
+	-fx-background-image: url(../img/Home.png);
+}
+
+.menu {
+	-fx-border-radius: 15px;
+	-fx-background-color: rgba(136, 136, 136, 0.50);
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.018), 10, 20, 0, 0);
+	-fx-background-radius: 15px;
+}
+
+.button {
+	-fx-border-radius: 20px;
+	-fx-background: rgba(217, 217, 217, 0.40);
+}

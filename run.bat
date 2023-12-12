@@ -1,13 +1,12 @@
 @echo off
+set FX_PATH=.\lib\javafx-sdk-17.0.9\lib
 
-REM Set the path to the JavaFX SDK
-set FX_PATH="C:\chemin\vers\votre\FX\javafx-sdk-21.0.1\lib"
+javac --module-path "%FX_PATH%" --add-modules javafx.controls,javafx.fxml -encoding utf8 "@compile.list" -d .\bin
 
-REM Compile Java files
-javac --module-path %FX_PATH% --add-modules javafx.graphics,javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.swing,javafx.web *.java
+cd bin
 
-REM Run the Java application
-java --module-path %FX_PATH% --add-modules javafx.graphics,javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.swing,javafx.web Essai
+set FX_PATH=..\lib\javafx-sdk-17.0.9\lib
 
-REM Pause to keep the terminal open (optional)
-set /p dummyVar=Press Enter to exit
+java --module-path "%FX_PATH%" --add-modules javafx.controls,javafx.fxml Essai
+
+exit /b 0
