@@ -130,6 +130,10 @@ CREATE TABLE Module (
 	valid BOOLEAN,
 
 	/*Spécifique a ressource*/
+	nbHPnTD   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTD = NULL),
+	nbHPnTP   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTP = NULL),
+	nbHPnCM   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineCM = NULL),
+	nbHPnHTut INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineHTut = NULL),
 	nbHParSemaineTD   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTD = NULL),
 	nbHParSemaineTP   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTP = NULL),
 	nbHParSemaineCM   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineCM = NULL),
@@ -138,8 +142,12 @@ CREATE TABLE Module (
 	/*Spécifique a sae*/
 	nbHPnSaeParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnSaeParSemestre = NULL),
 	nbHPnTutParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnTutParSemestre = NULL),
+	nbHSaeParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnSaeParSemestre = NULL),
+	nbHTutParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnTutParSemestre = NULL),
 
 	/*Spécifique a stage*/
+	nbHPnREH INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
+	nbHPnTut INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHTut = NULL),
 	nbHREH INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
 	nbHTut INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHTut = NULL)
 );
@@ -172,6 +180,44 @@ CREATE TABLE Affectation (
 	/*Spécifique a sae/stage*/
 	nbH INTEGER CHECK (verifTypMod(codMod,'SAE') OR verifTypMod(codMod,'Stage') OR nbH = NULL)
 );
+
+/* Lorsqu'on supprime un intervenant, ses affectations sont supprimés */
+CREATE OR REPLACE FUNCTION delAffectationInterFonc()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Supprimer les tuples dans la table Produit avec le même numMagasin
+  DELETE FROM Affectation
+  WHERE codInter = OLD.codInter;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger
+CREATE TRIGGER delAffectationInter
+BEFORE DELETE ON Intervenant
+FOR EACH ROW
+EXECUTE FUNCTION delAffectationInterFonc();
+
+/* Lorsqu'on supprime un module, ses affectations sont supprimés */
+CREATE OR REPLACE FUNCTION delAffectationModFonc()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Supprimer les tuples dans la table Produit avec le même numMagasin
+  DELETE FROM Affectation
+  WHERE codMod = OLD.codMod;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger
+CREATE TRIGGER delAffectationMod
+BEFORE DELETE ON Module
+FOR EACH ROW
+EXECUTE FUNCTION delAffectationModFonc();
+
+
 
 CREATE OR REPLACE VIEW affectation_final AS 
 SELECT  m.codMod,i.codInter,i.nom,c.nomCatHeure,
@@ -215,38 +261,3 @@ FROM Intervenant i JOIN affectation_final a ON i.codInter    = a.codInter
 				   JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter
 GROUP BY c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen;
 
-CREATE OR REPLACE FUNCTION delAffectationModFonc()
-RETURNS TRIGGER AS $$
-BEGIN
-  -- Supprimer les tuples dans la table Produit avec le même numMagasin
-  DELETE FROM Affectation
-  WHERE codMod = OLD.codMod;
-
-  RETURN OLD;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION delAffectationInterFonc()
-RETURNS TRIGGER AS $$
-BEGIN
-  -- Supprimer les tuples dans la table Produit avec le même numMagasin
-  DELETE FROM Affectation
-  WHERE codInter = OLD.codInter;
-
-  RETURN OLD;
-END;
-$$ LANGUAGE plpgsql;
-
--- Création du trigger
-CREATE TRIGGER delAffectationInter
-BEFORE DELETE ON Intervenant
-FOR EACH ROW
-EXECUTE FUNCTION delAffectationInterFonc();
-
-
-
--- Création du trigger
-CREATE TRIGGER delAffectationMod
-BEFORE DELETE ON Module
-FOR EACH ROW
-EXECUTE FUNCTION delAffectationModFonc();

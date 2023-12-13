@@ -100,7 +100,7 @@ VALUES('S3.1',1,6,            NULL,   10),
 
 
 
--- Insertion de données dans la table Affectation
+-- Insertion de données dans la table Affectation ressource
 INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbSem, nbGrp)
 VALUES('R1.01',7,1,'3 cm d''1h30.',  6, 1),  
       ('R1.01',7,2,           NULL, 14, 2),  
@@ -132,21 +132,3 @@ info_sd LePivert Philippe 384 576 1 188.0 18.0 0.0 206.0 0.0 0.0 0.0 0.0 206.0
 info_sd Legrix Bruno 384 576 1 118.0 18.0 0.0 136.0 0.0 0.0 0.0 0.0 136.0
 info_sd Nivet Laurence 384 576 1 75.0 12.0 0.0 87.0 0.0 0.0 0.0 0.0 87.0
 */
-
-/*Faire la somme en equivalent TD de toute les affectation des intervenants en fonction de chaque semestre*/
-/*SELECT i.*
-FROM Intervenant i JOIN Affectation a    ON i.codInter    = a.codInter
-				   JOIN Module      m    ON a.codMod      = m.codMod
-				   JOIN Semestre    s    ON m.codSem      = s.codSem
-				   JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure*/
-
-
-/*Affectation par module*/
-
-/*sTot impaire*/
-
-/*sTot paire*/
-
-/*Total*/
-
-
