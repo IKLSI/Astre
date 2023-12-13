@@ -184,34 +184,34 @@ CREATE TABLE Module (
 	valid BOOLEAN,
 
 	/*Spécifique a ressource*/
-	nbHPnCM   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnCM 		= NULL),
-	nbHPnTD   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnTD 		= NULL),
-	nbHPnTP   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnTP 		= NULL),
-	nbHPnHTut 			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnHTut 	= NULL),
+	nbHPnCM   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnCM 			= NULL),
+	nbHPnTD   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnTD 			= NULL),
+	nbHPnTP   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnTP 			= NULL),
 
 	nbSemaineTD		   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbSemaineTD 		= NULL),
 	nbSemaineTP	   		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbSemaineTP 		= NULL),
 	nbSemaineCM   		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbSemaineCM 		= NULL),
-	nbSemaineHTut 		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbSemaineHTut 	= NULL),
 
-	nbHParSemaineTD   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTD 		= NULL),
-	nbHParSemaineTP   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTP 		= NULL),
-	nbHParSemaineCM   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineCM 		= NULL),
-	nbHParSemaineHTut 	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineHTut 	= NULL),
+	nbHParSemaineTD   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTD 	= NULL),
+	nbHParSemaineTP   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTP 	= NULL),
+	nbHParSemaineCM   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineCM 	= NULL),
 	
-	hPonctuelle 		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR hPonctuelle 			= NULL),
+	hPonctuelle 		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR hPonctuelle 		= NULL),
 
 	/*Spécifique a sae*/
 	nbHPnSaeParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnSaeParSemestre = NULL),
 	nbHPnTutParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnTutParSemestre = NULL),
-	nbHSaeParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnSaeParSemestre = NULL),
-	nbHTutParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnTutParSemestre = NULL),
+	nbHSaeParSemestre 	INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHSaeParSemestre 	= NULL),
+	nbHTutParSemestre 	INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHTutParSemestre 	= NULL),
 
 	/*Spécifique a stage*/
-	nbHPnREH INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
-	nbHPnTut INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHTut = NULL),
-	nbHREH INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
-	nbHTut INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHTut = NULL)
+	nbHPnREH 	INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
+	nbHPnTut 	INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHTut = NULL),
+	nbHREH 		INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
+	nbHTut 		INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHTut = NULL),
+
+	/*Spécifique a PPP*/ --TODO ET MODIF INSERT
+	nbHTutPnSAE INTEGER CHECK (verifTypMod(codMod,'PPP') OR nbHTutPnSAE = NULL),
 );
 
 /* Lorsqu'on supprime un type de module, ses modules sont supprimés */
@@ -378,69 +378,58 @@ SELECT c.nomCat, i.nom, i.prenom, i.hServ,i.maxHeure,(c.ratioTPCatInterNum || '/
 	   NULL AS S1,NULL AS S2, NULL AS S3,NULL AS S4,NULL AS S5, NULL AS S6 
 	   FROM Intervenant i JOIN  CategorieIntervenant c ON i.codCatInter = c.codCatInter 
 	   WHERE i.codInter NOT IN (SELECT codInter FROM Affectation);
-/*
+
 CREATE OR REPLACE VIEW module_final AS
 SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.nbGrpTP,
+	   
+	   -- Heure PN GOOD
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM,
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTD,
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTP,
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM+nbHPnTD+nbHPnTP,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM*calculCoeff('CM'),
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM*calculCoeff('CM')*1, --1 Seule groupe CM
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTD*calculCoeff('TD')*s.nbGrpTD,
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTP*calculCoeff('TP')*s.nbGrpTP,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM*calculCoeff('CM')+nbHPnTD*calculCoeff('TD')*s.nbGrpTD+nbHPnTP*calculCoeff('TP')*s.nbGrpTP,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM*calculCoeff('CM')*1+nbHPnTD*calculCoeff('TD')*s.nbGrpTD+nbHPnTP*calculCoeff('TP')*s.nbGrpTP,
 	   
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN ,
+	   -- Répartition 1 GOOD
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineCM,
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHParSemaineCM,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN ,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTD,
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHParSemaineTD,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN ,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTP,
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHParSemaineTP,
+
+	   -- Repartition 2 GOOD
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineCM*nbHParSemaineCM, 
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTD*nbHParSemaineTD, 	
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTP*nbHParSemaineTP, 	
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineHTut*nbHParSemaineHTut, 
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN hPonctuelles,     
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineCM*nbHParSemaineCM+nbSemaineTD*nbHParSemaineTD+nbSemaineTP*nbHParSemaineTP+nbSemaineHTut*nbHParSemaineHTut+hPonctuelles, --SOMME DE TOUT
 	   
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('CM'), -- 6(NB SEMAINE)*1(NBH/Semaine) 
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TD'), --14(NB SEMAINE)*4(NBH/Semaine) 
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TP'), --14(NB SEMAINE)*2(NBH/Semaine) 
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN hPonctuelles,     --HEURE PONCTUELLE
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TP')+calculTotH('CM')+calculTotH('TD')+hPonctuelles, --SOMME DE TOUT
-	   --Total promo eqtd
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('CM')*calculCoeff('CM'),
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TD')*calculCoeff('TD'),
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TP')*calculCoeff('TP'),
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculHP(m.codMod),
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TP')*calculTotH('TP')+calculTotH('TD')*calculCoeff('TD')+calculTotH('CM')*calculCoeff('CM')+calculHP(m.codMod),
-	   	--Total affecté eqtd
+	   --Total promo eqtd GOOD
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineCM*nbHParSemaineCM*calculCoeff('CM'),
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTD*nbHParSemaineTD*calculCoeff('TD')*nbGrpTD,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTP*nbHParSemaineTP*calculCoeff('TP')*nbGrpTP,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN hPonctuelles*calculCoeff('HP')*nbGrpTD,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineCM*nbHParSemaineCM*calculCoeff('CM')+nbSemaineTD*nbHParSemaineTD*calculCoeff('TD')*nbGrpTD+nbSemaineTP*nbHParSemaineTP*calculCoeff('TP')*nbGrpTP+hPonctuelles*calculCoeff('HP')*nbGrpTD,
+	   
+	   --Total affecté eqtd
 	   CASE WHEN t.nomTypMod = 'Ressource' THEN 
 	
 	WHERE a.codMod = m.codMod;
 
+
 -- creation de la fonction calculHP
-CREATE OR REPLACE FUNCTION calculTotHEqtd(INTEGER,VARCHAR)
+CREATE OR REPLACE FUNCTION calculNbAffect(INTEGER,VARCHAR)
 RETURNS INTEGER AS $$
 DECLARE
 	totH INTEGER
 BEGIN
-	SELECT "tot eqtd" INTO totH
-	FROM   affectation_final a JOIN CategorieHeure c ON c.codCatHeure = a.codCatHeure
-	WHERE  $1 = codMod AND codCatHeure = $2;
+	SELECT SUM(a.nbSem*nbGrp)*CASE(WHEN $2 = 'TP' THEN WHEN $2 = 'TD' THEN WHEN $2 = 'CM' THEN WHEN $2 = 'HP')
+	FROM   Affectation a JOIN Module m ON a.codMod = m.codMod
+	WHERE  m.codMod;
 	RETURN totH; 
 END;
 $$ LANGUAGE plpgsql;
-
--- creation de la fonction calculTotH
-
-CREATE OR REPLACE FUNCTION calculTotH(VARCHAR)
-RETURNS INTEGER AS $$
-DECLARE
-	totH INTEGER
-BEGIN
-	SELECT  INTO totH
-	FROM   affectation_final a JOIN CategorieHeure c ON c.codCatHeure = a.codCatHeure
-	WHERE  $1 = codMod AND codCatHeure = $2;
-	RETURN totH; 
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE VIEW previsionnel_final AS
-SELECT t.nomTypMod, m.libLong,
-
-*/
