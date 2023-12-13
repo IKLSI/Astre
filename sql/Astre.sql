@@ -5,6 +5,7 @@
 -- suppression des tables si elles existent déjà
 -- NB : cela supprime donc les éventuels tuples contenus
 
+-- Table
 DROP TABLE IF EXISTS Intervenant 			CASCADE ;
 DROP TABLE IF EXISTS Module 				CASCADE ;
 DROP TABLE IF EXISTS Semestre 				CASCADE ;
@@ -13,16 +14,34 @@ DROP TABLE IF EXISTS CategorieIntervenant 	CASCADE ;
 DROP TABLE IF EXISTS CategorieHeure 		CASCADE ;
 DROP TABLE IF EXISTS TypeModule 	        CASCADE ;
 
+
+-- Fonction
 DROP FUNCTION IF EXISTS getService  (INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS getMaxHeure (INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS verifTypMod (INTEGER) CASCADE;
-DROP FUNCTION IF EXISTS delAffectationModFonc (INTEGER) CASCADE;
-DROP FUNCTION IF EXISTS delAffectationInterFonc (INTEGER) CASCADE;
 
-DROP TRIGGER IF EXISTS default_hServ_trigger
-DROP TRIGGER IF EXISTS delAffectationInter
-DROP TRIGGER IF EXISTS delAffectationMod
+-- Fonction de trigger en cas de suppresion d'une clef primaire
+DROP FUNCTION IF EXISTS delAffectationModFonc() CASCADE;
+DROP FUNCTION IF EXISTS delAffectationInterFonc() CASCADE;
+DROP FUNCTION IF EXISTS delAffectationCatHFonc() CASCADE;
+DROP FUNCTION IF EXISTS delIntervenantCatInterFonc() CASCADE;
+DROP FUNCTION IF EXISTS delModuleSemFonc() CASCADE;
+DROP FUNCTION IF EXISTS delModuleTypModFonc() CASCADE;
 
+
+-- Trigger
+DROP TRIGGER IF EXISTS default_hServ_trigger;
+
+-- Trigger en cas de suppresion d'une clef primaire
+DROP TRIGGER IF EXISTS delAffectationInter;
+DROP TRIGGER IF EXISTS delAffectationMod;
+DROP TRIGGER IF EXISTS delAffectationCatH;
+DROP TRIGGER IF EXISTS delIntervenantCatInter;
+DROP TRIGGER IF EXISTS delModuleSem;
+DROP TRIGGER IF EXISTS delModuleTypMod;
+
+
+-- Vue
 DROP VIEW IF EXISTS affectation_final CASCADE;
 DROP VIEW IF EXISTS inter CASCADE;
 DROP VIEW IF EXISTS intervenant_final CASCADE;
@@ -57,7 +76,9 @@ sa categorie d'intervenant. Cela sert a mettre service en valeur par defaut de h
 CREATE OR REPLACE FUNCTION default_hServ()
 RETURNS TRIGGER AS $$
 BEGIN
-	NEW.hServ := (SELECT service FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter);
+	IF NEW.hServ = NULL THEN
+		NEW.hServ := (SELECT service FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter);
+	END IF;
 	RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -72,7 +93,9 @@ sa categorie d'intervenant. Cela sert a mettre service en valeur par defaut de m
 CREATE OR REPLACE FUNCTION default_maxHeure()
 RETURNS TRIGGER AS $$
 BEGIN
-	NEW.maxHeure := (SELECT maxHeure FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter);
+	IF NEW.maxHeure = NULL THEN
+		NEW.maxHeure := (SELECT maxHeure FROM CategorieIntervenant WHERE codCatInter = NEW.codCatInter);
+	END IF;
 	RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -80,6 +103,23 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER default_maxHeure_trigger
 BEFORE INSERT ON Intervenant
 FOR EACH ROW EXECUTE FUNCTION default_maxHeure();
+
+/* Lorsqu'on supprime un type de module, ses modules sont supprimés */
+CREATE OR REPLACE FUNCTION delIntervenantCatInterFonc()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE CategorieIntervenant SET codCatInter = NULL
+  WHERE codCatInter = OLD.codCatInter;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger
+CREATE TRIGGER delIntervenantCatInter
+BEFORE DELETE ON CategorieIntervenant
+FOR EACH ROW
+EXECUTE FUNCTION delIntervenantCatInterFonc();
 
 -- creation de la table CategorieHeure
 
@@ -89,6 +129,20 @@ CREATE TABLE CategorieHeure (
 	coeffNum    INTEGER NOT NULL,
 	coeffDen    INTEGER NOT NULL
 );
+
+-- creation de la fonction calculCoeff
+
+CREATE OR REPLACE FUNCTION calculCoeff(VARCHAR)
+RETURNS INTEGER AS $$
+DECLARE
+	coeff FLOAT;
+BEGIN
+	SELECT coeffNum/coeffDen INTO coeff
+    FROM   CategorieHeure
+	WHERE  $1 = nomCatHeure ;
+  RETURN   coeff;
+END;
+$$ LANGUAGE plpgsql;
 
 -- creation de la table Semestre
 
@@ -130,14 +184,22 @@ CREATE TABLE Module (
 	valid BOOLEAN,
 
 	/*Spécifique a ressource*/
-	nbHPnTD   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTD = NULL),
-	nbHPnTP   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTP = NULL),
-	nbHPnCM   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineCM = NULL),
-	nbHPnHTut INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineHTut = NULL),
-	nbHParSemaineTD   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTD = NULL),
-	nbHParSemaineTP   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTP = NULL),
-	nbHParSemaineCM   INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineCM = NULL),
-	nbHParSemaineHTut INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineHTut = NULL),
+	nbHPnCM   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnCM 		= NULL),
+	nbHPnTD   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnTD 		= NULL),
+	nbHPnTP   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnTP 		= NULL),
+	nbHPnHTut 			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHPnHTut 	= NULL),
+
+	nbSemaineTD		   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbSemaineTD 		= NULL),
+	nbSemaineTP	   		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbSemaineTP 		= NULL),
+	nbSemaineCM   		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbSemaineCM 		= NULL),
+	nbSemaineHTut 		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbSemaineHTut 	= NULL),
+
+	nbHParSemaineTD   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTD 		= NULL),
+	nbHParSemaineTP   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineTP 		= NULL),
+	nbHParSemaineCM   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineCM 		= NULL),
+	nbHParSemaineHTut 	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR nbHParSemaineHTut 	= NULL),
+	
+	hPonctuelle 		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR hPonctuelle 			= NULL),
 
 	/*Spécifique a sae*/
 	nbHPnSaeParSemestre INTEGER CHECK (verifTypMod(codMod,'SAE') OR nbHPnSaeParSemestre = NULL),
@@ -152,6 +214,41 @@ CREATE TABLE Module (
 	nbHTut INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHTut = NULL)
 );
 
+/* Lorsqu'on supprime un type de module, ses modules sont supprimés */
+CREATE OR REPLACE FUNCTION delModuleTypModFonc()
+RETURNS TRIGGER AS $$
+BEGIN
+  DELETE FROM TypeModule
+  WHERE codTypMod = OLD.codTypMod;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger
+CREATE TRIGGER delModuleTypMod
+BEFORE DELETE ON CategorieHeure
+FOR EACH ROW
+EXECUTE FUNCTION delModuleTypModFonc();
+
+/* Lorsqu'on supprime un semestre, ses modules sont supprimés */
+CREATE OR REPLACE FUNCTION delModuleSemFonc()
+RETURNS TRIGGER AS $$
+BEGIN
+  DELETE FROM Semestre
+  WHERE codSem = OLD.codSem;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger
+CREATE TRIGGER delModuleSem
+BEFORE DELETE ON Semestre
+FOR EACH ROW
+EXECUTE FUNCTION delModuleSemFonc();
+
+/* Verifie si l'affectation a comme categorie d'heure heure ponctuelle*/
 CREATE OR REPLACE FUNCTION verifHP(INTEGER)
 	RETURNS BOOLEAN AS
 $$
@@ -185,7 +282,6 @@ CREATE TABLE Affectation (
 CREATE OR REPLACE FUNCTION delAffectationInterFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-  -- Supprimer les tuples dans la table Produit avec le même numMagasin
   DELETE FROM Affectation
   WHERE codInter = OLD.codInter;
 
@@ -203,7 +299,6 @@ EXECUTE FUNCTION delAffectationInterFonc();
 CREATE OR REPLACE FUNCTION delAffectationModFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-  -- Supprimer les tuples dans la table Produit avec le même numMagasin
   DELETE FROM Affectation
   WHERE codMod = OLD.codMod;
 
@@ -216,6 +311,24 @@ CREATE TRIGGER delAffectationMod
 BEFORE DELETE ON Module
 FOR EACH ROW
 EXECUTE FUNCTION delAffectationModFonc();
+
+
+/* Lorsqu'on supprime une categorie d'heure, ses affectations sont supprimés */
+CREATE OR REPLACE FUNCTION delAffectationCatHFonc()
+RETURNS TRIGGER AS $$
+BEGIN
+  DELETE FROM CategorieHeure
+  WHERE codCatHeure = OLD.codCatHeure;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger
+CREATE TRIGGER delAffectationCatH
+BEFORE DELETE ON CategorieHeure
+FOR EACH ROW
+EXECUTE FUNCTION delAffectationCatHFonc();
 
 
 
@@ -259,5 +372,75 @@ FROM Intervenant i JOIN affectation_final a ON i.codInter    = a.codInter
 				   JOIN Module            m ON a.codMod      = m.codMod
 				   JOIN inter             s ON m.codSem      = s.codSem
 				   JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter
-GROUP BY c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen;
+GROUP BY c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen
+UNION 
+SELECT c.nomCat, i.nom, i.prenom, i.hServ,i.maxHeure,(c.ratioTPCatInterNum || '/' || c.ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
+	   NULL AS S1,NULL AS S2, NULL AS S3,NULL AS S4,NULL AS S5, NULL AS S6 
+	   FROM Intervenant i JOIN  CategorieIntervenant c ON i.codCatInter = c.codCatInter 
+	   WHERE i.codInter NOT IN (SELECT codInter FROM Affectation);
+/*
+CREATE OR REPLACE VIEW module_final AS
+SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.nbGrpTP,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTD,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTP,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM+nbHPnTD+nbHPnTP,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM*calculCoeff('CM'),
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTD*calculCoeff('TD')*s.nbGrpTD,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTP*calculCoeff('TP')*s.nbGrpTP,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM*calculCoeff('CM')+nbHPnTD*calculCoeff('TD')*s.nbGrpTD+nbHPnTP*calculCoeff('TP')*s.nbGrpTP,
+	   
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN ,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHParSemaineCM,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN ,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHParSemaineTD,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN ,
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHParSemaineTP,
+	   
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('CM'), -- 6(NB SEMAINE)*1(NBH/Semaine) 
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TD'), --14(NB SEMAINE)*4(NBH/Semaine) 
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TP'), --14(NB SEMAINE)*2(NBH/Semaine) 
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN hPonctuelles,     --HEURE PONCTUELLE
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TP')+calculTotH('CM')+calculTotH('TD')+hPonctuelles, --SOMME DE TOUT
+	   --Total promo eqtd
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('CM')*calculCoeff('CM'),
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TD')*calculCoeff('TD'),
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TP')*calculCoeff('TP'),
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculHP(m.codMod),
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculTotH('TP')*calculTotH('TP')+calculTotH('TD')*calculCoeff('TD')+calculTotH('CM')*calculCoeff('CM')+calculHP(m.codMod),
+	   	--Total affecté eqtd
+	   CASE WHEN t.nomTypMod = 'Ressource' THEN 
+	
+	WHERE a.codMod = m.codMod;
 
+-- creation de la fonction calculHP
+CREATE OR REPLACE FUNCTION calculTotHEqtd(INTEGER,VARCHAR)
+RETURNS INTEGER AS $$
+DECLARE
+	totH INTEGER
+BEGIN
+	SELECT "tot eqtd" INTO totH
+	FROM   affectation_final a JOIN CategorieHeure c ON c.codCatHeure = a.codCatHeure
+	WHERE  $1 = codMod AND codCatHeure = $2;
+	RETURN totH; 
+END;
+$$ LANGUAGE plpgsql;
+
+-- creation de la fonction calculTotH
+
+CREATE OR REPLACE FUNCTION calculTotH(VARCHAR)
+RETURNS INTEGER AS $$
+DECLARE
+	totH INTEGER
+BEGIN
+	SELECT  INTO totH
+	FROM   affectation_final a JOIN CategorieHeure c ON c.codCatHeure = a.codCatHeure
+	WHERE  $1 = codMod AND codCatHeure = $2;
+	RETURN totH; 
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE VIEW previsionnel_final AS
+SELECT t.nomTypMod, m.libLong,
+
+*/
