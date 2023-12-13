@@ -19,10 +19,13 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 
 import javax.swing.Action;
+import java.util.ArrayList;
 
-import javafx.beans.property.SimpleStringProperty;
+import metier.Intervenant;
+
 import java.sql.SQLException;
 
 public class Intervenants
@@ -34,6 +37,10 @@ public class Intervenants
 
 	@FXML
 	private ScrollPane scrollPane;
+
+	private ArrayList<Integer> idIntervenant = new ArrayList<Integer>();
+
+	private ArrayList<Intervenant> intervenants = new ArrayList<Intervenant>();
 	
 	public Intervenants(AnchorPane panelCentre)
 	{
@@ -48,10 +55,7 @@ public class Intervenants
 		
 		try
 		{
-			Class.forName("org.postgresql.Driver");
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM intervenant_final;");
+			ResultSet resultSet = Controleur.getIntervenant_final();
 
 			data = FXCollections.observableArrayList();
 
@@ -110,11 +114,41 @@ public class Intervenants
 				}
 			});
 
+			Button boutonE = new Button("Enregistrer");
+			boutonE.setOnAction((ActionEvent event) -> {
+				try
+				{
+					enregistrer(event);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			});
+
+			Button buttonA = new Button("Annuler");
+			buttonA.setOnAction((ActionEvent event) -> {
+				try
+				{
+					new Intervenants(panelCentre);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			});
+
 			AnchorPane.setTopAnchor(bouton, 400.0);
 			AnchorPane.setLeftAnchor(bouton, 20.0);
 
 			AnchorPane.setTopAnchor(bouton2, 400.0);
 			AnchorPane.setLeftAnchor(bouton2, 80.0);
+
+			AnchorPane.setTopAnchor(boutonE, 450.0);
+			AnchorPane.setLeftAnchor(boutonE, 20.0);
+
+			AnchorPane.setTopAnchor(buttonA, 450.0);
+			AnchorPane.setLeftAnchor(buttonA, 110.0);
 
 			AnchorPane.setTopAnchor(lbl, 20.0);
 			AnchorPane.setLeftAnchor(lbl, 20.0);
@@ -138,23 +172,148 @@ public class Intervenants
 			panelCentre.getChildren().add(lbl);
 			panelCentre.getChildren().add(bouton);
 			panelCentre.getChildren().add(bouton2);
+			panelCentre.getChildren().add(boutonE);
+			panelCentre.getChildren().add(buttonA);
 
 			resultSet.close();
-			statement.close();
-			connection.close();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
+	
+	@FXML
+	public void ajouter(ActionEvent event, AnchorPane panelCentre) throws Exception
+	{
+		TextField nom = new TextField();
+		TextField prenom = new TextField();
+		TextField nomCat = new TextField();
+		TextField hserv = new TextField();
+		TextField maxheure = new TextField();
 
+		Label lbl = new Label("Ajouter un intervenant :");
+		lbl.setStyle("-fx-font-weight: bold");
+
+		Label lblNom = new Label("Nom :");
+		Label lblPrenom = new Label("Prénom :");
+		Label lblNomCat = new Label("Nom catégorie :");
+		Label lblHserv = new Label("Heures de service :");
+		Label lblMaxheure = new Label("Max heures :");
+
+		Button bouton = new Button("Ajouter");
+		bouton.setOnAction((ActionEvent event2) -> {
+			Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getText()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()));
+			this.intervenants.add(intervenant);
+			Controleur.insertIntervenant(intervenant);
+			new Intervenants(panelCentre);
+		});
+
+		Button buttonA = new Button("Annuler");
+		buttonA.setOnAction((ActionEvent event2) -> {
+			try
+			{
+				new Intervenants(panelCentre);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		});
+
+		AnchorPane.setTopAnchor(lbl, 20.0);
+		AnchorPane.setLeftAnchor(lbl, 20.0);
+
+		AnchorPane.setTopAnchor(lblNom, 80.0);
+		AnchorPane.setLeftAnchor(lblNom, 20.0);
+
+		AnchorPane.setTopAnchor(lblPrenom, 120.0);
+		AnchorPane.setLeftAnchor(lblPrenom, 20.0);
+
+		AnchorPane.setTopAnchor(lblNomCat, 160.0);
+		AnchorPane.setLeftAnchor(lblNomCat, 20.0);
+
+		AnchorPane.setTopAnchor(lblHserv, 200.0);
+		AnchorPane.setLeftAnchor(lblHserv, 20.0);
+
+		AnchorPane.setTopAnchor(lblMaxheure, 240.0);
+		AnchorPane.setLeftAnchor(lblMaxheure, 20.0);
+
+		AnchorPane.setTopAnchor(nom, 80.0);
+		AnchorPane.setLeftAnchor(nom, 140.0);
+
+		AnchorPane.setTopAnchor(prenom, 120.0);
+		AnchorPane.setLeftAnchor(prenom, 140.0);
+
+		AnchorPane.setTopAnchor(nomCat, 160.0);
+		AnchorPane.setLeftAnchor(nomCat, 140.0);
+
+		AnchorPane.setTopAnchor(hserv, 200.0);
+		AnchorPane.setLeftAnchor(hserv, 140.0);
+
+		AnchorPane.setTopAnchor(maxheure, 240.0);
+		AnchorPane.setLeftAnchor(maxheure, 140.0);
+
+		AnchorPane.setTopAnchor(bouton, 300.0);
+		AnchorPane.setLeftAnchor(bouton, 20.0);
+
+		AnchorPane.setTopAnchor(buttonA, 300.0);
+		AnchorPane.setLeftAnchor(buttonA, 80.0);
+
+		panelCentre.getChildren().clear();
+		panelCentre.getChildren().add(lbl);
+		panelCentre.getChildren().add(lblNom);
+		panelCentre.getChildren().add(lblPrenom);
+		panelCentre.getChildren().add(lblNomCat);
+		panelCentre.getChildren().add(lblHserv);
+		panelCentre.getChildren().add(lblMaxheure);
+		panelCentre.getChildren().add(nom);
+		panelCentre.getChildren().add(prenom);
+		panelCentre.getChildren().add(nomCat);
+		panelCentre.getChildren().add(hserv);
+		panelCentre.getChildren().add(maxheure);
+		panelCentre.getChildren().add(bouton);
+		panelCentre.getChildren().add(buttonA);
+	}
+	
 	@FXML
 	private void supprimer(ActionEvent event)
 	{
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
-	
+
+		try
+		{
+			Class.forName("org.postgresql.Driver");
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
+			Statement statement = connection.createStatement();
+
+			ResultSet resultSet = statement.executeQuery("SELECT codInter FROM Intervenant WHERE nom = '" + tableView.getItems().get(selectedIndex).get(1) + "';");
+
+			while (resultSet.next())
+			{
+				this.idIntervenant.add(resultSet.getInt(1));
+				System.out.println(resultSet.getInt(1));
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+
 		if (selectedIndex >= 0)
+		{
+			tableView.getItems().remove(selectedIndex);
+		}
+	}
+
+	@FXML
+	private void enregistrer(ActionEvent event)
+	{
+		for (int i = 0; i < this.idIntervenant.size(); i++)
 		{
 			try
 			{
@@ -162,24 +321,15 @@ public class Intervenants
 				Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
 				Statement statement = connection.createStatement();
 
-				ResultSet resultSet = statement.executeQuery("SELECT codInter FROM Intervenant WHERE nom = '" + tableView.getItems().get(selectedIndex).get(1) + "';");
-	
-				if (resultSet.next())
+				for (int j = 0; j < this.idIntervenant.size(); j++)
 				{
-					String codInter = resultSet.getString(1);
-					statement.executeUpdate("DELETE FROM Intervenant WHERE codInter = " + codInter + ";");
-					resultSet.close();
-				}
-				else
-				{
-					System.out.println("Erreur lors de la suppression");
+					statement.executeUpdate("DELETE FROM Intervenant WHERE codInter = " + this.idIntervenant.get(j) + ";");
 				}
 
-				statement.close();
-				connection.close();
-				tableView.getColumns().clear();
-				tableView.getItems().clear();
-				new Intervenants((AnchorPane) tableView.getParent());
+				for (Intervenant intervenant : this.intervenants)
+				{
+					Controleur.insertIntervenant(intervenant);
+				}
 			}
 			catch (SQLException e)
 			{
@@ -189,43 +339,6 @@ public class Intervenants
 			{
 				e.printStackTrace();
 			}
-		}
-	}
-
-	public void ajouter(ActionEvent event, AnchorPane panelCentre) throws Exception
-	{
-		try
-		{
-			ObservableList<String> newRow = FXCollections.observableArrayList();
-	
-			for (int i = 0; i < 12; i++)
-			{
-				TextField textField = new TextField();
-				newRow.add(textField.getText());
-				panelCentre.getChildren().add(textField);
-				AnchorPane.setTopAnchor(textField, 80.0 + data.size() * 30.0);
-				AnchorPane.setLeftAnchor(textField, 20.0 + i * 65.0);
-			}
-	
-			tableView.setEditable(true);
-			data.add(newRow);
-			
-			Class.forName("org.postgresql.Driver");
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement statement = connection.createStatement();
-
-			ResultSet resultSet = statement.executeQuery("SELECT MAX(codInter) FROM Intervenant;");
-			resultSet.next();
-			int codInter = resultSet.getInt(1) + 1;
-			resultSet.close();
-
-			statement.executeUpdate("INSERT INTO Intervenant_final VALUES (" + codInter + ", '" + Integer.parseInt(newRow.get(1)) + "', '" + newRow.get(2) + "', '" + newRow.get(3) + "', '" + newRow.get(4) + "', '" + newRow.get(5) + "', '" + newRow.get(6) + "', '" + newRow.get(7) + "', '" + newRow.get(8) + "', '" + newRow.get(9) + "', '" + newRow.get(10) + "', '" + newRow.get(11) + "');");
-			statement.close();
-			connection.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
 		}
 	}
 }
