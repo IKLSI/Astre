@@ -50,33 +50,33 @@ VALUES ('boukachour', 'Hadhoum'  , 1, 192, 364),
 
 
 -- Insertion de données dans la table Module ressource
-INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineHTut,nbHParSemaineCM)
-VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev'      , false,4,2,1,6),
-       ('R1.02', 'S1' , 1, 'Développement interfaces Web'          , 'Dev Web'       , false,4,2,1,0),
-       ('R1.03', 'S1' , 1, 'Introduction Architecture'             , 'Archi'         , false,4,2,1,0),
-       ('R1.04', 'S1' , 1, 'Introduction Système'                  , 'Système'       , false,4,2,1,0),
-       ('R1.05', 'S1' , 1, 'Introduction Base de données'          , 'Bado'          , false,4,2,1,0),
-       ('R1.06', 'S1' , 1, 'Mathématiques discrètes'               , 'Maths '        , false,4,2,1,0),
-       ('R1.07', 'S1' , 1, 'Outils mathématiques fondamentaux'     , 'Outils num'    , false,4,2,1,0),
-       ('R1.08', 'S1' , 1, 'Gestion de projet et des organisations', 'GPO'           , false,4,2,1,0),
-       ('R1.09', 'S1' , 1, 'Économie durable et numérique'         , 'Économie'      , false,4,2,1,0),
-       ('R1.10', 'S1' , 1, 'Anglais Technique'                     , 'Anglais Pro'   , false,4,2,1,0),
-       ('R1.11', 'S1' , 1, 'Bases de la communication'             , 'Communication' , false,4,2,1,0),
-       ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet'     , false,4,2,1,0),
-       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,2,2,0,0);
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHPnHTut, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbSemaineHTut, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, nbHParSemaineHTut, hPonctuelle)
+VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev'      , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.02', 'S1' , 1, 'Développement interfaces Web'          , 'Dev Web'       , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.03', 'S1' , 1, 'Introduction Architecture'             , 'Archi'         , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.04', 'S1' , 1, 'Introduction Système'                  , 'Système'       , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.05', 'S1' , 1, 'Introduction Base de données'          , 'Bado'          , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.06', 'S1' , 1, 'Mathématiques discrètes'               , 'Maths '        , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.07', 'S1' , 1, 'Outils mathématiques fondamentaux'     , 'Outils num'    , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.08', 'S1' , 1, 'Gestion de projet et des organisations', 'GPO'           , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.09', 'S1' , 1, 'Économie durable et numérique'         , 'Économie'      , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.10', 'S1' , 1, 'Anglais Technique'                     , 'Anglais Pro'   , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R1.11', 'S1' , 1, 'Bases de la communication'             , 'Communication' , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet'     , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
+       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,6,65,28,0,14,14,6,0,4,2,1,0,9);
 
  
 	 
 -- Insertion de données dans la table Module SAÉ
-INSERT INTO Module (codSem, codTypMod, codMod, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre)
-VALUES ('S1' , 2, 'S1.1', 'Implémentation d''un besoin client'    , 'SAE-01'   , false,6 ,0 ),
-       ('S2' , 2, 'S2.2', 'Développement d''une application'      , 'SAE-02'   , false,8 ,0 ),
-       ('S3' , 2, 'S3.1', 'Développement d''une application'      , 'Dev appli', false,40,38);
+INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre)
+VALUES ('S1.1', 2, 'S1' , 'Implémentation d''un besoin client'    , 'SAE-01'   , false,6 ,0 , 6, 0),
+       ('S2.2', 2, 'S2' , 'Développement d''une application'      , 'SAE-02'   , false,8 ,0 , 8, 8),
+       ('S3.1', 2, 'S3' , 'Développement d''une application'      , 'Dev appli', false,40,38, 40, 38);
 
 
 -- Insertion de données dans la table Module stage
-INSERT INTO Module (codSem, codTypMod, codMod, libLong, libCourt, valid, nbHREH, nbHTut)
-VALUES ('S4' , 3, 'S4.ST', 'Stage'                                 , 'Stage'    ,false ,10,2);
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHREH, nbHTut, nbHPnREH, nbHPnTut)
+VALUES ('S4.ST','S4', 3 , 'Stage'                                 , 'Stage'    ,false ,10,2, NULL, NULL);
 
 
 -- Insertion de données dans la table Affectation SAE / STAGE
