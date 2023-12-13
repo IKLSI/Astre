@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane prefHeight="442.0" prefWidth="636.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppControleur">
+   <BorderPane prefHeight="415.0" prefWidth="636.0">
+      <center>
+         <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" stylesheets="@../lib/style/Previsionnel.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+         <tabs>
+            <Tab text="S1">
+               <content>
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
+                        <children>
+                           <Label layoutX="32.0" layoutY="27.0" text="nb gp TD :" />
+                           <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
+                           <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
+                           <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
+                           <TextField editable="false" layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                        </children></AnchorPane>
+               </content>
+            </Tab>
+               <Tab text="S2">
+                  <content>
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
+                        <children>
+                           <Label layoutX="32.0" layoutY="27.0" text="nb gp TD :" />
+                           <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
+                           <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
+                           <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                        </children>
+                     </AnchorPane>
+                  </content>
+               </Tab>
+               <Tab text="S3">
+                  <content>
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
+                        <children>
+                           <Label layoutX="32.0" layoutY="27.0" text="nb gp TD :" />
+                           <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
+                           <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
+                           <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                        </children>
+                     </AnchorPane>
+                  </content>
+               </Tab>
+               <Tab text="S4">
+                  <content>
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
+                        <children>
+                           <Label layoutX="32.0" layoutY="27.0" text="nb gp TD :" />
+                           <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
+                           <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
+                           <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                        </children>
+                     </AnchorPane>
+                  </content>
+               </Tab>
+               <Tab text="S5">
+                  <content>
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
+                        <children>
+                           <Label layoutX="32.0" layoutY="27.0" text="nb gp TD :" />
+                           <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
+                           <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
+                           <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                        </children>
+                     </AnchorPane>
+                  </content>
+               </Tab>
+               <Tab text="S6">
+                  <content>
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
+                        <children>
+                           <Label layoutX="32.0" layoutY="27.0" text="nb gp TD :" />
+                           <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
+                           <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
+                           <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                        </children>
+                     </AnchorPane>
+                  </content>
+               </Tab>
+         </tabs>
+         </TabPane>
+      </center>
+      <top>
+         <Label text="Prévisionnel" BorderPane.alignment="TOP_LEFT">
+            <BorderPane.margin>
+               <Insets left="10.0" top="10.0" />
+            </BorderPane.margin>
+         </Label>
+      </top>
+   </BorderPane>
+   <Button id="CreerRessource" layoutX="51.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="Crée Ressource" />
+   <Button id="CreerSae" layoutX="160.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="Créer SAE" />
+   <Button id="CreerStage" layoutX="269.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text=" Créer Stage/Suivis" />
+   <Button id="modifier" layoutX="377.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="modifier" />
+   <Button id="supprimer" layoutX="485.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="supprimer" />
+</AnchorPane>
