@@ -167,6 +167,11 @@ public class Intervenants
 				tableView.getColumns().add(column);
 			}
 
+			TableColumn<ObservableList<String>, Void> modifierColumn = new TableColumn<>("Modifier");
+			modifierColumn.setPrefWidth(100);
+			modifierColumn.setGraphic(null);
+			tableView.getColumns().add(modifierColumn);
+
 			tableView.setItems(data);
 			panelCentre.getChildren().add(tableView);
 			panelCentre.getChildren().add(lbl);
@@ -205,6 +210,7 @@ public class Intervenants
 		bouton.setOnAction((ActionEvent event2) -> {
 			Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getText()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()));
 			this.intervenants.add(intervenant);
+			panelCentre.getChildren().clear();
 			Controleur.insertIntervenant(intervenant);
 			new Intervenants(panelCentre);
 		});

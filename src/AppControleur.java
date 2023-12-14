@@ -29,9 +29,6 @@ public class AppControleur implements Initializable
 	@FXML
 	private AnchorPane panelCentre;
 
-
-
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {affichageDefaut();}
 

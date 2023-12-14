@@ -1,12 +1,21 @@
 .categorie:hover{
 	-fx-text-fill:#7F23A7;
 }
+
 .categorie{
 	-fx-background-color : rgba(150, 81, 180, 0.0);
+}
+.categorie:focused{
+	-fx-background-color : #7F23A7;
+	-fx-text-fill:white;
 }
 
 .btn{
 	-fx-background-color : rgba(150, 81, 180, 0.0);
+	-fx-background-radius : 15px;
+	-fx-border-color :  #D09AE8;
+	-fx-border-radius : 15px;
+	-fx-border-width : 2px;
 }
 .btn:hover{
 	-fx-background-color : #D09AE8;
