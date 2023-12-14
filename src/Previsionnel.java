@@ -1,6 +1,7 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -38,26 +39,33 @@ public class Previsionnel{
 			AnchorPane loadedPanel = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPanel.getChildren());
+            System.out.println("previ");
+
 		}
 		catch (Exception e){e.printStackTrace();}
 
-		// try {
-        //     Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/votreBaseDeDonnees", "utilisateur", "motDePasse");
-        //     Statement stmt = conn.createStatement();
-        //     ResultSet rs = stmt.executeQuery("SELECT nomTypMod FROM TypeModule");
+		try {
+            Class.forName("org.postgresql.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
+			Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT nomTypMod FROM TypeModule;");
 
-        //     while (rs.next()) {
-        //         String nomBouton = rs.getString("nomTypMod");
-        //         MenuItem nouveauItem = new MenuItem(nomBouton);
-        //         nouveauItem.setOnAction(e -> {
-        //             System.out.println("Bouton " + nomBouton + " cliqué !");
-        //         });
-        //         menuButton.getItems().add(nouveauItem);
-        //     }
+            while (rs.next()) {
+                String nomBouton = rs.getString("nomTypMod");
+                MenuItem nouveauItem = new MenuItem(nomBouton);
+                nouveauItem.setOnAction(e -> {
+                    System.out.println("Bouton " + nomBouton + " cliqué !");
+                });
+                menuButton.getItems().add(nouveauItem);
+            }
 
-        //     conn.close();
-        // } catch (SQLException e) {
-        //     e.printStackTrace();
-        // }
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
     }
 }
