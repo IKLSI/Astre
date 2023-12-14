@@ -13,3 +13,5 @@
 ./src/metier/Module.java
 ./src/metier/Semestre.java
 ./src/metier/TypeModule.java
+./src/PrevisionnelController.java
+./src/Modules.java

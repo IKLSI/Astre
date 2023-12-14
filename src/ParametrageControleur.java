@@ -28,35 +28,32 @@ public class ParametrageControleur implements Initializable{
 
 
 	public void categorieIntervenants(){
-		System.out.println("Intervenants");
-		/*try{
-			Class.forName("org.postgresql.Driver");
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM CategorieIntervenant");
-
+		try{
+			ResultSet rs = Controleur.getCategorieInter();
 			data = FXCollections.observableArrayList();
 
-			ResultSetMetaData metaData = resultSet.getMetaData();
+			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
 			ObservableList<String> columns = FXCollections.observableArrayList();
-
 			for (int i = 1; i <= columnCount; i++)
-			columns.add(metaData.getColumnName(i));
-
+			{
+				columns.add(metaData.getColumnName(i));
+			}
 			data.add(columns);
-
-			while (resultSet.next())
+			while (rs.next())
 			{
 				ObservableList<String> row = FXCollections.observableArrayList();
-
 				for (int i = 1; i <= columnCount; i++)
-				row.add(resultSet.getString(i));
-
+				{
+					if (rs.getObject(i) != null)
+					{
+						row.add(rs.getObject(i).toString());
+					}
+					else
+						row.add("null");
+				}
 				data.add(row);
 			}
-
-			tableView = new TableView<>();
 
 			for (int i = 0; i < columnCount; i++)
 			{
@@ -68,61 +65,11 @@ public class ParametrageControleur implements Initializable{
 			}
 
 			tableView.setItems(data);
-
-			resultSet.close();
-			statement.close();
-			connection.close();
-		}
-		catch(Exception e){}*/
+		}catch (Exception e) {e.printStackTrace();}
 	}
 
 	public void categorieHeure(){
-		System.out.println("Heure");
-		/*try{
-			Class.forName("org.postgresql.Driver");
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM CategorieHeure");
 
-			data = FXCollections.observableArrayList();
-
-			ResultSetMetaData metaData = resultSet.getMetaData();
-			int columnCount = metaData.getColumnCount();
-			ObservableList<String> columns = FXCollections.observableArrayList();
-
-			for (int i = 1; i <= columnCount; i++)
-			columns.add(metaData.getColumnName(i));
-
-			data.add(columns);
-
-			while (resultSet.next())
-			{
-				ObservableList<String> row = FXCollections.observableArrayList();
-
-				for (int i = 1; i <= columnCount; i++)
-				row.add(resultSet.getString(i));
-
-				data.add(row);
-			}
-
-			tableView = new TableView<>();
-
-			for (int i = 0; i < columnCount; i++)
-			{
-				TableColumn<ObservableList<String>, String> column = new TableColumn<>(columns.get(i));
-				final int colIndex = i;
-				column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(colIndex)));
-				column.setGraphic(null);
-				tableView.getColumns().add(column);
-			}
-
-			tableView.setItems(data);
-
-			resultSet.close();
-			statement.close();
-			connection.close();
-		}
-		catch(Exception e){}*/
 	}
 
 	@FXML

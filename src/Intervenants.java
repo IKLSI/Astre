@@ -11,6 +11,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.DefaultStringConverter;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -23,6 +33,9 @@ import javafx.beans.property.SimpleStringProperty;
 
 import javax.swing.Action;
 import java.util.ArrayList;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 import metier.Intervenant;
 
@@ -41,6 +54,8 @@ public class Intervenants
 	private ArrayList<Integer> idIntervenant = new ArrayList<Integer>();
 
 	private ArrayList<Intervenant> intervenants = new ArrayList<Intervenant>();
+
+	private ArrayList<Intervenant> intervenantsModification = new ArrayList<Intervenant>();
 	
 	public Intervenants(AnchorPane panelCentre)
 	{
@@ -157,22 +172,36 @@ public class Intervenants
 			AnchorPane.setLeftAnchor(tableView, 20.0);
 			tableView.setPrefSize(630, 300);
 
-
 			for (int i = 0; i < columnCount; i++)
 			{
 				TableColumn<ObservableList<String>, String> column = new TableColumn<>(columns.get(i));
 				final int colIndex = i;
 				column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(colIndex)));
-				column.setGraphic(null);
+
+				if (i < 5)
+				{
+					column.setEditable(true);
+					column.setCellFactory(TextFieldTableCell.forTableColumn());
+					column.setOnEditCommit((CellEditEvent<ObservableList<String>, String> event) -> {
+						try
+						{
+							modifier(event);
+						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+					});
+				}
+
 				tableView.getColumns().add(column);
 			}
 
-			TableColumn<ObservableList<String>, Void> modifierColumn = new TableColumn<>("Modifier");
-			modifierColumn.setPrefWidth(100);
-			modifierColumn.setGraphic(null);
-			tableView.getColumns().add(modifierColumn);
+			tableView.setEditable(true);
+			tableView.getSelectionModel().setCellSelectionEnabled(true);
 
 			tableView.setItems(data);
+			tableView.setEditable(true);
 			panelCentre.getChildren().add(tableView);
 			panelCentre.getChildren().add(lbl);
 			panelCentre.getChildren().add(bouton);
@@ -287,9 +316,7 @@ public class Intervenants
 	{
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 
-		try
-		{
-			Class.forName("org.postgresql.Driver");
+			/*Class.forName("org.postgresql.Driver");
 			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
 			Statement statement = connection.createStatement();
 
@@ -299,16 +326,10 @@ public class Intervenants
 			{
 				this.idIntervenant.add(resultSet.getInt(1));
 				System.out.println(resultSet.getInt(1));
-			}
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
-		}
+			}*/
+
+			System.out.println(Controleur.getCodInter(tableView.getItems().get(selectedIndex).get(1)));
+			this.idIntervenant = Controleur.getCodInter(tableView.getItems().get(selectedIndex).get(1));
 
 		if (selectedIndex >= 0)
 		{
@@ -323,28 +344,51 @@ public class Intervenants
 		{
 			try
 			{
-				Class.forName("org.postgresql.Driver");
-				Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-				Statement statement = connection.createStatement();
+				
 
 				for (int j = 0; j < this.idIntervenant.size(); j++)
 				{
-					statement.executeUpdate("DELETE FROM Intervenant WHERE codInter = " + this.idIntervenant.get(j) + ";");
+					System.out.println(j);
+					Controleur.supprInter(this.idIntervenant.get(j));
 				}
 
 				for (Intervenant intervenant : this.intervenants)
 				{
 					Controleur.insertIntervenant(intervenant);
 				}
+
+				for (Intervenant intervenant : this.intervenantsModification)
+				{
+				
+				}
 			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-			catch (ClassNotFoundException e)
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@FXML
+	private void modifier(CellEditEvent<ObservableList<String>, String> event) throws SQLException
+	{
+		ObservableList<String> row = event.getRowValue();
+		String newValue = event.getNewValue();
+		int index = event.getTablePosition().getColumn();
+
+		row.set(index, newValue);
+		
+		Connection connection2 = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
+		Statement statement2 = connection2.createStatement();
+		ResultSet resultSet2 = statement2.executeQuery("SELECT codInter FROM Intervenant WHERE nom = '" + row.get(1) + "';");
+		int code = 0;
+
+		while (resultSet2.next())
+		{
+			code = resultSet2.getInt(1);
+		}
+
+		statement2.executeUpdate("SELECT modif_cat_inter(" + code + ", '" + row.get(0) + "');");
+		statement2.executeUpdate("UPDATE Intervenant SET nom = '" + row.get(1) + "', prenom = '" + row.get(2) + "', hServ = " + row.get(4) + ", maxH = " + row.get(5) + " WHERE codInter = " + code + ";");
 	}
 }

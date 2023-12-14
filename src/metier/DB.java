@@ -13,11 +13,15 @@ public class DB {
 	//requete
 	private PreparedStatement psSelectIntervenants;
 	private PreparedStatement psSelectIntervenant_final;
+	private PreparedStatement psSelectCodInter;
 	private PreparedStatement psSelectCategorieIntervenant;
 	private PreparedStatement psSelectCategorieHeure;
 
 	//instert
 	private PreparedStatement psInstertIntervenant;
+
+	//delete
+	private PreparedStatement psDeleteInter;
 
 	/*----------------*/
 	/*--Constructeur--*/
@@ -34,6 +38,7 @@ public class DB {
 			this.psSelectIntervenants = DB.connec.prepareStatement("Select * From Intervenant");
 			this.psSelectIntervenant_final = DB.connec.prepareStatement("SELECT * FROM intervenant_final");
 			this.psSelectCategorieIntervenant = DB.connec.prepareStatement("SELECT * FROM CategorieIntervenant");
+			this.psSelectCodInter = DB.connec.prepareStatement("SELECT codInter FROM Intervenant WHERE nom = ?");
 			this.psSelectCategorieHeure = DB.connec.prepareStatement("SELECT * FROM CategorieHeure");
 
 			//préparation des insertions
@@ -41,9 +46,11 @@ public class DB {
 
 			//préparation des update
 
+			//preparation des delete
+			this.psDeleteInter = DB.connec.prepareStatement("DELETE FROM Intervenant WHERE codInter = ?");
+
 		} catch (SQLException e) {
 			System.out.println("ECHEC connection");
-			e.printStackTrace();
 		}
 	}
 
@@ -87,22 +94,12 @@ public class DB {
 	}
 
 	//recupere toutes les categories d'intervenants
-	public ArrayList<CategorieIntervenant> getCategorieInter(){
-		ArrayList<CategorieIntervenant> lst = new ArrayList<CategorieIntervenant>();
+	public ResultSet getCategorieInter(){
+		ResultSet resultSet = null;
 		try {
-			ResultSet rs = this.psSelectIntervenants.executeQuery();
-			while(rs.next()){
-				int codCatInter = rs.getInt("codCatInter");;
-				String nomCat   = rs.getString("nomCat");
-				int service     = rs.getInt("service");
-				int maxHeure    = rs.getInt("maxHeure");
-				int ratioTPCatInterNum = rs.getInt("ratioTPCatInterNum");
-				int ratioTPCatInterDen = rs.getInt("ratioTPCatInterDen");
-
-				lst.add(new CategorieIntervenant(codCatInter, nomCat, service, maxHeure,ratioTPCatInterNum,ratioTPCatInterDen));
-			}
+			resultSet = this.psSelectCategorieIntervenant.executeQuery();
 		} catch (Exception e) {e.printStackTrace();}
-		return lst;
+		return resultSet;
 	}
 
 	//recupere toutes les categories d'heure
@@ -121,6 +118,19 @@ public class DB {
 		} catch (Exception e) {e.printStackTrace();}
 		return lst;
 	}
+
+	//recuper le code d'un intervenant
+	public ArrayList<Integer> getCodInter(String nomInter){
+		ArrayList<Integer> lstCodInter = new ArrayList<Integer>();
+		try {
+			this.psSelectCodInter.setString(1,"nom");
+			ResultSet rs = this.psSelectCodInter.executeQuery();
+			while (rs.next()) {
+				lstCodInter.add(rs.getInt("codInter"));
+			}
+		} catch (SQLException e) {e.printStackTrace();}
+		return lstCodInter;
+	}
 	/*
 	 * Méthode Insertion
 	 */
@@ -135,6 +145,18 @@ public class DB {
 
 			this.psInstertIntervenant.executeUpdate();
 			this.psInstertIntervenant.close();
+		} catch (SQLException e) {e.printStackTrace();}
+	}
+
+	/*
+	 * Méthode de Suppression
+	 */
+
+	public void supprInter(int codInter){
+		try {
+			this.psDeleteInter.setInt(1,codInter);
+			this.psDeleteInter.executeUpdate();
+			this.psDeleteInter.close();
 		} catch (SQLException e) {e.printStackTrace();}
 	}
 }
