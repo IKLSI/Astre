@@ -503,7 +503,7 @@ FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
 
 
 CREATE OR REPLACE VIEW liste_module AS 
-SELECT codSem, codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS heureAffect/heurePn, valid
+SELECT codSem, codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS heureAffect_heurePn, valid
 FROM module_final;
 
 CREATE OR REPLACE FUNCTION getCatInter(VARCHAR)
