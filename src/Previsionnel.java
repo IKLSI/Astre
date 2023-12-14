@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,6 +28,9 @@ import java.sql.SQLException;
 
 public class Previsionnel{
 
+	@FXML
+	private MenuButton menuButton;
+
 	public Previsionnel(AnchorPane panelCentre){
 		try
 		{
@@ -36,6 +41,25 @@ public class Previsionnel{
 			panelCentre.getChildren().setAll(loadedPanel.getChildren());
 		}
 		catch (Exception e){e.printStackTrace();}
+
+		// try {
+        //     Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/votreBaseDeDonnees", "utilisateur", "motDePasse");
+        //     Statement stmt = conn.createStatement();
+        //     ResultSet rs = stmt.executeQuery("SELECT nomTypMod FROM TypeModule");
+
+        //     while (rs.next()) {
+        //         String nomBouton = rs.getString("nomTypMod");
+        //         MenuItem nouveauItem = new MenuItem(nomBouton);
+        //         nouveauItem.setOnAction(e -> {
+        //             System.out.println("Bouton " + nomBouton + " cliqué !");
+        //         });
+        //         menuButton.getItems().add(nouveauItem);
+        //     }
+
+        //     conn.close();
+        // } catch (SQLException e) {
+        //     e.printStackTrace();
+        // }
 
 	}
 }

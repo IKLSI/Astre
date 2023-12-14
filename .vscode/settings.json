@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\IUT\\TP\\java\\paquetage_class\\jbdc.jar",
+        "c:\\IUT\\TP\\java\\paquetage_class\\mysql-connector-j-8.1.0.jar"
+    ]
+}

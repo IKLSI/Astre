@@ -3,6 +3,14 @@
 	-fx-text-fill : white;
 }
 
+.menu-button {
+    -fx-background-color:#7F23A7;
+}
+   
+.menu-button .label {
+    -fx-text-fill : white;
+}
+
 .btn:hover {
     -fx-background-color: #D09AE8;
 }

@@ -43,6 +43,7 @@ public class DB {
 
 		} catch (SQLException e) {
 			System.out.println("ECHEC connection");
+			e.printStackTrace();
 		}
 	}
 
