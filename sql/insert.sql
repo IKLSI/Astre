@@ -21,19 +21,19 @@ VALUES      ('CM'   , 3,2),
 		('TP'   , 1,1),
 		('HT'   , 1,1),
 		('REH'  , 1,1),
-		('Sae', 1,1),
+		('Sae'  , 1,1),
 		('HP'   , 1,1);
 
 
 
 -- Insertion de données dans la table Semestre
 INSERT INTO Semestre (codSem, nbGrpTD, nbGrpTP, nbEtd, nbSemaines)
-VALUES   ('S1', 3, 6, 85, 15),
-	   ('S2', 3, 6, 65, 16),
-	   ('S3', 2, 4, 48, 15),
-	   ('S4', 2, 4, 48, 16),
-	   ('S5', 2, 4, 42, 15),
-	   ('S6', 2, 4, 42, 16);
+VALUES   ('S1', 4, 7, 85, 15),
+	   ('S2', 4, 7, 65, 16),
+	   ('S3', 4, 7, 48, 15),
+	   ('S4', 4, 7, 48, 16),
+	   ('S5', 4, 7, 42, 15),
+	   ('S6', 4, 7, 42, 16);
 
 
 
@@ -52,22 +52,22 @@ VALUES ('boukachour', 'Hadhoum'  , 1, 192, 364),
 
 
 -- Insertion de données dans la table Module ressource
-INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, nbHParSemaineHTut, hPonctuelle)
-VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev'      , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.02', 'S1' , 1, 'Développement interfaces Web'          , 'Dev Web'       , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.03', 'S1' , 1, 'Introduction Architecture'             , 'Archi'         , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.04', 'S1' , 1, 'Introduction Système'                  , 'Système'       , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.05', 'S1' , 1, 'Introduction Base de données'          , 'Bado'          , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.06', 'S1' , 1, 'Mathématiques discrètes'               , 'Maths '        , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.07', 'S1' , 1, 'Outils mathématiques fondamentaux'     , 'Outils num'    , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.08', 'S1' , 1, 'Gestion de projet et des organisations', 'GPO'           , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.09', 'S1' , 1, 'Économie durable et numérique'         , 'Économie'      , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.10', 'S1' , 1, 'Anglais Technique'                     , 'Anglais Pro'   , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R1.11', 'S1' , 1, 'Bases de la communication'             , 'Communication' , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet'     , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R3.02', 'S3' , 1, 'Développement Efficace'                , 'Dev Effi'      , false,6,65,28,14,14,6,4,2,1,0,9),
-       ('R4.01', 'S4' , 1, 'Architecture logicielle'               , 'Archi Logi'    , false,6,65,28,14,14,6,4,2,1,0,9),
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle)
+VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev'      , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.02', 'S1' , 1, 'Développement interfaces Web'          , 'Dev Web'       , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.03', 'S1' , 1, 'Introduction Architecture'             , 'Archi'         , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.04', 'S1' , 1, 'Introduction Système'                  , 'Système'       , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.05', 'S1' , 1, 'Introduction Base de données'          , 'Bado'          , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.06', 'S1' , 1, 'Mathématiques discrètes'               , 'Maths '        , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.07', 'S1' , 1, 'Outils mathématiques fondamentaux'     , 'Outils num'    , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.08', 'S1' , 1, 'Gestion de projet et des organisations', 'GPO'           , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.09', 'S1' , 1, 'Économie durable et numérique'         , 'Économie'      , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.10', 'S1' , 1, 'Anglais Technique'                     , 'Anglais Pro'   , false,6,65,28,14,14,6,4,2,1,9),
+       ('R1.11', 'S1' , 1, 'Bases de la communication'             , 'Communication' , false,6,65,28,14,14,6,4,2,1,9),
+       ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet'     , false,6,65,28,14,14,6,4,2,1,9),
+       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,6,65,28,14,14,6,4,2,1,9),
+       ('R3.02', 'S3' , 1, 'Développement Efficace'                , 'Dev Effi'      , false,6,65,28,14,14,6,4,2,1,9),
+       ('R4.01', 'S4' , 1, 'Architecture logicielle'               , 'Archi Logi'    , false,6,65,28,14,14,6,4,2,1,9);      
 
 	 
 -- Insertion de données dans la table Module SAÉ
@@ -81,8 +81,8 @@ VALUES ('S1.1', 2, 'S1' , 'Implémentation d''un besoin client'    , 'SAE-01'   
 INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHREH, nbHTut, nbHPnREH, nbHPnTut)
 VALUES ('S4.ST','S4', 3 , 'Stage'                                 , 'Stage'    ,false ,10,2, NULL, NULL);
 
--- Insertion de données dans la table Module PPPP
-INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHTutPnSAE)
+-- Insertion de données dans la table Module PPP
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHPnHTut)
 VALUES             ('P3.01','S3', 4 , 'Portfolio'                 , 'Portfolio' ,false ,1, 1, 1, 2, 4, 0, 1, 4);
 
 
@@ -113,7 +113,8 @@ INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbSem, nbGr
 VALUES('R1.01',7,1,'3 cm d''1h30.',  6, 1),  
       ('R1.01',7,2,           NULL, 14, 2),  
       ('R1.01',7,3,           NULL, 14, 2),  
-      ('R1.01',7,7,          'TP0',  1, 6),  
+      ('R1.01',7,7,          'TP0',  1, 6), 
+      ('R1.01',7,7,    'DS PAPIER',  1, 5),  
       ('R1.01',7,7,   'DS MACHINE',  1, 5),  
 
       ('R1.01',8,2,           NULL, 14, 2), 

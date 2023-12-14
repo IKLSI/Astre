@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS calculNbAffect() CASCADE;
 DROP FUNCTION IF EXISTS modif_cat_inter() CASCADE;
 DROP FUNCTION IF EXISTS default_hServ() CASCADE;
 DROP FUNCTION IF EXISTS default_maxHeure() CASCADE;
-DROP FUNCTION IF EXISTS calculCoeff() CASCADE;
+DROP FUNCTION IF EXISTS calculCoeff(VARCHAR) CASCADE;
 DROP FUNCTION IF EXISTS getCatInter() CASCADE;
 
 -- Fonction de trigger en cas de suppresion d'une clef primaire
@@ -140,23 +140,25 @@ EXECUTE FUNCTION delIntervenantCatInterFonc();
 CREATE TABLE CategorieHeure (
 	codCatHeure SERIAL PRIMARY KEY,
 	nomCatHeure VARCHAR(20),
-	coeffNum    INTEGER NOT NULL,
-	coeffDen    INTEGER NOT NULL
+	coeffNum    FLOAT NOT NULL,
+	coeffDen    FLOAT NOT NULL
 );
 
 -- creation de la fonction calculCoeff
 
 CREATE OR REPLACE FUNCTION calculCoeff(VARCHAR)
-RETURNS INTEGER AS $$
+RETURNS FLOAT AS $$
 DECLARE
 	coeff FLOAT;
 BEGIN
-	SELECT coeffNum/coeffDen INTO coeff
+	SELECT coeffNum::FLOAT/coeffDen::FLOAT INTO coeff
     FROM   CategorieHeure
 	WHERE  $1 = nomCatHeure ;
   RETURN   coeff;
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 -- creation de la table Semestre
 
@@ -222,7 +224,10 @@ CREATE TABLE Module (
 	nbHPnREH 	INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
 	nbHPnTut 	INTEGER CHECK (verifTypMod(codMod,'Stage') OR verifTypMod(codMod,'PPP') OR nbHTut = NULL),
 	nbHREH 		INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
-	nbHTut 		INTEGER CHECK (verifTypMod(codMod,'Stage') OR verifTypMod(codMod,'PPP') OR nbHTut = NULL)
+	nbHTut 		INTEGER CHECK (verifTypMod(codMod,'Stage') OR verifTypMod(codMod,'PPP') OR nbHTut = NULL),
+
+		/*Spécifique a ressource*/
+	nbHPnHTut   INTEGER CHECK (verifTypMod(codMod,'PPP') OR nbHPnHTut = NULL)
 );
 
 /* Lorsqu'on supprime un type de module, ses modules sont supprimés */
@@ -398,7 +403,7 @@ DECLARE
 BEGIN
 	SELECT SUM("tot eqtd") INTO totH
 	FROM   affectation_final 
-	WHERE  codMod = $1 AND $1 = nomCatHeure;
+	WHERE  codMod = $1 AND $2 = nomCatHeure;
 	RETURN totH; 
 END;
 $$ LANGUAGE plpgsql;
@@ -408,107 +413,97 @@ SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.n
 	
 	   -- POUR LES RESSOURCES.
 	   -- Heure PN GOOD
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM END,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTD END,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnTP END,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHPnCM+nbHPnTD+nbHPnTP END AS sommePn,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN COALESCE(nbHPnCM,0)*COALESCE(calculCoeff('CM'),1) END AS totalEqtdPromoPnCm,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN COALESCE(nbHPnTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(s.nbGrpTD,0) END AS totalEqtdPromoPnTd,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN COALESCE(nbHPnTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(s.nbGrpTP,0) END AS totalEqtdPromoPnTP,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN COALESCE(nbHPnCM,0)*COALESCE(calculCoeff('CM'),1)+COALESCE(nbHPnTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(s.nbGrpTD,0)+COALESCE(nbHPnTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(s.nbGrpTP,0) END AS sommeTotalEqtdPromoPn,
+	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHPnCM END AS nbHPnCM,
+	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHPnTD END AS nbHPnTD,
+	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHPnTP END AS nbHPnTP,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN nbHPnCM+nbHPnTD+nbHPnTP 	    END AS sommePn,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbHPnCM,0)*COALESCE(calculCoeff('CM'),3/2) 				     END AS totalEqtdPromoPnCm,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbHPnTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(s.nbGrpTD,0) END AS totalEqtdPromoPnTd,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbHPnTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(s.nbGrpTP,0) END AS totalEqtdPromoPnTP,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbHPnCM,0)*COALESCE(calculCoeff('CM'),3/2)+COALESCE(nbHPnTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(s.nbGrpTD,0)+COALESCE(nbHPnTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(s.nbGrpTP,0) END AS sommeTotalEqtdPromoPn,
 	   
 	   -- Répartition 1 GOOD
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineCM 	END,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHParSemaineCM END,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTD 	END,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHParSemaineTD END,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTP 	END,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbHParSemaineTP END,
+	   CASE WHEN t.nomTypMod = 'Ressources' 				       THEN nbSemaineCM 		END AS nbSemaineCM,
+	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHParSemaineCM 	END AS nbHParSemaineCM,
+	   CASE WHEN t.nomTypMod = 'Ressources' 					   THEN nbSemaineTD 		END AS nbSemaineTD,
+	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHParSemaineTD 	END AS nbHParSemaineTD,
+	   CASE WHEN t.nomTypMod = 'Ressources' 					   THEN nbSemaineTP 		END AS nbSemaineTP,
+	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHParSemaineTP 	END AS nbHParSemaineTP,
 
 	   -- Repartition 2 GOOD
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN COALESCE(nbSemaineCM,1)*COALESCE(nbHParSemaineCM,1) 	END AS nbSXnbHCM, 
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTD*nbHParSemaineTD 	END AS nbSXnbHTD, 	
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTP*nbHParSemaineTP 	END AS nbSXnbHTP, 	 
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN hPonctuelle 					END,     
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineCM*nbHParSemaineCM+nbSemaineTD*nbHParSemaineTD+nbSemaineTP*nbHParSemaineTP+hPonctuelle END AS SommeNbSXnbH,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,1)*COALESCE(nbHParSemaineCM,0) END AS nbSXnbHCM, 
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTD,1)*COALESCE(nbHParSemaineTD,0) END AS nbSXnbHTD, 	
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTP,1)*COALESCE(nbHParSemaineTP,0) END AS nbSXnbHTP, 	 
+	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN hPonctuelle 				 END AS hPonctuelle,      
+  
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,0)*COALESCE(nbHParSemaineCM,0)+COALESCE(nbSemaineTD,0)*COALESCE(nbHParSemaineTD,0)+COALESCE(nbSemaineTP,0)*COALESCE(nbHParSemaineTP,0)+COALESCE(hPonctuelle,0) END AS SommeNbSXnbH,
 	   
 	   --Total promo eqtd GOOD
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineCM*nbHParSemaineCM*calculCoeff('CM') 			END AS promoEqtdCM,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTD*nbHParSemaineTD*calculCoeff('TD')*nbGrpTD 	END AS promoEqtdTD,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN nbSemaineTP*nbHParSemaineTP*calculCoeff('TP')*nbGrpTP 	END AS promoEqtdTP,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN hPonctuelle*calculCoeff('HP')*nbGrpTD 					END AS promoEqtdHP,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN (nbSemaineCM*nbHParSemaineCM*calculCoeff('CM')+nbSemaineTD*nbHParSemaineTD*calculCoeff('TD')*nbGrpTD+nbSemaineTP*nbHParSemaineTP*calculCoeff('TP')*nbGrpTP+hPonctuelle*calculCoeff('HP')*nbGrpTD) END AS sommeTotPromoEqtd,
-	   
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,1)*COALESCE(nbHParSemaineCM,0)*COALESCE(calculCoeff('CM'),3/2) 			END AS promoEqtdCM,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTD,1)*COALESCE(nbHParSemaineTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(nbGrpTD,0) 	END AS promoEqtdTD,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTP,1)*COALESCE(nbHParSemaineTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(nbGrpTP,0) 	END AS promoEqtdTP,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(hPonctuelle,0)*COALESCE(calculCoeff('HP'),1)*COALESCE(nbGrpTD,0) 					END AS promoEqtdHP,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,1)*COALESCE(nbHParSemaineCM,0)*COALESCE(calculCoeff('CM'),3/2)+COALESCE(nbSemaineTD,1)*COALESCE(nbHParSemaineTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(nbGrpTD,0)+COALESCE(nbSemaineTP,0)*COALESCE(nbHParSemaineTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(nbGrpTP,1)+COALESCE(hPonctuelle,0)*COALESCE(calculCoeff('HP'),1)*COALESCE(nbGrpTD,0)
+	   		WHEN t.nomTypMod = 'SAE'   	    THEN COALESCE(nbHSaeParSemestre,0)+COALESCE(nbHTutParSemestre,0)
+			WHEN t.nomTypMod = 'Stage'      THEN COALESCE(nbHREH,0)+COALESCE(nbHTut,0)
+			WHEN t.nomTypMod = 'PPP'        THEN COALESCE(nbHParSemaineCM,0)+COALESCE(nbHParSemaineTD,0)+COALESCE(nbHParSemaineTP,0)+COALESCE(nbHTut,0)+COALESCE(hPonctuelle,0)
+			END AS sommeTotPromoEqtd,
+
 	   --Total affecté eqtd
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculNbAffect(m.codMod,'CM') END AS eqtdCM,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculNbAffect(m.codMod,'TD') END AS eqtdTD,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculNbAffect(m.codMod,'TP') END AS eqtdTP,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculNbAffect(m.codMod,'HP') END AS eqtdHP,
-	   CASE WHEN t.nomTypMod = 'Ressource' THEN calculNbAffect(m.codMod,'CM')+calculNbAffect(m.codMod,'TD')+calculNbAffect(m.codMod,'TP')+calculNbAffect(m.codMod,'HP') END AS sommeTotAffectEqtd,
-	   
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN calculNbAffect(m.codMod,'CM') END AS eqtdCM,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN calculNbAffect(m.codMod,'TD') END AS eqtdTD,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN calculNbAffect(m.codMod,'TP') END AS eqtdTP,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN calculNbAffect(m.codMod,'HP') END AS eqtdHP,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'CM'),0)+COALESCE(calculNbAffect(m.codMod,'TD'),0)+COALESCE(calculNbAffect(m.codMod,'TP'),0)+COALESCE(calculNbAffect(m.codMod,'HP'),0)
+	   		WHEN t.nomTypMod = 'SAE'        THEN COALESCE(calculNbAffect(m.codMod,'Sae'),0)+COALESCE(calculNbAffect(m.codMod,'HT'),0)
+			WHEN t.nomTypMod = 'Stage' 	    THEN COALESCE(calculNbAffect(m.codMod,'REH'),0)+COALESCE(calculNbAffect(m.codMod,'HT'),0)
+			WHEN t.nomTypMod = 'PPP' 	    THEN COALESCE(calculNbAffect(m.codMod,'CM'),0)+COALESCE(calculNbAffect(m.codMod,'TD'),0)+COALESCE(calculNbAffect(m.codMod,'TP'),0)+COALESCE(calculNbAffect(m.codMod,'HT'),0)+COALESCE(calculNbAffect(m.codMod,'HP') ,0)
+			END AS sommeTotAffectEqtd,
+
 	   --POUR LES SAE.
 	   --Heure pn GOOD
-	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnSaeParSemestre 						END,
-	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnTutParSemestre 						END,
-	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnSaeParSemestre+nbHPnTutParSemestre	END,
+	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnSaeParSemestre 						END AS nbHPnSaeParSemestre,
+	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnTutParSemestre 						END AS nbHPnTutParSemestre,
+	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnSaeParSemestre+nbHPnTutParSemestre	END AS sommeHPnSAE,
 	   
 	   --Repartition premiere ligne GOOD
-	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHSaeParSemestre 												END,
-	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHTutParSemestre 												END,
-	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHSaeParSemestre+nbHTutParSemestre  	END AS sommeTotPromoEqtd,
+	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHSaeParSemestre 												END AS nbHSaeParSemestre,
+	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHTutParSemestre 												END AS nbHTutParSemestre,
 	   
 	   --Repartition seconde ligne GOOD
 	   CASE WHEN t.nomTypMod = 'SAE' THEN calculNbAffect(m.codMod,'Sae') END AS nbHAffecteSAE,
-	   CASE WHEN t.nomTypMod = 'SAE' THEN calculNbAffect(m.codMod,'HT') END AS nbHAffecteHT
-	   CASE WHEN t.nomTypMod = 'SAE' THEN calculNbAffect(m.codMod,'Sae')+calculNbAffect(m.codMod,'HT')   	END AS sommeTotAffectEqtd,
+	   CASE WHEN t.nomTypMod = 'SAE' OR t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'HT') END AS nbHAffecteHT,
 
 	   --POUR LES STAGE.
 	   --Heure pn GOOD
-	   CASE WHEN t.nomTypMod = 'Stage' THEN nbHPnREH 			END,
-	   CASE WHEN t.nomTypMod = 'Stage' THEN nbHPnTut 			END,
-	   CASE WHEN t.nomTypMod = 'Stage' THEN nbHPnREH+nbHPnTut 	END,
+	   CASE WHEN t.nomTypMod = 'Stage' 							THEN nbHPnREH 			END AS nbHPnREH,
+	   CASE WHEN t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP'	THEN nbHPnTut 			END AS nbHPnTut,
+	   CASE WHEN t.nomTypMod = 'Stage' 							THEN COALESCE(nbHPnREH,0)+COALESCE(nbHPnTut,0) 	END AS sommeHPnStage,
 	   
 	   --Repartition premiere ligne GOOD
-	   CASE WHEN t.nomTypMod = 'Stage' THEN nbHREH 										END,
-	   CASE WHEN t.nomTypMod = 'Stage' THEN nbHTut 										END,
-	   CASE WHEN t.nomTypMod = 'Stage' THEN nbHREH+nbHTut  	END AS sommeTotPromoEqtd,
+	   CASE WHEN t.nomTypMod = 'Stage' 						  THEN nbHREH END AS nbHREH,
+	   CASE WHEN t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP' THEN nbHTut END AS nbHTut,
 	   
 	   --Repartition seconde ligne GOOD
 	   CASE WHEN t.nomTypMod = 'Stage' THEN calculNbAffect(m.codMod,'REH') 	END AS nbHAffecteREH,
-	   CASE WHEN t.nomTypMod = 'Stage' THEN calculNbAffect(m.codMod,'HT') 	END AS nbHAffecteHT,
-	   CASE WHEN t.nomTypMod = 'Stage' THEN calculNbAffect(m.codMod,'REH')+calculNbAffect(m.codMod,'HT') END AS sommeTotAffectEqtd,
 
 	   --POUR LES PPP.
 	   --Heure pn ??
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHPnCM END,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHPnTD END,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHPnTP END,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHPnTut END,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHPnCM+nbHPnTD+nbHPnTP+nbHPnTut END AS sommeHeurePnPPP,
+	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(nbHPnCM,0)+COALESCE(nbHPnTD,0)+COALESCE(nbHPnTP,0)+COALESCE(nbHPnTut,0) END AS sommeHeurePnPPP,
 	   	-- Répartition 1 ??
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHParSemaineCM END,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHParSemaineTD END,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHParSemaineTP END,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHTut END,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN hPonctuelle END,   
-	   CASE WHEN t.nomTypMod = 'PPP' THEN nbHParSemaineCM+nbHParSemaineTD+nbHParSemaineTP+nbHTut+hPonctuelle END AS sommeTotPromoEqtd,
 	   	-- Répartition 2 EFFECTUER ??
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'CM') END AS nbHAffecteCM,
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'TD') END AS nbHAffecteTD,
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'TP') END AS nbHAffecteTP,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'HT') END AS nbHAffecteHT,
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'HP') END AS nbHAffecteHP,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'CM')+calculNbAffect(m.codMod,'TD')+calculNbAffect(m.codMod,'TP')+calculNbAffect(m.codMod,'HT')+calculNbAffect(m.codMod,'HP') END AS sommeTotAffectEqtd,
 	   
 	   m.valid
 FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
 			  JOIN Semestre   s ON s.codSem    = m.codSem;
 
 
-
-
 CREATE OR REPLACE VIEW liste_module AS 
-SELECT codSem, codMod, libLong, (sommeTotPromoEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS "heureAffect/heurePn", valid
+SELECT codSem, codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS "heureAffect/heurePn", valid
 FROM module_final;
 
 CREATE OR REPLACE FUNCTION getCatInter(VARCHAR)
