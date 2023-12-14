@@ -19,9 +19,9 @@ INSERT INTO CategorieHeure (nomCatHeure, coeffNum, coeffDen)
 VALUES      ('CM'   , 3,2),
 		('TD'   , 1,1),
 		('TP'   , 1,1),
-		('H tut', 1,1),
+		('HT'   , 1,1),
 		('REH'  , 1,1),
-		('H saé', 1,1),
+		('Sae', 1,1),
 		('HP'   , 1,1);
 
 
@@ -52,22 +52,23 @@ VALUES ('boukachour', 'Hadhoum'  , 1, 192, 364),
 
 
 -- Insertion de données dans la table Module ressource
-INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHPnHTut, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbSemaineHTut, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, nbHParSemaineHTut, hPonctuelle)
-VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev'      , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.02', 'S1' , 1, 'Développement interfaces Web'          , 'Dev Web'       , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.03', 'S1' , 1, 'Introduction Architecture'             , 'Archi'         , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.04', 'S1' , 1, 'Introduction Système'                  , 'Système'       , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.05', 'S1' , 1, 'Introduction Base de données'          , 'Bado'          , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.06', 'S1' , 1, 'Mathématiques discrètes'               , 'Maths '        , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.07', 'S1' , 1, 'Outils mathématiques fondamentaux'     , 'Outils num'    , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.08', 'S1' , 1, 'Gestion de projet et des organisations', 'GPO'           , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.09', 'S1' , 1, 'Économie durable et numérique'         , 'Économie'      , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.10', 'S1' , 1, 'Anglais Technique'                     , 'Anglais Pro'   , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R1.11', 'S1' , 1, 'Bases de la communication'             , 'Communication' , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet'     , false,6,65,28,0,14,14,6,0,4,2,1,0,9),
-       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,6,65,28,0,14,14,6,0,4,2,1,0,9);
---A MODIF POUR GERER LE PPP
- 
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, nbHParSemaineHTut, hPonctuelle)
+VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev'      , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.02', 'S1' , 1, 'Développement interfaces Web'          , 'Dev Web'       , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.03', 'S1' , 1, 'Introduction Architecture'             , 'Archi'         , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.04', 'S1' , 1, 'Introduction Système'                  , 'Système'       , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.05', 'S1' , 1, 'Introduction Base de données'          , 'Bado'          , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.06', 'S1' , 1, 'Mathématiques discrètes'               , 'Maths '        , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.07', 'S1' , 1, 'Outils mathématiques fondamentaux'     , 'Outils num'    , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.08', 'S1' , 1, 'Gestion de projet et des organisations', 'GPO'           , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.09', 'S1' , 1, 'Économie durable et numérique'         , 'Économie'      , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.10', 'S1' , 1, 'Anglais Technique'                     , 'Anglais Pro'   , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R1.11', 'S1' , 1, 'Bases de la communication'             , 'Communication' , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet'     , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R3.02', 'S3' , 1, 'Développement Efficace'                , 'Dev Effi'      , false,6,65,28,14,14,6,4,2,1,0,9),
+       ('R4.01', 'S4' , 1, 'Architecture logicielle'               , 'Archi Logi'    , false,6,65,28,14,14,6,4,2,1,0,9),
+
 	 
 -- Insertion de données dans la table Module SAÉ
 INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre)
@@ -79,6 +80,11 @@ VALUES ('S1.1', 2, 'S1' , 'Implémentation d''un besoin client'    , 'SAE-01'   
 -- Insertion de données dans la table Module stage
 INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHREH, nbHTut, nbHPnREH, nbHPnTut)
 VALUES ('S4.ST','S4', 3 , 'Stage'                                 , 'Stage'    ,false ,10,2, NULL, NULL);
+
+-- Insertion de données dans la table Module PPPP
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHTutPnSAE)
+VALUES             ('P3.01','S3', 4 , 'Portfolio'                 , 'Portfolio' ,false ,1, 1, 1, 2, 4, 0, 1, 4);
+
 
 
 -- Insertion de données dans la table Affectation SAE / STAGE
