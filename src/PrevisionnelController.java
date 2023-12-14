@@ -240,7 +240,7 @@ public class PrevisionnelController implements Initializable
 			{
 				String codMod = rs.getString("codMod");
 				String libLong = rs.getString("libLong");
-				String hAP = rs.getString("heureAffect/heurePn");
+				String hAP = rs.getString("heureAffect_heurePn");
 				String valid = rs.getString("valid");
 
 				Modules module = new Modules(codMod, libLong, hAP, valid);
