@@ -107,13 +107,25 @@ public class PrevisionnelController implements Initializable
 	private TextField nbSemaineS6 = new TextField();
 
 	@FXML
-	private String intitule = "S2";
+	private String intitule = "S1";
 
 	@FXML
 	private TableView tableView;
 
 	@FXML
-	private TableView tableViewS2;
+	private TableView tableViewS2 = new TableView();
+
+	@FXML
+	private TableView tableViewS3 = new TableView();
+
+	@FXML
+	private TableView tableViewS4 = new TableView();
+
+	@FXML
+	private TableView tableViewS5 = new TableView();
+
+	@FXML
+	private TableView tableViewS6 = new TableView();
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle)
@@ -228,7 +240,24 @@ public class PrevisionnelController implements Initializable
 	{
 		try
 		{
+			tableView.getColumns().clear();
 			tableView.getItems().clear();
+
+			tableViewS2.getColumns().clear();
+			tableViewS2.getItems().clear();
+
+			tableViewS3.getColumns().clear();
+			tableViewS3.getItems().clear();
+
+			tableViewS4.getColumns().clear();
+			tableViewS4.getItems().clear();
+
+			tableViewS5.getColumns().clear();
+			tableViewS5.getItems().clear();
+
+			tableViewS6.getColumns().clear();
+			tableViewS6.getItems().clear();
+
 			Class.forName("org.postgresql.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125", "lk210125", "Kyliann.0Bado");
 			Statement stmt = conn.createStatement();
@@ -240,23 +269,23 @@ public class PrevisionnelController implements Initializable
 			{
 				String codMod = rs.getString("codMod");
 				String libLong = rs.getString("libLong");
-				String hAP = rs.getString("heureAffect_heurePn");
+				String hAP = rs.getString("hAP");
 				String valid = rs.getString("valid");
 
 				Modules module = new Modules(codMod, libLong, hAP, valid);
 				listeModules.add(module);
 			}
 
-			TableColumn<Module, String> codModCol = new TableColumn<>("Code Module");
+			TableColumn<Modules, String> codModCol = new TableColumn<>("Code Module");
 			codModCol.setCellValueFactory(new PropertyValueFactory<>("codMod"));
 
-			TableColumn<Module, String> libLongCol = new TableColumn<>("Libellé Long");
+			TableColumn<Modules, String> libLongCol = new TableColumn<>("Libellé Long");
 			libLongCol.setCellValueFactory(new PropertyValueFactory<>("libLong"));
 
-			TableColumn<Module, String> hAPCol = new TableColumn<>("Heure Affectée / Heure Prévue");
-			hAPCol.setCellValueFactory(new PropertyValueFactory<>("hAP"));
+			TableColumn<Modules, String> hAPCol = new TableColumn<>("Heure Affectée / Heure Prévue");
+			hAPCol.setCellValueFactory(new PropertyValueFactory<>("HAP"));
 
-			TableColumn<Module, String> validCol = new TableColumn<>("Valid");
+			TableColumn<Modules, String> validCol = new TableColumn<>("Valid");
 			validCol.setCellValueFactory(new PropertyValueFactory<>("valid"));
 
 			if (this.intitule.equals("S1"))
@@ -266,8 +295,28 @@ public class PrevisionnelController implements Initializable
 			}
 			else if (this.intitule.equals("S2"))
 			{
-				tableViewS2.getColumns().addAll(codModCol, libLongCol, validCol);
+				tableViewS2.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 				tableViewS2.setItems(listeModules);
+			}
+			else if (this.intitule.equals("S3"))
+			{
+				tableViewS3.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+				tableViewS3.setItems(listeModules);
+			}
+			else if (this.intitule.equals("S4"))
+			{
+				tableViewS4.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+				tableViewS4.setItems(listeModules);
+			}
+			else if (this.intitule.equals("S5"))
+			{
+				tableViewS5.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+				tableViewS5.setItems(listeModules);
+			}
+			else if (this.intitule.equals("S6"))
+			{
+				tableViewS6.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+				tableViewS6.setItems(listeModules);
 			}
 
 			conn.close();

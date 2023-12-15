@@ -315,21 +315,7 @@ public class Intervenants
 	private void supprimer(ActionEvent event)
 	{
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
-
-			/*Class.forName("org.postgresql.Driver");
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement statement = connection.createStatement();
-
-			ResultSet resultSet = statement.executeQuery("SELECT codInter FROM Intervenant WHERE nom = '" + tableView.getItems().get(selectedIndex).get(1) + "';");
-
-			while (resultSet.next())
-			{
-				this.idIntervenant.add(resultSet.getInt(1));
-				System.out.println(resultSet.getInt(1));
-			}*/
-
-			System.out.println(Controleur.getCodInter(tableView.getItems().get(selectedIndex).get(1)));
-			this.idIntervenant = Controleur.getCodInter(tableView.getItems().get(selectedIndex).get(1));
+		this.idIntervenant = Controleur.getCodInter(tableView.getItems().get(selectedIndex).get(1));
 
 		if (selectedIndex >= 0)
 		{
@@ -344,11 +330,8 @@ public class Intervenants
 		{
 			try
 			{
-				
-
 				for (int j = 0; j < this.idIntervenant.size(); j++)
 				{
-					System.out.println(j);
 					Controleur.supprInter(this.idIntervenant.get(j));
 				}
 
@@ -357,10 +340,6 @@ public class Intervenants
 					Controleur.insertIntervenant(intervenant);
 				}
 
-				for (Intervenant intervenant : this.intervenantsModification)
-				{
-				
-				}
 			}
 			catch (Exception e)
 			{
@@ -376,19 +355,11 @@ public class Intervenants
 		String newValue = event.getNewValue();
 		int index = event.getTablePosition().getColumn();
 
+		String ancienNom = row.get(index);
+
 		row.set(index, newValue);
-		
-		Connection connection2 = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-		Statement statement2 = connection2.createStatement();
-		ResultSet resultSet2 = statement2.executeQuery("SELECT codInter FROM Intervenant WHERE nom = '" + row.get(1) + "';");
-		int code = 0;
 
-		while (resultSet2.next())
-		{
-			code = resultSet2.getInt(1);
-		}
-
-		statement2.executeUpdate("SELECT modif_cat_inter(" + code + ", '" + row.get(0) + "');");
-		statement2.executeUpdate("UPDATE Intervenant SET nom = '" + row.get(1) + "', prenom = '" + row.get(2) + "', hServ = " + row.get(4) + ", maxH = " + row.get(5) + " WHERE codInter = " + code + ";");
+		Intervenant nouveauInter = new Intervenant(row.get(1),row.get(2),Integer.parseInt(row.get(3)),Integer.parseInt(row.get(4)));
+		Controleur.updateInter(nouveauInter,ancienNom);
 	}
 }
