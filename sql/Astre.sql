@@ -20,14 +20,14 @@ DROP FUNCTION IF EXISTS getService  (INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS getMaxHeure (INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS verifTypMod (INTEGER) CASCADE;
 
--- Fonction JSP
-DROP FUNCTION IF EXISTS verifHP() CASCADE;
-DROP FUNCTION IF EXISTS calculNbAffect() CASCADE;
-DROP FUNCTION IF EXISTS modif_cat_inter() CASCADE;
+-- Fonction 
+DROP FUNCTION IF EXISTS verifHP(INTEGER) CASCADE;
+DROP FUNCTION IF EXISTS calculNbAffect(VARCHAR,VARCHAR) CASCADE;
+DROP FUNCTION IF EXISTS modif_cat_inter(INTEGER,VARCHAR) CASCADE;
 DROP FUNCTION IF EXISTS default_hServ() CASCADE;
 DROP FUNCTION IF EXISTS default_maxHeure() CASCADE;
 DROP FUNCTION IF EXISTS calculCoeff(VARCHAR) CASCADE;
-DROP FUNCTION IF EXISTS getCatInter() CASCADE;
+DROP FUNCTION IF EXISTS getCatInter(VARCHAR) CASCADE;
 
 -- Fonction de trigger en cas de suppresion d'une clef primaire
 DROP FUNCTION IF EXISTS delAffectationModFonc() 		CASCADE;
@@ -41,7 +41,7 @@ DROP FUNCTION IF EXISTS delModuleTypModFonc() 			CASCADE;
 -- Trigger
 DROP TRIGGER IF EXISTS default_hServ_trigger 	ON Intervenant;
 
--- Trigger JSP
+-- Trigger 
 DROP TRIGGER IF EXISTS default_maxHeure_trigger ON Intervenant;
 
 -- Trigger en cas de suppresion d'une clef primaire
@@ -118,14 +118,14 @@ CREATE TRIGGER default_maxHeure_trigger
 BEFORE INSERT ON Intervenant
 FOR EACH ROW EXECUTE FUNCTION default_maxHeure();
 
-/* Lorsqu'on supprime un type de module, ses modules sont supprimés */
 CREATE OR REPLACE FUNCTION delIntervenantCatInterFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE CategorieIntervenant SET codCatInter = NULL
-  WHERE codCatInter = OLD.codCatInter;
+	IF EXISTS (SELECT 1 FROM Intervenant WHERE codCatInter = OLD.codCatInter) THEN
+		RAISE EXCEPTION 'Impossible de supprimer la catégorie d''intervenant car il existe des intervenants liés à elle.';
+	END IF;
 
-  RETURN OLD;
+	RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -234,8 +234,9 @@ CREATE TABLE Module (
 CREATE OR REPLACE FUNCTION delModuleTypModFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-  DELETE FROM TypeModule
-  WHERE codTypMod = OLD.codTypMod;
+	IF EXISTS (SELECT 1 FROM Module WHERE codTypMod = OLD.codTypMod) THEN
+		RAISE EXCEPTION 'Impossible de supprimer le type de module car il existe des modules liés lui.';
+	END IF;
 
   RETURN OLD;
 END;
@@ -247,12 +248,12 @@ BEFORE DELETE ON CategorieHeure
 FOR EACH ROW
 EXECUTE FUNCTION delModuleTypModFonc();
 
-/* Lorsqu'on supprime un semestre, ses modules sont supprimés */
 CREATE OR REPLACE FUNCTION delModuleSemFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-  DELETE FROM Semestre
-  WHERE codSem = OLD.codSem;
+	IF EXISTS (SELECT 1 FROM Module WHERE codSem = OLD.codSem) THEN
+		RAISE EXCEPTION 'Impossible de supprimer le semestre car il existe des modules liés lui.';
+	END IF;
 
   RETURN OLD;
 END;
@@ -298,8 +299,9 @@ CREATE TABLE Affectation (
 CREATE OR REPLACE FUNCTION delAffectationInterFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-  DELETE FROM Affectation
-  WHERE codInter = OLD.codInter;
+	IF EXISTS (SELECT 1 FROM Affectation WHERE codInter = OLD.codInter) THEN
+		RAISE EXCEPTION 'Impossible de supprimer l''intervenant car il existe des affectations liés lui.';
+	END IF;
 
   RETURN OLD;
 END;
@@ -311,14 +313,12 @@ BEFORE DELETE ON Intervenant
 FOR EACH ROW
 EXECUTE FUNCTION delAffectationInterFonc();
 
-/* Lorsqu'on supprime un module, ses affectations sont supprimés */
 CREATE OR REPLACE FUNCTION delAffectationModFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-  DELETE FROM Affectation
-  WHERE codMod = OLD.codMod;
-
-  RETURN OLD;
+	IF EXISTS (SELECT 1 FROM Affectation WHERE codMod = OLD.codMod) THEN
+		RAISE EXCEPTION 'Impossible de supprimer le module car il existe des affectations liés a lui.';
+	END IF;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -328,13 +328,12 @@ BEFORE DELETE ON Module
 FOR EACH ROW
 EXECUTE FUNCTION delAffectationModFonc();
 
-
-/* Lorsqu'on supprime une categorie d'heure, ses affectations sont supprimés */
 CREATE OR REPLACE FUNCTION delAffectationCatHFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-  DELETE FROM CategorieHeure
-  WHERE codCatHeure = OLD.codCatHeure;
+	IF EXISTS (SELECT 1 FROM Affectation WHERE codCatHeure = OLD.codCatHeure) THEN
+		RAISE EXCEPTION 'Impossible de supprimer la categorie d''heure car il existe des affectations liés a elle.';
+	END IF;
 
   RETURN OLD;
 END;
@@ -345,8 +344,6 @@ CREATE TRIGGER delAffectationCatH
 BEFORE DELETE ON CategorieHeure
 FOR EACH ROW
 EXECUTE FUNCTION delAffectationCatHFonc();
-
-
 
 CREATE OR REPLACE VIEW affectation_final AS 
 SELECT  m.codMod,i.codInter,i.nom,c.nomCatHeure,
@@ -378,12 +375,15 @@ GROUP BY i.nom,s.codSem;
 
 CREATE OR REPLACE VIEW intervenant_final AS
 SELECT  c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
-		MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END) AS S1,
-		MAX(CASE WHEN s.codSem = 'S2' THEN "tot sem" END) AS S2,
-		MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END) AS S3,
-		MAX(CASE WHEN s.codSem = 'S4' THEN "tot sem" END) AS S4,
-		MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END) AS S5,
-		MAX(CASE WHEN s.codSem = 'S6' THEN "tot sem" END) AS S6
+		COALESCE(MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END),0) AS S1,
+		COALESCE(MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END),0) AS S3,
+		COALESCE(MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END),0) AS S5,
+		COALESCE(MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END),0) AS sTotImpair,
+		COALESCE(MAX(CASE WHEN s.codSem = 'S2' THEN "tot sem" END),0) AS S2,
+		COALESCE(MAX(CASE WHEN s.codSem = 'S4' THEN "tot sem" END),0) AS S4,
+		COALESCE(MAX(CASE WHEN s.codSem = 'S6' THEN "tot sem" END),0) AS S6,
+		COALESCE(MAX(CASE WHEN s.codSem = 'S2' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S4' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S6' THEN "tot sem" END),0) AS sTotPair,
+		COALESCE(MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S2' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S4' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S6' THEN "tot sem" END),0) AS Total
 FROM Intervenant i JOIN affectation_final a ON i.codInter    = a.codInter
 				   JOIN Module            m ON a.codMod      = m.codMod
 				   JOIN inter             s ON m.codSem      = s.codSem
@@ -391,7 +391,7 @@ FROM Intervenant i JOIN affectation_final a ON i.codInter    = a.codInter
 GROUP BY c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen
 UNION 
 SELECT c.nomCat, i.nom, i.prenom, i.hServ,i.maxHeure,(c.ratioTPCatInterNum || '/' || c.ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
-	   NULL AS S1,NULL AS S2, NULL AS S3,NULL AS S4,NULL AS S5, NULL AS S6 
+	   0 AS S1,0 AS S3,0 AS S5,0 AS sTotImpair,0 AS S2,0 AS S4,0 AS S6,0 AS sTotPair,0 AS Total 
 	   FROM Intervenant i JOIN  CategorieIntervenant c ON i.codCatInter = c.codCatInter 
 	   WHERE i.codInter NOT IN (SELECT codInter FROM Affectation);
 
@@ -520,7 +520,7 @@ CREATE OR REPLACE FUNCTION modif_cat_inter(INTEGER,VARCHAR)
 RETURNS VOID AS $$	
 BEGIN
 	UPDATE Intervenant 
-	SET codCatInter = getCatInter($1)
+	SET codCatInter = getCatInter($2)
 	WHERE codInter = $1;
 END;
 $$ LANGUAGE plpgsql;

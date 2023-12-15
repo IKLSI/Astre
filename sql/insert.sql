@@ -68,6 +68,7 @@ VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev'
        ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,0, 0,93, 0,13,0,0,3,0,0),
        ('R3.02', 'S3' , 1, 'Développement Efficace'                , 'Dev Effi'      , false,6,65,28,14,14,6,4,2,1,9),
        ('R4.01', 'S4' , 1, 'Architecture logicielle'               , 'Archi Logi'    , false,6,65,28,13,13,6,2,2,1,0),
+       ('R5.03', 'S5' , 1, 'Politique de communication'            , 'Communication' , false,0,93, 0,16, 0,0,2,0,0,2),
        ('R6.05', 'S6' , 1, 'Développement Avancé'                  , 'Dev Avancé'    , false,6,65,28,14,14,6,4,2,1,9);
 
 	 
@@ -130,13 +131,14 @@ VALUES('R1.01',7,1,'3 CM d''1h30.',  6, 1),
 
       ('R1.01',1,7,    'DS PAPIER', 1,  5),
       --Ajout random
-      ('R2.02',3,2,           NULL, 13, 2);
-      ('R2.02',7,2,           NULL, 13, 2);
-      ('R4.01',2,1,    'NbSem tmp',  6, 1);
-      ('R4.01',2,2,    'NbSem tmp', 13, 2);
-      ('R4.01',2,3,    'NbSem tmp', 13, 2);
-      ('R1.01',1,1,'3 CM d''1h30.',  6, 1),  
-      ('R1.01',1,2,           NULL, 14, 2),  
-      ('R1.01',1,3,           NULL, 14, 2),  
-      ('R1.01',1,7,   'DS MACHINE',  1, 5),  
-      ('R1.01',1,7,   'DS MACHINE',  1, 5),  
+      ('R2.02',3,2,           NULL, 13, 2),
+      ('R2.02',7,2,           NULL, 13, 2),
+      ('R4.01',2,1,    'NbSem tmp',  6, 1),
+      ('R4.01',2,2,    'NbSem tmp', 13, 2),
+      ('R4.01',2,3,    'NbSem tmp', 13, 2),
+      ('R5.03',9,2,           NULL, 15, 2),
+      ('R6.05',1,1,'3 CM d''1h30.',  6, 1),  
+      ('R6.05',1,2,           NULL, 14, 2),  
+      ('R6.05',1,3,           NULL, 14, 2),  
+      ('R6.05',1,7,   'DS MACHINE',  1, 5),  
+      ('R6.05',1,7,   'DS MACHINE',  1, 5);  
