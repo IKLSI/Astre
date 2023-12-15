@@ -1,15 +1,11 @@
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.util.ArrayList;
 
 public class GenererHTML
 {
 	public static void GenererIntervenant()
 	{
-		ArrayList<Intervenant> lstInter = Controleur.getIntervenant_final();
-
 		try
 		{
 			ResultSet resultSet = Controleur.getIntervenant_final();
@@ -26,7 +22,7 @@ public class GenererHTML
 						"\t\t\t\t<tr>\n");
 			
 			resultSet.next();
-			for(int cpt = 0; cpt < resultSet.getColumnCount(); cpt++)
+			for(int cpt = 0; cpt < resultSet.getMetaData().getColumnCount(); cpt++)
 				pw.println ("\t\t\t\t\t<th>\n" + //
 							"\t\t\t\t\t\t"+resultSet.getString(cpt)+"\n" + //
 							"\t\t\t\t\t</th>\n");
@@ -37,9 +33,9 @@ public class GenererHTML
 					
 			while(resultSet.next()) {
 				pw.println ("\t\t\t\t<tr>\n");
-				for(int cpt = 0; cpt < resultSet.getColumnCount(); cpt++) {
+				for(int cpt = 0; cpt < resultSet.getMetaData().getColumnCount(); cpt++) {
 					pw.println ("\t\t\t\t\t<td>\n" + //
-								"\t\t\t\t\t"+resultSet.get(cpt)+"\n" +
+								"\t\t\t\t\t"+resultSet.getString(cpt)+"\n" +
 								"\t\t\t\t\t<\td>\n");
 				}
 				pw.println ("\t\t\t\t</tr>\n");
