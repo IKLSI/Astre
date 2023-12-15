@@ -39,7 +39,7 @@ VALUES   ('S1', 4, 7, 85, 15),
 
 -- Insertion de données dans la table Intervenants
 INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure)
-VALUES ('boukachour', 'Hadhoum'  , 1, 192, 364),
+VALUES ('Boukachour', 'Hadhoum'  , 1, 192, 364),
 	   ('Colignon'  , 'Thomas'   , 2, 120, 187),
 	   ('Dubocage'  , 'Tiphaine' , 2, 120, 187),
 	   ('Hervé'     , 'Nathalie' , 3,  90, 187),
@@ -65,7 +65,7 @@ VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'           , 'Init Dev'
        ('R1.10', 'S1' , 1, 'Anglais Technique'                     , 'Anglais Pro'   , false,6,65,28,14,14,6,4,2,1,9),
        ('R1.11', 'S1' , 1, 'Bases de la communication'             , 'Communication' , false,6,65,28,14,14,6,4,2,1,9),
        ('R2.01', 'S2' , 1, 'Développement orienté objets'          , 'Dev Objet'     , false,6,65,28,14,14,6,4,2,1,9),
-       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,6,65,28,14,14,6,4,2,1,9),
+       ('R2.02', 'S2' , 1, 'Développement d''applications avec IHM', 'Dev IHM'       , false,0,0,93,0,13,0,0,3,0,0),
        ('R3.02', 'S3' , 1, 'Développement Efficace'                , 'Dev Effi'      , false,6,65,28,14,14,6,4,2,1,9),
        ('R4.01', 'S4' , 1, 'Architecture logicielle'               , 'Archi Logi'    , false,6,65,28,14,14,6,4,2,1,9);      
 
@@ -108,7 +108,7 @@ VALUES('S3.1',1,6,            NULL,   10),
 
 
 
--- Insertion de données dans la table Affectation ressource
+-- Insertion de données dans la table Affectation Ressource
 INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbSem, nbGrp)
 VALUES('R1.01',7,1,'3 cm d''1h30.',  6, 1),  
       ('R1.01',7,2,           NULL, 14, 2),  
@@ -127,4 +127,8 @@ VALUES('R1.01',7,1,'3 cm d''1h30.',  6, 1),
       ('R1.01',3,3,           NULL, 14, 2),
       ('R1.01',3,7,   'DS MACHINE',  1, 3), 
 
-      ('R1.01',1,7,    'DS PAPIER', 1, 5);
+      ('R1.01',1,7,    'DS PAPIER', 1,  5),
+      --Ajout random
+      ('R2.02',3,2,           NULL, 13, 2);
+
+      ('R2.02',7,2,           NULL, 13, 2);
