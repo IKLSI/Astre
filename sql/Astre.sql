@@ -1,5 +1,5 @@
 ------------------------------
---		Projet ASTRE		--
+--		Projet ASTRE	      	--
 ------------------------------
 
 -- suppression des tables si elles existent déjà
@@ -412,7 +412,7 @@ CREATE OR REPLACE VIEW module_final AS
 SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.nbGrpTP,
 	
 	   -- POUR LES RESSOURCES.
-	   -- Heure PN GOOD
+	   -- Heure PN 
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHPnCM END AS nbHPnCM,
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHPnTD END AS nbHPnTD,
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHPnTP END AS nbHPnTP,
@@ -422,7 +422,7 @@ SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.n
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbHPnTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(s.nbGrpTP,0) END AS totalEqtdPromoPnTP,
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbHPnCM,0)*COALESCE(calculCoeff('CM'),3/2)+COALESCE(nbHPnTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(s.nbGrpTD,0)+COALESCE(nbHPnTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(s.nbGrpTP,0) END AS sommeTotalEqtdPromoPn,
 	   
-	   -- Répartition 1 GOOD
+	   -- Répartition 1 
 	   CASE WHEN t.nomTypMod = 'Ressources' 				       THEN nbSemaineCM 		END AS nbSemaineCM,
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHParSemaineCM 	END AS nbHParSemaineCM,
 	   CASE WHEN t.nomTypMod = 'Ressources' 					   THEN nbSemaineTD 		END AS nbSemaineTD,
@@ -430,7 +430,7 @@ SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.n
 	   CASE WHEN t.nomTypMod = 'Ressources' 					   THEN nbSemaineTP 		END AS nbSemaineTP,
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHParSemaineTP 	END AS nbHParSemaineTP,
 
-	   -- Repartition 2 GOOD
+	   -- Repartition 2 
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,1)*COALESCE(nbHParSemaineCM,0) END AS nbSXnbHCM, 
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTD,1)*COALESCE(nbHParSemaineTD,0) END AS nbSXnbHTD, 	
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTP,1)*COALESCE(nbHParSemaineTP,0) END AS nbSXnbHTP, 	 
@@ -438,7 +438,7 @@ SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.n
   
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,0)*COALESCE(nbHParSemaineCM,0)+COALESCE(nbSemaineTD,0)*COALESCE(nbHParSemaineTD,0)+COALESCE(nbSemaineTP,0)*COALESCE(nbHParSemaineTP,0)+COALESCE(hPonctuelle,0) END AS SommeNbSXnbH,
 	   
-	   --Total promo eqtd GOOD
+	   --Total promo eqtd 
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,1)*COALESCE(nbHParSemaineCM,0)*COALESCE(calculCoeff('CM'),3/2) 			END AS promoEqtdCM,
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTD,1)*COALESCE(nbHParSemaineTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(nbGrpTD,0) 	END AS promoEqtdTD,
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTP,1)*COALESCE(nbHParSemaineTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(nbGrpTP,0) 	END AS promoEqtdTP,
@@ -461,30 +461,30 @@ SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.n
 			END AS sommeTotAffectEqtd,
 
 	   --POUR LES SAE.
-	   --Heure pn GOOD
+	   --Heure pn 
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnSaeParSemestre 						END AS nbHPnSaeParSemestre,
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnTutParSemestre 						END AS nbHPnTutParSemestre,
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnSaeParSemestre+nbHPnTutParSemestre	END AS sommeHPnSAE,
 	   
-	   --Repartition premiere ligne GOOD
+	   --Repartition premiere ligne 
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHSaeParSemestre 												END AS nbHSaeParSemestre,
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHTutParSemestre 												END AS nbHTutParSemestre,
 	   
-	   --Repartition seconde ligne GOOD
-	   CASE WHEN t.nomTypMod = 'SAE' THEN calculNbAffect(m.codMod,'Sae') END AS nbHAffecteSAE,
-	   CASE WHEN t.nomTypMod = 'SAE' OR t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'HT') END AS nbHAffecteHT,
+	   --Repartition seconde ligne 
+	   CASE WHEN t.nomTypMod = 'SAE'                                                 THEN calculNbAffect(m.codMod,'Sae') END AS nbHAffecteSAE,
+	   CASE WHEN t.nomTypMod = 'SAE' OR t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'HT')  END AS nbHAffecteHT,
 
 	   --POUR LES STAGE.
-	   --Heure pn GOOD
-	   CASE WHEN t.nomTypMod = 'Stage' 							THEN nbHPnREH 			END AS nbHPnREH,
-	   CASE WHEN t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP'	THEN nbHPnTut 			END AS nbHPnTut,
-	   CASE WHEN t.nomTypMod = 'Stage' 							THEN COALESCE(nbHPnREH,0)+COALESCE(nbHPnTut,0) 	END AS sommeHPnStage,
+	   --Heure pn 
+	   CASE WHEN t.nomTypMod = 'Stage' 							          THEN nbHPnREH 			                            END AS nbHPnREH,
+	   CASE WHEN t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP'	THEN nbHPnTut 			                            END AS nbHPnTut,
+	   CASE WHEN t.nomTypMod = 'Stage' 							          THEN COALESCE(nbHPnREH,0)+COALESCE(nbHPnTut,0) 	END AS sommeHPnStage,
 	   
-	   --Repartition premiere ligne GOOD
-	   CASE WHEN t.nomTypMod = 'Stage' 						  THEN nbHREH END AS nbHREH,
+	   --Repartition premiere ligne 
+	   CASE WHEN t.nomTypMod = 'Stage' 						            THEN nbHREH END AS nbHREH,
 	   CASE WHEN t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP' THEN nbHTut END AS nbHTut,
 	   
-	   --Repartition seconde ligne GOOD
+	   --Repartition seconde ligne 
 	   CASE WHEN t.nomTypMod = 'Stage' THEN calculNbAffect(m.codMod,'REH') 	END AS nbHAffecteREH,
 
 	   --POUR LES PPP.
@@ -503,7 +503,7 @@ FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
 
 
 CREATE OR REPLACE VIEW liste_module AS 
-SELECT codSem, codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS heureAffect_heurePn, valid
+SELECT codSem, codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS hAP, valid
 FROM module_final;
 
 CREATE OR REPLACE FUNCTION getCatInter(VARCHAR)
