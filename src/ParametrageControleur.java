@@ -28,6 +28,8 @@ public class ParametrageControleur implements Initializable{
 
 
 	public void categorieIntervenants(){
+		tableView.getColumns().clear();
+		tableView.getItems().clear();
 		try{
 			ResultSet rs = Controleur.getCategorieInter();
 			data = FXCollections.observableArrayList();

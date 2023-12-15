@@ -23,6 +23,9 @@ public class DB {
 	//delete
 	private PreparedStatement psDeleteInter;
 
+	//update
+	private PreparedStatement psUpdateInter;
+
 	/*----------------*/
 	/*--Constructeur--*/
 	/*----------------*/
@@ -45,6 +48,7 @@ public class DB {
 			this.psInstertIntervenant = DB.connec.prepareStatement("INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure) VALUES(?,?,?,?,?)");
 
 			//préparation des update
+			this.psUpdateInter = DB.connec.prepareStatement("UPDATE Intervenant SET nom = ?, prenom = ?, codCatInter = ?, hServ = ?, maxHeure = ? WHERE nom = ?");
 
 			//preparation des delete
 			this.psDeleteInter = DB.connec.prepareStatement("DELETE FROM Intervenant WHERE codInter = ?");
@@ -123,7 +127,7 @@ public class DB {
 	public ArrayList<Integer> getCodInter(String nomInter){
 		ArrayList<Integer> lstCodInter = new ArrayList<Integer>();
 		try {
-			this.psSelectCodInter.setString(1,"nom");
+			this.psSelectCodInter.setString(1, nomInter);
 			ResultSet rs = this.psSelectCodInter.executeQuery();
 			while (rs.next()) {
 				lstCodInter.add(rs.getInt("codInter"));
@@ -145,6 +149,24 @@ public class DB {
 
 			this.psInstertIntervenant.executeUpdate();
 			this.psInstertIntervenant.close();
+		} catch (SQLException e) {e.printStackTrace();}
+	}
+
+	/*
+	 * Méthode d'Update
+	 */
+
+	public void updateInter(Intervenant nouveauInter, String ancienNom){
+		try {
+			this.psUpdateInter.setString(1,nouveauInter.getNom());
+			this.psUpdateInter.setString(2,nouveauInter.getPrenom());
+			this.psUpdateInter.setInt(3,nouveauInter.getCodCatInter());
+			this.psUpdateInter.setInt(4,nouveauInter.gethServ());
+			this.psUpdateInter.setInt(5,nouveauInter.getMaxHeure());
+			this.psUpdateInter.setString(6,ancienNom);
+
+			this.psUpdateInter.executeUpdate();
+			//this.psUpdateInter.close();
 		} catch (SQLException e) {e.printStackTrace();}
 	}
 

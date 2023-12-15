@@ -30,11 +30,11 @@ public class Modules
 		this.libLong = libLong;
 	}
 
-	public String gethAP() {
+	public String getHAP() {
 		return hAP;
 	}
 
-	public void sethAP(String hAP) {
+	public void setHAP(String hAP) {
 		this.hAP = hAP;
 	}
 

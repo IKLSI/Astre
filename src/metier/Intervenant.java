@@ -19,6 +19,14 @@ public class Intervenant {
 		this.hServ = hServ;
 		this.maxHeure = maxHeure;
 	}
+		public Intervenant( String nom, String prenom, int hServ, int maxHeure) {
+		this.codInter = 1;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.codCatInter = 1;
+		this.hServ = hServ;
+		this.maxHeure = maxHeure;
+	}
 
 	//methode getteur setteur
 	public int getcodInter() {

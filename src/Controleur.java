@@ -32,13 +32,18 @@ public class Controleur{
 	public static ArrayList<CategorieHeure> getCategorieHeure(){
 		return Controleur.dataBase.getCategorieHeure();
 	}
-	public static ArrayList getCodInter(String nomInter){
+	public static ArrayList<Integer> getCodInter(String nomInter){
 		return Controleur.dataBase.getCodInter(nomInter);
 	}
 
 	//insertion
 	public static void insertIntervenant(Intervenant inter){
 		Controleur.dataBase.insertIntervenant(inter);
+	}
+
+	//update
+	public static void updateInter(Intervenant nouveauInter, String ancienNom){
+		Controleur.dataBase.updateInter(nouveauInter,ancienNom);
 	}
 
 	//suppression
