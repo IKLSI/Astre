@@ -12,12 +12,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane prefHeight="442.0" prefWidth="636.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppControleur">
+<AnchorPane prefHeight="442.0" prefWidth="636.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrevisionnelController">
    <BorderPane prefHeight="415.0" prefWidth="636.0">
       <center>
-         <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" stylesheets="@../lib/style/Previsionnel.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+         <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" stylesheets="@../lib/style/Previsionnel.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:id="tab">
          <tabs>
-            <Tab text="S1">
+            <Tab text="S1" onSelectionChanged="#semestreChange">
                <content>
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
                         <children>
@@ -25,16 +25,16 @@
                            <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
                            <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
                            <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
-                           <TextField editable="false" layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTDS1" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTPS1"/>
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbEtdS1"/>
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbSemaineS1"/>
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" fx:id="tableView"/>
                         </children></AnchorPane>
                </content>
             </Tab>
-               <Tab text="S2">
+               <Tab text="S2" onSelectionChanged="#semestreChange">
                   <content>
                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
                         <children>
@@ -42,17 +42,17 @@
                            <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
                            <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
                            <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
-                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTDS2" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTPS2"/>
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbEtdS2"/>
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbSemaineS2"/>
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" fx:id="tableViewS2" />
                         </children>
                      </AnchorPane>
                   </content>
                </Tab>
-               <Tab text="S3">
+               <Tab text="S3" onSelectionChanged="#semestreChange">
                   <content>
                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
                         <children>
@@ -60,17 +60,17 @@
                            <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
                            <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
                            <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
-                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTDS3" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTPS3"/>
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbEtdS3"/>
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbSemaineS3"/>
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" fx:id="tableViewS3" />
                         </children>
                      </AnchorPane>
                   </content>
                </Tab>
-               <Tab text="S4">
+               <Tab text="S4" onSelectionChanged="#semestreChange">
                   <content>
                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
                         <children>
@@ -78,17 +78,17 @@
                            <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
                            <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
                            <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
-                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTDS4" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTPS4"/>
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbEtdS4"/>
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbSemaineS4"/>
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" fx:id="tableViewS4"/>
                         </children>
                      </AnchorPane>
                   </content>
                </Tab>
-               <Tab text="S5">
+               <Tab text="S5" onSelectionChanged="#semestreChange">
                   <content>
                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
                         <children>
@@ -96,17 +96,17 @@
                            <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
                            <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
                            <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
-                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTDS5" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTPS5"/>
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbEtdS5"/>
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbSemaineS5"/>
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" fx:id="tableViewS5" />
                         </children>
                      </AnchorPane>
                   </content>
                </Tab>
-               <Tab text="S6">
+               <Tab text="S6" onSelectionChanged="#semestreChange">
                   <content>
                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
                         <children>
@@ -114,12 +114,12 @@
                            <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
                            <Label layoutX="306.0" layoutY="28.0" text="nb Etd :" />
                            <Label layoutX="433.0" layoutY="28.0" text="nb semaine :" />
-                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
-                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" />
+                           <TextField layoutX="97.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTDS6" />
+                           <TextField layoutX="230.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbgpTPS6"/>
+                           <TextField layoutX="357.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbEtdS6"/>
+                           <TextField layoutX="513.0" layoutY="24.0" prefHeight="26.0" prefWidth="49.0" fx:id="nbSemaineS6"/>
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" fx:id="tableViewS6" />
                         </children>
                      </AnchorPane>
                   </content>
@@ -137,7 +137,7 @@
    </BorderPane>
    <Button id="modifier" layoutX="268.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="modifier" />
    <Button id="supprimer" layoutX="393.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="supprimer" />
-   <MenuButton layoutX="143.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" stylesheets="@../lib/style/Previsionnel.css" text="MenuButton">
+   <MenuButton layoutX="143.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" stylesheets="@../lib/style/Previsionnel.css" text="Création" fx:id="menuButton">
      <items>
      </items>
    </MenuButton>

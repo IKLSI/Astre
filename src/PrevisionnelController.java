@@ -149,7 +149,6 @@ public class PrevisionnelController implements Initializable
 				nouveauItem.setOnAction(e -> { System.out.println("Bouton " + nomBouton + " cliqué !"); });
 				nouveauItem.setStyle("-fx-text-fill : #000000");
 				menuButton.getItems().add(nouveauItem);
-				menuButton.setPrefWidth(85);
 			}
 
 			conn.close();
