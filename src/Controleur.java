@@ -31,7 +31,7 @@ public class Controleur
 	// Modification
 	public static void updateInter(Intervenant nouveauInter)						{ Controleur.dataBase.updateInter(nouveauInter); }
 	public static void updateSem(String textFieldId, String intitule, int newVal)   { Controleur.dataBase.updateSem(textFieldId, intitule, newVal); }
-
+	//public static void updateMod(Modules nouveauModules, String codModTyp)          { Controleur.dataBase.updateMod(nouveauModules, codModTyp); }
 	// Suppression
 	public static void supprInter(int codInter){ Controleur.dataBase.supprInter(codInter); }
 }
