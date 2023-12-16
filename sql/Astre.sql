@@ -226,7 +226,7 @@ CREATE TABLE Module (
 	nbHREH 		INTEGER CHECK (verifTypMod(codMod,'Stage') OR nbHREH = NULL),
 	nbHTut 		INTEGER CHECK (verifTypMod(codMod,'Stage') OR verifTypMod(codMod,'PPP') OR nbHTut = NULL),
 
-		/*Spécifique a ressource*/
+	/*Spécifique a PPP*/
 	nbHPnHTut   INTEGER CHECK (verifTypMod(codMod,'PPP') OR nbHPnHTut = NULL)
 );
 
