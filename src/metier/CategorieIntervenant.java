@@ -1,8 +1,9 @@
 package metier;
 
-public class CategorieIntervenant {
+public class CategorieIntervenant
+{
+	// Attributs d'instance
 
-	// attributs d'instance
 	private int codCatInter;
 	private String nomCat;
 	private int service;
@@ -10,8 +11,10 @@ public class CategorieIntervenant {
 	private int ratioTPCatInterNum;
 	private int ratioTPCatInterDen;
 
-	// Constructor
-	public CategorieIntervenant( int codCatInter,String nomCat, int service, int maxHeure, int ratioTPCatInterNum, int ratioTPCatInterDen) {
+	// Constructeur
+
+	public CategorieIntervenant( int codCatInter,String nomCat, int service, int maxHeure, int ratioTPCatInterNum, int ratioTPCatInterDen)
+	{
 		this.codCatInter = codCatInter;
 		this.nomCat = nomCat;
 		this.service = service;
@@ -20,54 +23,32 @@ public class CategorieIntervenant {
 		this.ratioTPCatInterDen = ratioTPCatInterDen;
 	}
 
-	// Getter methods
-	public int getCodCatInter() {
-		return codCatInter;
-	}
+	// Getter
 
-	public String getNomCat() {
-		return nomCat;
-	}
+	public int getCodCatInter() { return this.codCatInter; }
 
-	public int getService() {
-		return service;
-	}
+	public String getNomCat() { return this.nomCat; }
 
-	public int getMaxHeure() {
-		return maxHeure;
-	}
+	public int getService() { return this.service; }
 
-	public int getRatioTPCatInterNum() {
-		return ratioTPCatInterNum;
-	}
+	public int getMaxHeure() { return this.maxHeure; }
 
-	public int getRatioTPCatInterDen() {
-		return ratioTPCatInterDen;
-	}
+	public int getRatioTPCatInterNum() { return this.ratioTPCatInterNum; }
 
-	// Setter methods
-	public void setCodCatInter(int codCatInter) {
-		this.codCatInter = codCatInter;
-	}
+	public int getRatioTPCatInterDen() { return this.ratioTPCatInterDen; }
 
-	public void setNomCat(String nomCat) {
-		this.nomCat = nomCat;
-	}
+	// Setter
 
-	public void setService(int service) {
-		this.service = service;
-	}
+	public void setCodCatInter(int codCatInter) { this.codCatInter = codCatInter; }
 
-	public void setMaxHeure(int maxHeure) {
-		this.maxHeure = maxHeure;
-	}
+	public void setNomCat(String nomCat) { this.nomCat = nomCat; }
 
-	public void setRatioTPCatInterNum(int ratioTPCatInterNum) {
-		this.ratioTPCatInterNum = ratioTPCatInterNum;
-	}
+	public void setService(int service) { this.service = service; }
 
-	public void setRatioTPCatInterDen(int ratioTPCatInterDen) {
-		this.ratioTPCatInterDen = ratioTPCatInterDen;
-	}
+	public void setMaxHeure(int maxHeure) { this.maxHeure = maxHeure; }
+
+	public void setRatioTPCatInterNum(int ratioTPCatInterNum) { this.ratioTPCatInterNum = ratioTPCatInterNum; }
+
+	public void setRatioTPCatInterDen(int ratioTPCatInterDen) { this.ratioTPCatInterDen = ratioTPCatInterDen; }
 }
 

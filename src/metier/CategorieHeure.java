@@ -1,52 +1,41 @@
 package metier;
 
-public class CategorieHeure {
+public class CategorieHeure
+{
+	// Attributs d'instances
 
-	//attributs d'instances
 	private int    codCatHeure;
 	private String nomCatHeure;
 	private int    coeffNum;
 	private int    coeffDen;
 
-	// Constructor
-	public CategorieHeure(int codCatHeure, String nomCatHeure, int coeffNum, int coeffDen) {
+	// Constructeur
+
+	public CategorieHeure(int codCatHeure, String nomCatHeure, int coeffNum, int coeffDen)
+	{
 		this.codCatHeure = codCatHeure;
 		this.nomCatHeure = nomCatHeure;
 		this.coeffNum = coeffNum;
 		this.coeffDen = coeffDen;
 	}
 
-	// Getter methods
-	public int getCodCatHeure() {
-		return codCatHeure;
-	}
+	// Getter
 
-	public String getNomCatHeure() {
-		return nomCatHeure;
-	}
+	public int getCodCatHeure() { return this.codCatHeure; }
 
-	public int getCoeffNum() {
-		return coeffNum;
-	}
+	public String getNomCatHeure() { return this.nomCatHeure; }
 
-	public int getCoeffDen() {
-		return coeffDen;
-	}
+	public int getCoeffNum() { return this.coeffNum; }
 
-	// Setter methods
-	public void setCodCatHeure(int codCatHeure) {
-		this.codCatHeure = codCatHeure;
-	}
+	public int getCoeffDen() { return this.coeffDen; }
 
-	public void setNomCatHeure(String nomCatHeure) {
-		this.nomCatHeure = nomCatHeure;
-	}
+	// Setter
 
-	public void setCoeffNum(int coeffNum) {
-		this.coeffNum = coeffNum;
-	}
+	public void setCodCatHeure(int codCatHeure) { this.codCatHeure = codCatHeure; }
 
-	public void setCoeffDen(int coeffDen) {
-		this.coeffDen = coeffDen;
-	}
+	public void setNomCatHeure(String nomCatHeure) { this.nomCatHeure = nomCatHeure; }
+
+	public void setCoeffNum(int coeffNum) { this.coeffNum = coeffNum; }
+
+	public void setCoeffDen(int coeffDen) { this.coeffDen = coeffDen; }
 }

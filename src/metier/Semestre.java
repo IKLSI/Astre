@@ -1,16 +1,19 @@
 package metier;
 
-public class Semestre {
+public class Semestre
+{
+	// Attributs d'instances
 
-	// attributs d'instances
 	private String codSem;
 	private int nbGrpTD;
 	private int nbGrpTP;
 	private int nbEtd;
 	private int nbSemaines;
 
-	// Constructor
-	public Semestre(String codSem, int nbGrpTD, int nbGrpTP, int nbEtd, int nbSemaines) {
+	// Constructeur
+
+	public Semestre(String codSem, int nbGrpTD, int nbGrpTP, int nbEtd, int nbSemaines)
+	{
 		this.codSem = codSem;
 		this.nbGrpTD = nbGrpTD;
 		this.nbGrpTP = nbGrpTP;
@@ -18,45 +21,27 @@ public class Semestre {
 		this.nbSemaines = nbSemaines;
 	}
 
-	// Getter methods
-	public String getcodSem() {
-		return codSem;
-	}
+	// Getter
 
-	public int getNbGrpTD() {
-		return nbGrpTD;
-	}
+	public String getcodSem() { return codSem; }
 
-	public int getNbGrpTP() {
-		return nbGrpTP;
-	}
+	public int getNbGrpTD() { return nbGrpTD; }
 
-	public int getNbEtd() {
-		return nbEtd;
-	}
+	public int getNbGrpTP() { return nbGrpTP; }
 
-	public int getNbSemaines() {
-		return nbSemaines;
-	}
+	public int getNbEtd() { return nbEtd; }
 
-	// Setter methods
-	public void setcodSem(String codSem) {
-		this.codSem = codSem;
-	}
+	public int getNbSemaines() { return nbSemaines; }
 
-	public void setNbGrpTD(int nbGrpTD) {
-		this.nbGrpTD = nbGrpTD;
-	}
+	// Setter
 
-	public void setNbGrpTP(int nbGrpTP) {
-		this.nbGrpTP = nbGrpTP;
-	}
+	public void setcodSem(String codSem) { this.codSem = codSem; }
 
-	public void setNbEtd(int nbEtd) {
-		this.nbEtd = nbEtd;
-	}
+	public void setNbGrpTD(int nbGrpTD) { this.nbGrpTD = nbGrpTD; }
 
-	public void setNbSemaines(int nbSemaines) {
-		this.nbSemaines = nbSemaines;
-	}
+	public void setNbGrpTP(int nbGrpTP) { this.nbGrpTP = nbGrpTP; }
+
+	public void setNbEtd(int nbEtd) { this.nbEtd = nbEtd; }
+
+	public void setNbSemaines(int nbSemaines) { this.nbSemaines = nbSemaines; }
 }

@@ -32,45 +32,32 @@ public class AppControleur implements Initializable
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {affichageDefaut();}
 
-	
-	//test exemple
-	@FXML
-	private void majCentre(ActionEvent event){
-		try {
-			panelCentre.getChildren().clear();
-			
-		} catch (Exception e) {
+	// Test exemple
 
-		}
+	@FXML
+	private void majCentre(ActionEvent event)
+	{
+		try { panelCentre.getChildren().clear(); }
+		catch (Exception e) { e.printStackTrace(); }
 	}
 
 	/* Méthodes changement du Panel centre*/
 
-	private void affichageDefaut(){
-		new Intervenants(this.panelCentre);
-	}
+	private void affichageDefaut(){ new Intervenants(this.panelCentre); }
 
 	@FXML
-	private void afficheParametres(ActionEvent event){
-		new Parametrage(this.panelCentre);
-	}
+	private void afficheParametres(ActionEvent event) { new Parametrage(this.panelCentre); }
+
 	@FXML
-	private void affichePrevisionnel(ActionEvent event){
-		new Previsionnel(this.panelCentre);
-	}
+	private void affichePrevisionnel(ActionEvent event){ new Previsionnel(this.panelCentre); }
 	
 	@FXML
-	private void afficheIntervenants(ActionEvent event){
-		new Intervenants(this.panelCentre);
-	}
+	private void afficheIntervenants(ActionEvent event){ new Intervenants(this.panelCentre); }
 
 	@FXML
-	private void afficheEtats(ActionEvent event){
-		try {
-			panelCentre.getChildren().clear();
-			
-		} catch (Exception e) {
-
-		}
+	private void afficheEtats(ActionEvent event)
+	{
+		try { panelCentre.getChildren().clear(); } 
+		catch (Exception e) { e.printStackTrace(); }
 	}
 }

@@ -1,30 +1,19 @@
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.*;
+import javafx.fxml.FXMLLoader;
 
 import java.net.URL;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import metier.*;
 
 public class PrevisionnelController implements Initializable
 {
@@ -32,79 +21,76 @@ public class PrevisionnelController implements Initializable
 	private MenuButton menuButton;
 
 	@FXML
-	private AnchorPane panelCentre;
+	private TextField nbGrpTDS1 = new TextField();
 
 	@FXML
-	private TextField nbgpTPS1 = new TextField();
-
-	@FXML
-	private TextField nbgpTDS1 = new TextField();
+	private TextField nbGrpTPS1 = new TextField();
 
 	@FXML
 	private TextField nbEtdS1 = new TextField();
 
 	@FXML
-	private TextField nbSemaineS1 = new TextField();
+	private TextField nbSemainesS1 = new TextField();
 
 	@FXML
-	private TextField nbgpTPS2 = new TextField();
+	private TextField nbGrpTDS2 = new TextField();
 
 	@FXML
-	private TextField nbgpTDS2 = new TextField();
+	private TextField nbGrpTPS2 = new TextField();
 
 	@FXML
 	private TextField nbEtdS2 = new TextField();
 
 	@FXML
-	private TextField nbSemaineS2 = new TextField();
+	private TextField nbSemainesS2 = new TextField();
 
 	@FXML
-	private TextField nbgpTPS3 = new TextField();
+	private TextField nbGrpTPS3 = new TextField();
 
 	@FXML
-	private TextField nbgpTDS3 = new TextField();
+	private TextField nbGrpTDS3 = new TextField();
 
 	@FXML
 	private TextField nbEtdS3 = new TextField();
 
 	@FXML
-	private TextField nbSemaineS3 = new TextField();
+	private TextField nbSemainesS3 = new TextField();
 
 	@FXML
-	private TextField nbgpTPS4 = new TextField();
+	private TextField nbGrpTPS4 = new TextField();
 
 	@FXML
-	private TextField nbgpTDS4 = new TextField();
+	private TextField nbGrpTDS4 = new TextField();
 
 	@FXML
 	private TextField nbEtdS4 = new TextField();
 
 	@FXML
-	private TextField nbSemaineS4 = new TextField();
+	private TextField nbSemainesS4 = new TextField();
 
 	@FXML
-	private TextField nbgpTPS5 = new TextField();
+	private TextField nbGrpTPS5 = new TextField();
 
 	@FXML
-	private TextField nbgpTDS5 = new TextField();
+	private TextField nbGrpTDS5 = new TextField();
 
 	@FXML
 	private TextField nbEtdS5 = new TextField();
 
 	@FXML
-	private TextField nbSemaineS5 = new TextField();
+	private TextField nbSemainesS5 = new TextField();
 
 	@FXML
-	private TextField nbgpTPS6 = new TextField();
+	private TextField nbGrpTPS6 = new TextField();
 
 	@FXML
-	private TextField nbgpTDS6 = new TextField();
+	private TextField nbGrpTDS6 = new TextField();
 
 	@FXML
 	private TextField nbEtdS6 = new TextField();
 
 	@FXML
-	private TextField nbSemaineS6 = new TextField();
+	private TextField nbSemainesS6 = new TextField();
 
 	@FXML
 	private String intitule = "S1";
@@ -128,38 +114,28 @@ public class PrevisionnelController implements Initializable
 	private TableView tableViewS6 = new TableView();
 
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle)
-	{
-		chargementBtn();
-	}
+	public void initialize(URL url, ResourceBundle resourceBundle) { chargementBtn(); }
 
 	private void chargementBtn()
 	{
-		try
-		{
-			Class.forName("org.postgresql.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nomTypMod FROM TypeModule;");
+		ArrayList<TypeModule> lst = Controleur.getNomCategorieModules();
 
-			while (rs.next())
-			{
-				String nomBouton = rs.getString("nomTypMod");
-				MenuItem nouveauItem = new MenuItem(nomBouton);
-				nouveauItem.setOnAction(e -> { System.out.println("Bouton " + nomBouton + " cliqué !"); });
-				nouveauItem.setStyle("-fx-text-fill : #000000");
-				menuButton.getItems().add(nouveauItem);
-			}
-
-			conn.close();
-		}
-		catch (SQLException e)
+		for (TypeModule typeModule : lst)
 		{
-			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
+			String nomBouton = typeModule.getNomTypMod();
+			MenuItem nouveauItem = new MenuItem(nomBouton);
+			nouveauItem.setOnAction(e -> {
+				switch (nomBouton)
+				{
+					case "Ressources" -> System.out.println("RESSOURCES");
+					case "SAE"-> System.out.println("SAE");
+					case "Stage" -> System.out.println("STAGE");
+					case "PPP" -> System.out.println("PPP");
+				}
+			});
+			nouveauItem.setStyle("-fx-text-fill : #000000");
+			menuButton.getItems().add(nouveauItem);
+			menuButton.setPrefWidth(85);
 		}
 	}
 
@@ -182,149 +158,129 @@ public class PrevisionnelController implements Initializable
 
 				if (this.intitule.equals("S1"))
 				{
-					nbgpTDS1.setText(String.valueOf(nbGrpTD));
-					nbgpTPS1.setText(String.valueOf(nbGrpTP));
+					nbGrpTDS1.setText(String.valueOf(nbGrpTD));
+					nbGrpTPS1.setText(String.valueOf(nbGrpTP));
 					nbEtdS1.setText(String.valueOf(nbEtd));
-					nbSemaineS1.setText(String.valueOf(nbSemaine));
+					nbSemainesS1.setText(String.valueOf(nbSemaine));
 				}
 				else if (this.intitule.equals("S2"))
 				{
-					nbgpTDS2.setText(String.valueOf(nbGrpTD));
-					nbgpTPS2.setText(String.valueOf(nbGrpTP));
+					nbGrpTDS2.setText(String.valueOf(nbGrpTD));
+					nbGrpTPS2.setText(String.valueOf(nbGrpTP));
 					nbEtdS2.setText(String.valueOf(nbEtd));
-					nbSemaineS2.setText(String.valueOf(nbSemaine));
+					nbSemainesS2.setText(String.valueOf(nbSemaine));
 				}
 				else if (this.intitule.equals("S3"))
 				{
-					nbgpTDS3.setText(String.valueOf(nbGrpTD));
-					nbgpTPS3.setText(String.valueOf(nbGrpTP));
+					nbGrpTDS3.setText(String.valueOf(nbGrpTD));
+					nbGrpTPS3.setText(String.valueOf(nbGrpTP));
 					nbEtdS3.setText(String.valueOf(nbEtd));
-					nbSemaineS3.setText(String.valueOf(nbSemaine));
+					nbSemainesS3.setText(String.valueOf(nbSemaine));
 				}
 				else if (this.intitule.equals("S4"))
 				{
-					nbgpTDS4.setText(String.valueOf(nbGrpTD));
-					nbgpTPS4.setText(String.valueOf(nbGrpTP));
+					nbGrpTDS4.setText(String.valueOf(nbGrpTD));
+					nbGrpTPS4.setText(String.valueOf(nbGrpTP));
 					nbEtdS4.setText(String.valueOf(nbEtd));
-					nbSemaineS4.setText(String.valueOf(nbSemaine));
+					nbSemainesS4.setText(String.valueOf(nbSemaine));
 				}
 				else if (this.intitule.equals("S5"))
 				{
-					nbgpTDS5.setText(String.valueOf(nbGrpTD));
-					nbgpTPS5.setText(String.valueOf(nbGrpTP));
+					nbGrpTDS5.setText(String.valueOf(nbGrpTD));
+					nbGrpTPS5.setText(String.valueOf(nbGrpTP));
 					nbEtdS5.setText(String.valueOf(nbEtd));
-					nbSemaineS5.setText(String.valueOf(nbSemaine));
+					nbSemainesS5.setText(String.valueOf(nbSemaine));
 				}
 				else if (this.intitule.equals("S6"))
 				{
-					nbgpTDS6.setText(String.valueOf(nbGrpTD));
-					nbgpTPS6.setText(String.valueOf(nbGrpTP));
+					nbGrpTDS6.setText(String.valueOf(nbGrpTD));
+					nbGrpTPS6.setText(String.valueOf(nbGrpTP));
 					nbEtdS6.setText(String.valueOf(nbEtd));
-					nbSemaineS6.setText(String.valueOf(nbSemaine));
+					nbSemainesS6.setText(String.valueOf(nbSemaine));
 				}
 			}
 		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
-		}
+		catch (SQLException e) { e.printStackTrace(); }
+		catch (ClassNotFoundException e) { e.printStackTrace(); }
 	}
 
 	@FXML
 	private void remplirTableau()
 	{
-		try
+		tableView.getColumns().clear();
+		tableView.getItems().clear();
+
+		tableViewS2.getColumns().clear();
+		tableViewS2.getItems().clear();
+
+		tableViewS3.getColumns().clear();
+		tableViewS3.getItems().clear();
+
+		tableViewS4.getColumns().clear();
+		tableViewS4.getItems().clear();
+
+		tableViewS5.getColumns().clear();
+		tableViewS5.getItems().clear();
+
+		tableViewS6.getColumns().clear();
+		tableViewS6.getItems().clear();
+		ObservableList<Modules> listeModules = FXCollections.observableArrayList();
+
+		// Stocker une arraylist dans une observablelist
+		ArrayList<Modules> lst = Controleur.getListModule(this.intitule);
+		
+		for (Modules module : lst)
 		{
-			tableView.getColumns().clear();
-			tableView.getItems().clear();
+			String codMod  = module.getCodMod();
+			String libLong = module.getLibLong();
+			String hAP     = module.getHAP();
+			Boolean valid   = module.getValid();
 
-			tableViewS2.getColumns().clear();
-			tableViewS2.getItems().clear();
-
-			tableViewS3.getColumns().clear();
-			tableViewS3.getItems().clear();
-
-			tableViewS4.getColumns().clear();
-			tableViewS4.getItems().clear();
-
-			tableViewS5.getColumns().clear();
-			tableViewS5.getItems().clear();
-
-			tableViewS6.getColumns().clear();
-			tableViewS6.getItems().clear();
-
-			Class.forName("org.postgresql.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125", "lk210125", "Kyliann.0Bado");
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM liste_module WHERE codSem = '" + this.intitule + "';");
-
-			ObservableList<Modules> listeModules = FXCollections.observableArrayList();
-
-			while (rs.next())
-			{
-				String codMod = rs.getString("codMod");
-				String libLong = rs.getString("libLong");
-				String hAP = rs.getString("hAP");
-				String valid = rs.getString("valid");
-
-				Modules module = new Modules(codMod, libLong, hAP, valid);
-				listeModules.add(module);
-			}
-
-			TableColumn<Modules, String> codModCol = new TableColumn<>("Code Module");
-			codModCol.setCellValueFactory(new PropertyValueFactory<>("codMod"));
-
-			TableColumn<Modules, String> libLongCol = new TableColumn<>("Libellé Long");
-			libLongCol.setCellValueFactory(new PropertyValueFactory<>("libLong"));
-
-			TableColumn<Modules, String> hAPCol = new TableColumn<>("Heure Affectée / Heure Prévue");
-			hAPCol.setCellValueFactory(new PropertyValueFactory<>("HAP"));
-
-			TableColumn<Modules, String> validCol = new TableColumn<>("Valid");
-			validCol.setCellValueFactory(new PropertyValueFactory<>("valid"));
-
-			if (this.intitule.equals("S1"))
-			{
-				tableView.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
-				tableView.setItems(listeModules);
-			}
-			else if (this.intitule.equals("S2"))
-			{
-				tableViewS2.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
-				tableViewS2.setItems(listeModules);
-			}
-			else if (this.intitule.equals("S3"))
-			{
-				tableViewS3.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
-				tableViewS3.setItems(listeModules);
-			}
-			else if (this.intitule.equals("S4"))
-			{
-				tableViewS4.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
-				tableViewS4.setItems(listeModules);
-			}
-			else if (this.intitule.equals("S5"))
-			{
-				tableViewS5.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
-				tableViewS5.setItems(listeModules);
-			}
-			else if (this.intitule.equals("S6"))
-			{
-				tableViewS6.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
-				tableViewS6.setItems(listeModules);
-			}
-
-			conn.close();
-			stmt.close();
-			rs.close();
+			Modules module2 = new Modules(codMod, libLong, hAP, valid);
+			listeModules.add(module2);
 		}
-		catch (SQLException | ClassNotFoundException e)
+
+		TableColumn<Modules, String> codModCol = new TableColumn<>("Code Module");
+		codModCol.setCellValueFactory(new PropertyValueFactory<>("codMod"));
+
+		TableColumn<Modules, String> libLongCol = new TableColumn<>("Libellé Long");
+		libLongCol.setCellValueFactory(new PropertyValueFactory<>("libLong"));
+
+		TableColumn<Modules, String> hAPCol = new TableColumn<>("Heure Affectée / Heure Prévue");
+		hAPCol.setCellValueFactory(new PropertyValueFactory<>("HAP"));
+
+		TableColumn<Modules, String> validCol = new TableColumn<>("Valid");
+		validCol.setCellValueFactory(new PropertyValueFactory<>("valid"));
+
+		if (this.intitule.equals("S1"))
 		{
-			e.printStackTrace();
+			tableView.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+			tableView.setItems(listeModules);
+		}
+		else if (this.intitule.equals("S2"))
+		{
+			tableViewS2.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+			tableViewS2.setItems(listeModules);
+		}
+		else if (this.intitule.equals("S3"))
+		{
+			tableViewS3.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+			tableViewS3.setItems(listeModules);
+		}
+		else if (this.intitule.equals("S4"))
+		{
+			tableViewS4.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+			tableViewS4.setItems(listeModules);
+		}
+		else if (this.intitule.equals("S5"))
+		{
+			tableViewS5.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+			tableViewS5.setItems(listeModules);
+		}
+		else if (this.intitule.equals("S6"))
+		{
+			tableViewS6.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
+			tableViewS6.setItems(listeModules);
 		}
 	}
 
@@ -335,5 +291,20 @@ public class PrevisionnelController implements Initializable
 		this.intitule = tb.getText();
 		initialisationInformations();
 		remplirTableau();
+	}
+
+	@FXML
+	private void modification(ActionEvent event)
+	{
+		TextField textField   = (TextField) event.getSource();
+		String    textFieldId = textField.getId();
+		textFieldId = textFieldId.substring(0, textFieldId.length() - 2);
+
+		Controleur.updateSem(textFieldId, this.intitule, Integer.parseInt(textField.getText()));
+	}
+
+	@FXML
+	private void creerRessource()
+	{
 	}
 }

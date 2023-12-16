@@ -1,45 +1,28 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.*;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.DefaultStringConverter;
-
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
-import java.util.ResourceBundle;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.control.TableView;
 import javafx.beans.property.SimpleStringProperty;
 
-import javax.swing.Action;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.ResultSetMetaData;
+import java.sql.ResultSet;
 
 import metier.Intervenant;
-
-import java.sql.SQLException;
 
 public class Intervenants
 {
@@ -47,26 +30,17 @@ public class Intervenants
 	private ObservableList<ObservableList<String>> data;
 	@FXML
 	private TableView<ObservableList<String>> tableView;
-
 	@FXML
 	private ScrollPane scrollPane;
 
-	private ArrayList<Integer> idIntervenant = new ArrayList<Integer>();
-
-	private ArrayList<Intervenant> intervenants = new ArrayList<Intervenant>();
-
+	private ArrayList<Integer>     idIntervenant            = new ArrayList<Integer>();
+	private ArrayList<Intervenant> intervenants             = new ArrayList<Intervenant>();
 	private ArrayList<Intervenant> intervenantsModification = new ArrayList<Intervenant>();
 	
 	public Intervenants(AnchorPane panelCentre)
 	{
-		try
-		{
-			panelCentre.getChildren().clear();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		try	{ panelCentre.getChildren().clear(); }
+		catch (Exception e)	{ e.printStackTrace(); }
 		
 		try
 		{
@@ -92,9 +66,7 @@ public class Intervenants
 				for (int i = 1; i <= columnCount; i++)
 				{
 					if (resultSet.getObject(i) != null)
-					{
 						row.add(resultSet.getObject(i).toString());
-					}
 					else
 						row.add("null");
 				}
@@ -111,10 +83,7 @@ public class Intervenants
 				{
 					ajouter(event, panelCentre);
 				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+				catch (Exception e) { e.printStackTrace(); }
 			});
 
 			Button bouton2 = new Button("Supprimer");
@@ -123,10 +92,7 @@ public class Intervenants
 				{
 					supprimer(event);
 				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+				catch (Exception e)	{ e.printStackTrace(); }
 			});
 
 			Button boutonE = new Button("Enregistrer");
@@ -135,10 +101,7 @@ public class Intervenants
 				{
 					enregistrer(event);
 				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+				catch (Exception e)	{ e.printStackTrace(); }
 			});
 
 			Button buttonA = new Button("Annuler");
@@ -147,10 +110,7 @@ public class Intervenants
 				{
 					new Intervenants(panelCentre);
 				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+				catch (Exception e)	{ e.printStackTrace(); }
 			});
 
 			AnchorPane.setTopAnchor(bouton, 400.0);
@@ -187,10 +147,7 @@ public class Intervenants
 						{
 							modifier(event);
 						}
-						catch (Exception e)
-						{
-							e.printStackTrace();
-						}
+						catch (Exception e)	{ e.printStackTrace(); }
 					});
 				}
 
@@ -201,7 +158,6 @@ public class Intervenants
 			tableView.getSelectionModel().setCellSelectionEnabled(true);
 
 			tableView.setItems(data);
-			tableView.setEditable(true);
 			panelCentre.getChildren().add(tableView);
 			panelCentre.getChildren().add(lbl);
 			panelCentre.getChildren().add(bouton);
@@ -211,10 +167,7 @@ public class Intervenants
 
 			resultSet.close();
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		catch (Exception e)	{ e.printStackTrace(); }
 	}
 	
 	@FXML
@@ -250,10 +203,7 @@ public class Intervenants
 			{
 				new Intervenants(panelCentre);
 			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+			catch (Exception e)	{ e.printStackTrace(); }
 		});
 
 		AnchorPane.setTopAnchor(lbl, 20.0);
@@ -318,9 +268,7 @@ public class Intervenants
 		this.idIntervenant = Controleur.getCodInter(tableView.getItems().get(selectedIndex).get(1));
 
 		if (selectedIndex >= 0)
-		{
 			tableView.getItems().remove(selectedIndex);
-		}
 	}
 
 	@FXML
@@ -331,20 +279,12 @@ public class Intervenants
 			try
 			{
 				for (int j = 0; j < this.idIntervenant.size(); j++)
-				{
 					Controleur.supprInter(this.idIntervenant.get(j));
-				}
-
+				
 				for (Intervenant intervenant : this.intervenants)
-				{
 					Controleur.insertIntervenant(intervenant);
-				}
-
 			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+			catch (Exception e)	{ e.printStackTrace(); }
 		}
 	}
 
@@ -355,11 +295,11 @@ public class Intervenants
 		String newValue = event.getNewValue();
 		int index = event.getTablePosition().getColumn();
 
-		String ancienNom = row.get(index);
+		int code = Controleur.getCodInter(row.get(1)).get(0);
 
 		row.set(index, newValue);
 
-		Intervenant nouveauInter = new Intervenant(row.get(1),row.get(2),Integer.parseInt(row.get(3)),Integer.parseInt(row.get(4)));
-		Controleur.updateInter(nouveauInter,ancienNom);
+		Intervenant inter = new Intervenant(code, row.get(1), row.get(2), Integer.parseInt(row.get(3)), Integer.parseInt(row.get(4)));
+		Controleur.updateInter(inter);
 	}
 }

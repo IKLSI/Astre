@@ -10,36 +10,35 @@ import javafx.scene.image.Image;
 
 public class App extends Application
 {
-	/*Attributs d'instances*/
-	private Stage primaryStage;	//Frame
+	// Attributs d'instances
 
-	/*Méthode de lancement de la Frame*/
+	private Stage primaryStage; //Frame
+
+	// Méthode permettant de lancer l'application
+
 	@Override
 	public void start(Stage primaryStage)
 	{
 		Controleur.ouvrirConnection();
 		try
 		{
-			/*--Création--*/
-
 			// Frame Accueil
+
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Accueil.fxml"));
 			AnchorPane root = loader.load();
 
-			//frame
 			this.primaryStage = primaryStage;
 			this.primaryStage.setTitle("ASTRE");
 			Scene scene = new Scene(root, 800, 500);
+
+			this.primaryStage.setResizable(false);
 
 			/*--Positionnement--*/
 
 			this.primaryStage.setScene(scene);
 			this.primaryStage.show();
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		catch (Exception e) { e.printStackTrace(); }
 	}
 
 	@FXML
@@ -60,10 +59,7 @@ public class App extends Application
 			Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			currentStage.close();
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		catch (Exception e) { e.printStackTrace(); }
 	}
 
 	/*--------*/

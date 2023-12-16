@@ -9,4 +9,4 @@ set FX_PATH=..\lib\javafx-sdk-21.0.1\lib
 
 java --module-path "%FX_PATH%" --add-modules javafx.controls,javafx.fxml App
 
-exit /b 0
+exit /b 

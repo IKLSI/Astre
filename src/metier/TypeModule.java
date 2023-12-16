@@ -1,22 +1,29 @@
 package metier;
 
-public class TypeModule {
+public class TypeModule
+{
+	// Attributs d'instances
 
-	//attributs d'instances
 	private int    codTypMod;
 	private String nomTypMod;
 
-	//constructeur
-	public TypeModule(int codTypMod, String nomTypMod){
+	// Constructeur
+
+	public TypeModule(int codTypMod, String nomTypMod)
+	{
 		this.codTypMod = codTypMod;
 		this.nomTypMod = nomTypMod;
 	}
 
-	// getteurs
-	public int getCodTypMod(){
-		return this.codTypMod;
-	}
-	public String getNomTypMod(){
-		return this.nomTypMod;
-	}
+	// Getteurs
+
+	public int getCodTypMod() { return this.codTypMod; }
+
+	public String getNomTypMod() { return this.nomTypMod; }
+
+	// Setteurs
+
+	public void setCodTypMod(int codTypMod) { this.codTypMod = codTypMod; }
+
+	public void setNomTypMod(String nomTypMod) { this.nomTypMod = nomTypMod; }
 }
