@@ -1,6 +1,5 @@
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
 import java.sql.*;  
 
 public class GenererHTML
@@ -9,8 +8,6 @@ public class GenererHTML
 	{
 		try
 		{
-			ResultSet resultSet = Controleur.getIntervenant_final();
-			PrintWriter pw = new PrintWriter( new FileOutputStream("sortie.html") );
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".html") );
 			pw.println ("<!DOCTYPE html>\n" + //
 						"<html lang=\"fr\">\n" + //
@@ -25,11 +22,8 @@ public class GenererHTML
 						"\t\t\t<thead>\n" + //
 						"\t\t\t\t<tr>\n");
 
-			resultSet.next();
-			for(int cpt = 0; cpt < resultSet.getMetaData().getColumnCount(); cpt++)
 			for(int cpt = 1; cpt <= resultSetInter.getMetaData().getColumnCount(); cpt++)
 				pw.println ("\t\t\t\t\t<th>\n" + //
-							"\t\t\t\t\t\t"+resultSet.getString(cpt)+"\n" + //
 							"\t\t\t\t\t\t"+resultSetInter.getMetaData().getColumnName(cpt)+"\n" + //
 							"\t\t\t\t\t</th>\n");
 
@@ -37,14 +31,10 @@ public class GenererHTML
 						"\t\t\t</thead>\n" + //
 						"\t\t\t<tbody>\n");
 
-			while(resultSet.next()) {
 			while(resultSetInter.next()) {
 				pw.println ("\t\t\t\t<tr>\n");
-				for(int cpt = 0; cpt < resultSet.getMetaData().getColumnCount(); cpt++) {
 				for(int cpt = 1; cpt <= resultSetInter.getMetaData().getColumnCount(); cpt++) {
 					pw.println ("\t\t\t\t\t<td>\n" + //
-								"\t\t\t\t\t"+resultSet.getString(cpt)+"\n" +
-								"\t\t\t\t\t<\td>\n");
 								"\t\t\t\t\t"+resultSetInter.getString(cpt)+"\n" +
 								"\t\t\t\t\t</td>\n");
 				}
@@ -52,8 +42,6 @@ public class GenererHTML
 			}
 
 			pw.println ("\t\t\t</tbody>\n" + //
-						"\t\t</table>\n" + //
-						"\t</body>\n" + //
 						"\t\t</table>\n" + 
 						"\t\t<h2>Prévisualisation des affectations</h2>\n" + //
 						"\t\t<table>\n" + //
@@ -205,4 +193,4 @@ public class GenererHTML
 		catch (SQLException e){ e.printStackTrace(); }
 
 	}
-} 
+}
