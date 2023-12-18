@@ -388,9 +388,9 @@ FROM Intervenant i JOIN affectation_final a ON i.codInter    = a.codInter
 				   JOIN Module            m ON a.codMod      = m.codMod
 				   JOIN inter             s ON m.codSem      = s.codSem
 				   JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter
-GROUP BY c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen
+GROUP BY i.codInter,c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen
 UNION 
-SELECT c.nomCat, i.nom, i.prenom, i.hServ,i.maxHeure,(c.ratioTPCatInterNum || '/' || c.ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
+SELECT i.codInter,c.nomCat, i.nom, i.prenom, i.hServ,i.maxHeure,(c.ratioTPCatInterNum || '/' || c.ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
 	   0 AS S1,0 AS S3,0 AS S5,0 AS sTotImpair,0 AS S2,0 AS S4,0 AS S6,0 AS sTotPair,0 AS Total 
 	   FROM Intervenant i JOIN  CategorieIntervenant c ON i.codCatInter = c.codCatInter 
 	   WHERE i.codInter NOT IN (SELECT codInter FROM Affectation);
@@ -526,7 +526,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE VIEW intervenant_complet AS
-SELECT (f.nom || ' ' || f.prenom)::VARCHAR AS nom, nomCat, 
+SELECT (f.nom || ' ' || f.prenom)::VARCHAR AS nom, f.nomCat, 
 		S1 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS1,
 		S1 AS ReelS1,
 		S3 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS3,
@@ -545,4 +545,5 @@ SELECT (f.nom || ' ' || f.prenom)::VARCHAR AS nom, nomCat,
 		sTotPair AS ReelssPairTot,
 		Total * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoTot,
 		Total AS ReelTot
-FROM intervenant_final f JOIN intervenant i ON f.codInter = i.codInter;
+FROM intervenant_final f JOIN intervenant i ON f.codInter = i.codInter
+						 JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter;
