@@ -49,7 +49,7 @@ public class AppControleur implements Initializable
 	private void afficheParametres(ActionEvent event) { new Parametrage(this.panelCentre); }
 
 	@FXML
-	private void affichePrevisionnel(ActionEvent event){ new Previsionnel(this.panelCentre); }
+	public void affichePrevisionnel(ActionEvent event){ new Previsionnel(this.panelCentre); }
 	
 	@FXML
 	private void afficheIntervenants(ActionEvent event){ new Intervenants(this.panelCentre); }
@@ -60,4 +60,6 @@ public class AppControleur implements Initializable
 		try { panelCentre.getChildren().clear(); } 
 		catch (Exception e) { e.printStackTrace(); }
 	}
+
+	private void afficheRessources(ActionEvent event){ new Ressource(this.panelCentre); }
 }

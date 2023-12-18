@@ -15,3 +15,5 @@
 ./src/PrevisionnelController.java
 ./src/metier/TypeModule.java
 ./src/RessourceControleur.java
+./src/Ressource.java
+./src/Affectation.java

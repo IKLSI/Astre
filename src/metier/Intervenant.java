@@ -32,16 +32,6 @@ public class Intervenant
 		this.maxHeure = maxHeure;
 	}
 
-	public Intervenant( String nom, String prenom, int hServ, int maxHeure)
-	{
-		this.codInter = 1;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.codCatInter = 1;
-		this.hServ = hServ;
-		this.maxHeure = maxHeure;
-	}
-
 	// Méthode getteur setteur
 
 	public int getcodInter() { return this.codInter; }

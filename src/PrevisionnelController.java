@@ -7,6 +7,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.*;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.*;
@@ -127,7 +129,7 @@ public class PrevisionnelController implements Initializable
 			nouveauItem.setOnAction(e -> {
 				switch (nomBouton)
 				{
-					case "Ressources" -> System.out.println("RESSOURCES");
+					case "Ressources" -> afficheRessource();
 					case "SAE"-> System.out.println("SAE");
 					case "Stage" -> System.out.println("STAGE");
 					case "PPP" -> System.out.println("PPP");
@@ -304,7 +306,5 @@ public class PrevisionnelController implements Initializable
 	}
 
 	@FXML
-	private void creerRessource()
-	{
-	}
+	private void afficheRessource() { new RessourceControleur().affichageDefaut(this.intitule); }
 }

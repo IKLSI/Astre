@@ -22,7 +22,7 @@ public class Controleur
 	public static ArrayList<Semestre> 		getSemestre(String nomSem) 				{ return Controleur.dataBase.getSemestre(nomSem); }
 	public static ArrayList<TypeModule> 	getNomCategorieModules() 				{ return Controleur.dataBase.getNomCategorieModules(); }
 	public static ArrayList<Modules> 		getListModule(String semestre)			{ return Controleur.dataBase.getListModule(semestre);}
-	public static ResultSet 				getModuleParIntervenant(int codInter) 	{ return Controleur.dataBase.getModulParIntervenant(codInter);} //JAMAIS APPELER ???
+	public static ResultSet 				getModuleParIntervenant(int codInter) 	{ return Controleur.dataBase.getModulParIntervenant(codInter);}
 	public static ResultSet                 getAffectationRessource(String codMod)  { return Controleur.dataBase.getAffectationRessource(codMod);}
 
 	// Insertion
@@ -31,7 +31,7 @@ public class Controleur
 	// Modification
 	public static void updateInter(Intervenant nouveauInter)						{ Controleur.dataBase.updateInter(nouveauInter); }
 	public static void updateSem(String textFieldId, String intitule, int newVal)   { Controleur.dataBase.updateSem(textFieldId, intitule, newVal); }
-	//public static void updateMod(Modules nouveauModules, String codModTyp)          { Controleur.dataBase.updateMod(nouveauModules, codModTyp); }
+
 	// Suppression
 	public static void supprInter(int codInter){ Controleur.dataBase.supprInter(codInter); }
 }
