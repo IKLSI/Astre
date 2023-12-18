@@ -17,37 +17,37 @@ VALUES   ('Ressources'),
 -- Insertion de données dans la table CategorieHeure
 INSERT INTO CategorieHeure (nomCatHeure, coeffNum, coeffDen)
 VALUES ('CM'   , 3,2),
-		   ('TD'   , 1,1),
-	     ('TP'   , 1,1),
-	   	 ('HT'   , 1,1),
-		   ('REH'  , 1,1),
-		   ('Sae'  , 1,1),
-		   ('HP'   , 1,1);
+	 ('TD'   , 1,1),
+	 ('TP'   , 1,1),
+	 ('HT'   , 1,1),
+	 ('REH'  , 1,1),
+	 ('Sae'  , 1,1),
+	 ('HP'   , 1,1);
 
 
 
 -- Insertion de données dans la table Semestre
 INSERT INTO Semestre (codSem, nbGrpTD, nbGrpTP, nbEtd, nbSemaines)
 VALUES ('S1', 4, 7, 85, 15),
-	     ('S2', 4, 7, 65, 16),
-	     ('S3', 4, 7, 48, 15),
-	     ('S4', 4, 7, 48, 16),
-	     ('S5', 4, 7, 42, 15),
-	     ('S6', 4, 7, 42, 16);
+	 ('S2', 4, 7, 65, 16),
+	 ('S3', 4, 7, 48, 15),
+	 ('S4', 4, 7, 48, 16),
+	 ('S5', 4, 7, 42, 15),
+	 ('S6', 4, 7, 42, 16);
 
 
 
 -- Insertion de données dans la table Intervenants
 INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure)
 VALUES ('Boukachour', 'Hadhoum'  , 1, 192, 364),
-	     ('Colignon'  , 'Thomas'   , 2, 120, 187),
-	     ('Dubocage'  , 'Tiphaine' , 2, 120, 187),
-	     ('Hervé'     , 'Nathalie' , 3,  90, 187),
-	     ('Pecqueret' , 'Véronique', 4,  80,  96),
-	     ('Laffeach'  , 'Quentin'  , 5, 384, 576),
-	     ('Le Pivert' , 'Philippe' , 5, 384, 576),
-	     ('Legrix'    , 'Bruno'    , 5, 384, 576),
-	     ('Nivet'     , 'Laurence' , 5, 384, 576);
+	 ('Colignon'  , 'Thomas'   , 2, 120, 187),
+	 ('Dubocage'  , 'Tiphaine' , 2, 120, 187),
+	 ('Hervé'     , 'Nathalie' , 3,  90, 187),
+	 ('Pecqueret' , 'Véronique', 4,  80,  96),
+	 ('Laffeach'  , 'Quentin'  , 5, 384, 576),
+	 ('Le Pivert' , 'Philippe' , 5, 384, 576),
+	 ('Legrix'    , 'Bruno'    , 5, 384, 576),
+	 ('Nivet'     , 'Laurence' , 5, 384, 576);
 
 
 
@@ -85,28 +85,27 @@ VALUES ('S4.ST','S4', 3 , 'Stage'                                 , 'Stage'    ,
 
 -- Insertion de données dans la table Module PPP
 INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHPnHTut)
-VALUES             ('P3.01','S3', 4 , 'Portfolio'                 , 'Portfolio' ,false ,1, 1, 1, 2, 4, 0, 1, 4);
+VALUES ('P3.01','S3', 4 , 'Portfolio'                 , 'Portfolio' ,false ,1, 1, 1, 2, 4, 0, 1, 4);
 
 
 
 -- Insertion de données dans la table Affectation SAE / STAGE
 INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbH)
-VALUES('S3.1',1,6,            NULL,   10), 
-      ('S3.1',1,7,            NULL,    8),
-
-      ('S3.1',6,6,            NULL,    5),
-      ('S3.1',6,7,            NULL,    7),
-
-      ('S3.1',1,6,            NULL,   10),
-      ('S3.1',1,7,            NULL,    8),
-
-      ('S3.1',1,6,            NULL,   10),
-      ('S3.1',1,7,            NULL,    8),
-
-      ('S3.1',1,6,            NULL,    5),
-      ('S3.1',1,7,            NULL,    7),
-
-      ('S4.ST',6,7,           NULL,    3);
+VALUES('S1.1',7,6,              NULL,    4), 
+      ('S1.1',1,6,              NULL,    4), 
+      ('S1.1',8,6,              NULL,    4), 
+      ('S2.2',8,6, 'Absent 1semaine',   12), 
+      ('S3.1',1,6,              NULL,   10), 
+      ('S3.1',1,7,              NULL,    8),
+      ('S3.1',6,6,              NULL,    5),
+      ('S3.1',6,7,              NULL,    7),
+      ('S3.1',1,6,              NULL,   10),
+      ('S3.1',1,7,              NULL,    8),
+      ('S3.1',1,6,              NULL,   10),
+      ('S3.1',1,7,              NULL,    8),
+      ('S3.1',1,6,              NULL,    5),
+      ('S3.1',1,7,              NULL,    7),
+      ('S4.ST',6,7,             NULL,    3);
 
 
 
