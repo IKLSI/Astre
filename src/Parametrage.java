@@ -13,7 +13,6 @@ public class Parametrage
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());
-
 		}
 		catch (Exception e) { e.printStackTrace(); }
 	}

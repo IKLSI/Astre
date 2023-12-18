@@ -278,7 +278,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
--- creation de la table Affectation
+-- creation de la table Affectation 
 
 CREATE TABLE Affectation (
 	codAffec SERIAL PRIMARY KEY,

@@ -16,4 +16,4 @@
 ./src/metier/TypeModule.java
 ./src/RessourceControleur.java
 ./src/Ressource.java
-./src/Affectation.java
+./src/metier/Affectation.java

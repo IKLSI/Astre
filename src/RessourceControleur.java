@@ -23,10 +23,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import metier.*;
+import metier.Affectation;
 
 public class RessourceControleur implements Initializable
 {
-	String intitule;
+	public static String intitule;
 
 	@FXML
 	public TextField semestre = new TextField();
@@ -35,27 +36,13 @@ public class RessourceControleur implements Initializable
 	public TableView tableView = new TableView<>();
 
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) { }
+	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
 
 	@FXML
-	public void affichageDefaut(String intitule)
+	public void affichageDefaut( )
 	{
-		try
-		{
-			Stage stage = new Stage();
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("Ressource.fxml"));
-			loader.load();
-			RessourceControleur ressourceControleur = loader.getController();
-			Scene scene = new Scene(loader.getRoot());
-			stage.setTitle("Ressources");
-			stage.setScene(scene);
-			stage.show();
-			
-			ressourceControleur.semestre.setText(intitule);
-			ressourceControleur.remplirTableau();
-		}
-		catch (Exception e) { e.printStackTrace(); }
+		this.semestre.setText(RessourceControleur.intitule);
+		remplirTableau();
 	}
 
 	@FXML

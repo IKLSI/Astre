@@ -47,7 +47,8 @@ public class Modules
 	}
 
 	//Constructeur global
-	public Modules (String codMod, String libLong, String libCourt, boolean valid, int nbHPnCM, int nbHPnTD, int nbHPnTP, int nbSemaineTD, int nbSemaineTP, int nbSemaineCM, int nbHParSemaineTD, int nbHParSemaineTP, int nbHParSemaineCM, int hPonctuelle, int nbHPnSaeParSemestre, int nbHPnTutParSemestre, int nbHSaeParSemestre, int nbHTutParSemestre, int nbHPnREH, int nbHPnTut, int nbHREH, int nbHTut, int nbHPnHTut)
+	public Modules (String codMod, String libLong, String libCourt, boolean valid, int nbHPnCM, 
+					int nbHPnTD, int nbHPnTP, int nbSemaineTD, int nbSemaineTP, int nbSemaineCM, int nbHParSemaineTD, int nbHParSemaineTP, int nbHParSemaineCM, int hPonctuelle, int nbHPnSaeParSemestre, int nbHPnTutParSemestre, int nbHSaeParSemestre, int nbHTutParSemestre, int nbHPnREH, int nbHPnTut, int nbHREH, int nbHTut, int nbHPnHTut)
 	{
 		this.codMod = codMod;
 		this.libLong = libLong;

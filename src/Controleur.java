@@ -1,4 +1,6 @@
 import metier.*;
+import metier.Affectation;
+
 import java.util.ArrayList;
 import java.sql.*;
 
@@ -30,6 +32,7 @@ public class Controleur
 
 	// Insertion
 	public static void insertIntervenant(Intervenant inter) { Controleur.dataBase.insertIntervenant(inter); }
+	public static void insertAffectation(Affectation affec) { Controleur.dataBase.insertAffectation(affec); }
 
 	// Modification
 	public static void updateInter(Intervenant nouveauInter)						{ Controleur.dataBase.updateInter(nouveauInter); }
