@@ -20,6 +20,9 @@ import metier.*;
 public class PrevisionnelController implements Initializable
 {
 	@FXML
+	public static AnchorPane panelCentre;
+
+	@FXML
 	private MenuButton menuButton;
 
 	@FXML
@@ -306,5 +309,8 @@ public class PrevisionnelController implements Initializable
 	}
 
 	@FXML
-	private void afficheRessource() { new RessourceControleur().affichageDefaut(this.intitule); }
+	private void afficheRessource() {
+		RessourceControleur.intitule = this.intitule;
+		new Ressource(PrevisionnelController.panelCentre);
+	}
 }

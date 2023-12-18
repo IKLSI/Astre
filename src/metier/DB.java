@@ -9,11 +9,9 @@ import java.util.Map;
 public class DB
 {
 	// Attribut de classe
-
 	private static Connection connec;
 
 	// Attribut requête Select
-
 	private PreparedStatement psSelectIntervenants;
 	private PreparedStatement psSelectIntervenant_final;
 	private PreparedStatement psSelectCodInter;
@@ -27,15 +25,13 @@ public class DB
 	private PreparedStatement psSelectAffectModuleRessource;
 
 	// Attribut requête Insert
-
 	private PreparedStatement psInstertIntervenant;
+	private PreparedStatement psInstertAffectation;
 
 	// Attribut requête Delete
-
 	private PreparedStatement psDeleteInter;
 
 	// Attribut requête Update
-
 	private PreparedStatement psUpdateInter;
 	private PreparedStatement psUpdateModRessources;
 	private PreparedStatement psUpdateModSAE;
@@ -47,7 +43,6 @@ public class DB
 	/*----------------*/
 
 	// Ici on gère la connexion et on prépare les requêtes
-
 	public DB()
 	{
 		try
@@ -69,7 +64,8 @@ public class DB
 			this.psSelectAffectModuleRessource = DB.connec.prepareStatement("SELECT * FROM affectation_final WHERE codMod = ?;");
 
 			// Préparation des Insertions
-			this.psInstertIntervenant = DB.connec.prepareStatement("INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure) VALUES(?,?,?,?,?)");
+			this.psInstertIntervenant = DB.connec.prepareStatement("INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure)  VALUES(?,?,?,?,?)");
+			this.psInstertAffectation = DB.connec.prepareStatement("INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire) VALUES(?,?,?,?)");
 
 			// Préparation des Updates
 			this.psUpdateInter         = DB.connec.prepareStatement("UPDATE Intervenant SET nom = ?, prenom = ?, hServ = ?, maxHeure = ? WHERE codInter = ?;");
@@ -312,7 +308,21 @@ public class DB
 			this.psInstertIntervenant.setInt(5,inter.getMaxHeure());
 
 			this.psInstertIntervenant.executeUpdate();
-			this.psInstertIntervenant.close(); // SERT A QUOI ??
+			this.psInstertIntervenant.close(); //jsp ?
+		}
+		catch (SQLException e) { e.printStackTrace(); }
+	}
+
+	public void insertAffectation(Affectation affec)
+	{
+		try
+		{
+			this.psInstertAffectation.setString(1,affec.getNom());
+			this.psInstertAffectation.setString(2,affec.getType());
+			this.psInstertAffectation.setInt(3,affec.getNbSem());
+			this.psInstertAffectation.setInt(4,affec.getNbGp());
+			this.psInstertAffectation.setInt(5,affec.getTotalEqTd());
+			this.psInstertAffectation.executeUpdate();
 		}
 		catch (SQLException e) { e.printStackTrace(); }
 	}
