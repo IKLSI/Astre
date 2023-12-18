@@ -17,3 +17,9 @@
 ./src/RessourceControleur.java
 ./src/Ressource.java
 ./src/metier/Affectation.java
+./src/Stages.java
+./src/StageControleur.java
+./src/Sae.java
+./src/SaeControleur.java
+./src/Ppp.java
+./src/PppControleur.java

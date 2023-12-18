@@ -133,9 +133,9 @@ public class PrevisionnelController implements Initializable
 				switch (nomBouton)
 				{
 					case "Ressources" -> afficheRessource();
-					case "SAE"-> System.out.println("SAE");
-					case "Stage" -> System.out.println("STAGE");
-					case "PPP" -> System.out.println("PPP");
+					case "SAE"        -> afficheSAE();
+					case "Stage"      -> afficheStage();
+					case "PPP"        -> affichePPP();
 				}
 			});
 			nouveauItem.setStyle("-fx-text-fill : #000000");
@@ -312,5 +312,23 @@ public class PrevisionnelController implements Initializable
 	private void afficheRessource() {
 		RessourceControleur.intitule = this.intitule;
 		new Ressource(PrevisionnelController.panelCentre);
+	}
+
+	@FXML
+	private void afficheSAE() {
+		RessourceControleur.intitule = this.intitule;
+		new Sae(PrevisionnelController.panelCentre);
+	}
+
+	@FXML
+	private void afficheStage() {
+		RessourceControleur.intitule = this.intitule;
+		new Stages(PrevisionnelController.panelCentre);
+	}
+
+	@FXML
+	private void affichePPP() {
+		RessourceControleur.intitule = this.intitule;
+		new Ppp(PrevisionnelController.panelCentre);
 	}
 }

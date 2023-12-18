@@ -8,15 +8,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="834.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="834.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SaeControleur">
    <children>
       <Label layoutX="14.0" layoutY="8.0" text="type module" />
       <Label layoutX="103.0" layoutY="8.0" text="semestre" />
       <Label layoutX="168.0" layoutY="8.0" text="code" />
       <Label layoutX="218.0" layoutY="8.0" text="libellé long" />
       <Label layoutX="359.0" layoutY="8.0" text="libellé court" />
-      <TextField disable="true" layoutX="14.0" layoutY="27.0" prefHeight="4.0" prefWidth="82.0" />
-      <TextField disable="true" layoutX="102.0" layoutY="27.0" prefHeight="26.0" prefWidth="58.0" />
+      <TextField disable="true" layoutX="14.0" layoutY="27.0" prefHeight="4.0" prefWidth="82.0" text="SAE" />
+      <TextField disable="true" layoutX="102.0" layoutY="27.0" prefHeight="26.0" prefWidth="58.0" fx:id="semestre" />
       <TextField layoutX="165.0" layoutY="27.0" prefHeight="26.0" prefWidth="48.0" />
       <TextField layoutX="218.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" />
       <TextField layoutX="359.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" />

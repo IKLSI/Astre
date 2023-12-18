@@ -16,8 +16,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,9 +46,7 @@ public class RessourceControleur implements Initializable
 	@FXML
 	public void annuler(ActionEvent event)
 	{
-		Node source = (Node) event.getSource();
-		Stage stage = (Stage) source.getScene().getWindow();
-		stage.close();
+		new Previsionnel(PrevisionnelController.panelCentre);
 	}
 
 	@FXML
