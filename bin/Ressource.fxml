@@ -21,11 +21,11 @@
       <TextField layoutX="218.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" />
       <TextField layoutX="359.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" />
       <Label layoutX="17.0" layoutY="58.0" text="nb etd" />
-      <TextField disable="true" layoutX="17.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" />
+      <TextField disable="true" layoutX="17.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbEtd" />
       <Label layoutX="138.0" layoutY="58.0" text="nb gp TP" />
-      <TextField disable="true" layoutX="137.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" />
+      <TextField disable="true" layoutX="137.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbTP" />
       <Label layoutX="81.0" layoutY="58.0" text="nb gp TD" />
-      <TextField disable="true" layoutX="81.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" />
+      <TextField disable="true" layoutX="81.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbTD" />
       <AnchorPane layoutX="16.0" layoutY="124.0" prefHeight="102.0" prefWidth="238.0" styleClass="pane" stylesheets="@../lib/style/module.css">
          <children>
             <Label alignment="CENTER" layoutX="111.0" layoutY="11.0" prefHeight="18.0" prefWidth="35.0" text="TD" />

@@ -209,7 +209,7 @@ public class DB
 
 		try
 		{
-			ResultSet rs = this.psSelectIntervenants.executeQuery();
+			ResultSet rs = this.psSelectCategorieHeure.executeQuery();
 			
 			while(rs.next())
 			{
@@ -288,29 +288,42 @@ public class DB
 		return resultSet;
 	}
 
-	
-	
-	/*
-	public HashMap<String,ArrayList<String>> getPreviModuleRessource(String codTypMod) //PAS TEST
+	public HashMap<String,ArrayList<String>> getPreviModuleRessource(String codMod) //PAS TEST
 	{
 		HashMap<String,ArrayList<String>> lstVal = new HashMap<String,ArrayList<String>>();
 		try
 		{
-			this.psSelectPreviModuleRessource.setString(1,codTypMod);
+			this.psSelectPreviModuleRessource.setString(1,codMod);
 			ResultSet rs = this.psSelectPreviModuleRessource.executeQuery();
 			rs.next();
 			for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++)
 			{
 				lstVal.put(rs.getMetaData().getColumnName(cpt),new ArrayList<String>());
 			}
-			while(rs.next)
-				for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++) 
-					lstVal.get(lstCol.get(cpt)).add(rs.getString(cpt));
+			
+			while(rs.next())
+			{
+				for(String col : lstVal.keySet()) 
+
+					lstVal.get(col).add(rs.getString(col));
+			}
+
+			for(String col : lstVal.keySet())
+				if(verifNull(lstVal.get(col)))
+					lstVal.remove(col);
 		}
 		catch(Exception e){ e.printStackTrace(); };
 		return lstVal;
 	}
-	*/
+	
+
+	public boolean verifNull(ArrayList<String> lstVal) //PAS TEST
+	{
+		for(String str : lstVal)
+			if(str != null) return false;
+		return true;
+	}
+	
 
 	// Récupère les affectations d'un module.
 	public ResultSet getAffectationRessource(String codMod)

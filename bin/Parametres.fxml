@@ -2,90 +2,75 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ParametrageControleur">
    <children>
-      <BorderPane prefHeight="400.0" prefWidth="600.0">
-         <top>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="336.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnHeure" prefHeight="54.0" prefWidth="205.0" styleClass="categorie" stylesheets="@../lib/style/Parametre.css" text="Catégories Heures">
-                     <font>
-                        <Font name="Arial Bold" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </Button>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnIntervenant" prefHeight="54.0" prefWidth="202.0" styleClass="categorie" stylesheets="@../lib/style/Parametre.css" text="Catégories Intervenants">
-                     <font>
-                        <Font name="Arial Bold" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </Button>
-               </children>
-            </HBox>
-         </top>
-         <center>
-            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
-         </center>
-         <bottom>
-            <HBox alignment="CENTER" prefHeight="74.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Annuler">
-                     <font>
-                        <Font name="Arial Bold" size="12.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Ajouter">
-                     <font>
-                        <Font name="Arial Bold" size="12.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Supprimer">
-                     <font>
-                        <Font name="Arial Bold" size="12.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Valider">
-                     <font>
-                        <Font name="Arial Bold" size="12.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-         </bottom>
-      </BorderPane>
+      <TableView fx:id="tableView" layoutX="90.0" layoutY="100.0" prefHeight="200.0" prefWidth="433.0" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
+         <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#categorieHeure" prefHeight="54.0" prefWidth="205.0" styleClass="categorie" stylesheets="@../lib/style/Parametre.css" text="Catégories Heures">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </HBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#categorieIntervenants" prefHeight="54.0" prefWidth="202.0" styleClass="categorie" stylesheets="@../lib/style/Parametre.css" text="Catégories Intervenants">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </HBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutY="318.0" prefHeight="74.0" prefWidth="600.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Annuler">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Ajouter">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Supprimer">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Valider">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
