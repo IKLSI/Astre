@@ -23,7 +23,8 @@ public class Controleur
 	public static ArrayList<Semestre> 		getSemestre(String nomSem) 				{ return Controleur.dataBase.getSemestre(nomSem); }
 	public static ArrayList<TypeModule> 	getNomCategorieModules() 				{ return Controleur.dataBase.getNomCategorieModules(); }
 	public static ArrayList<Modules> 		getListModule(String semestre)			{ return Controleur.dataBase.getListModule(semestre);}
-	public static ResultSet 				getModuleParIntervenant(int codInter) 	{ return Controleur.dataBase.getModulParIntervenant(codInter);} //JAMAIS APPELER ???
+	public static ResultSet 				getModuleParIntervenant(int codInter) 	{ return Controleur.dataBase.getModulParIntervenant(codInter);}
+	public static ResultSet 				getModule(String codMod)				{ return Controleur.dataBase.getModule(codMod);}
 	public static ResultSet                 getAffectationRessource(String codMod)  { return Controleur.dataBase.getAffectationRessource(codMod);}
 
 	// Insertion

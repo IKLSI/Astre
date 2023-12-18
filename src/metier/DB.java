@@ -24,8 +24,10 @@ public class DB
 	private PreparedStatement psSelectListeSemestre;
 	private PreparedStatement psSelectTypeModules;
 	private PreparedStatement psSelectModuleParIntervenant;
+	private PreparedStatement psSelectModulePar1Intervenant;
 	private PreparedStatement psSelectPreviModuleRessource;
 	private PreparedStatement psSelectAffectModuleRessource;
+	private PreparedStatement psSelectModule;
 
 	// Attribut requête Insert
 
@@ -59,7 +61,7 @@ public class DB
 			// Préparation des Requêtes
 			this.psSelectIntervenants          = DB.connec.prepareStatement("SELECT * FROM Intervenant");
 			this.psSelectIntervenant_final     = DB.connec.prepareStatement("SELECT * FROM intervenant_final");
-			this.psSelectIntervenant_final     = DB.connec.prepareStatement("SELECT * FROM intervenant_final WHERE codInter = ?");
+			this.psSelect1Intervenant_final    = DB.connec.prepareStatement("SELECT * FROM intervenant_final WHERE codInter = ?");
 			this.psSelectCategorieIntervenant  = DB.connec.prepareStatement("SELECT * FROM CategorieIntervenant");
 			this.psSelectCodInter              = DB.connec.prepareStatement("SELECT codInter FROM Intervenant WHERE nom = ?");
 			this.psSelectCategorieHeure        = DB.connec.prepareStatement("SELECT * FROM CategorieHeure");
@@ -67,6 +69,8 @@ public class DB
 			this.psSelectListeModule           = DB.connec.prepareStatement("SELECT * FROM liste_module WHERE codSem = ?");
 			this.psSelectTypeModules           = DB.connec.prepareStatement("SELECT * FROM TypeModule");
 			this.psSelectModuleParIntervenant  = DB.connec.prepareStatement("SELECT * FROM affectation_final");
+			this.psSelectModulePar1Intervenant = DB.connec.prepareStatement("SELECT * FROM affectation_final WHERE ?");
+			this.psSelectModule                = DB.connec.prepareStatement("SELECT codmod,codsem,liblong,libcourt FROM module WHERE codMod = ?");
 			this.psSelectPreviModuleRessource  = DB.connec.prepareStatement("SELECT * FROM module_final WHERE codTypMod = ?");
 			this.psSelectAffectModuleRessource = DB.connec.prepareStatement("SELECT * FROM affectation_final WHERE codMod = ?;");
 
@@ -170,8 +174,8 @@ public class DB
 		ResultSet resultSet = null;
 
 		try { 
-			this.psSelectModuleParIntervenant.setInt(1, codInter);
-			resultSet = this.psSelectModuleParIntervenant.executeQuery(); }
+			this.psSelectModulePar1Intervenant.setInt(1, codInter);
+			resultSet = this.psSelectModulePar1Intervenant.executeQuery(); }
 		catch (Exception e) { e.printStackTrace(); }
 
 		return resultSet;
@@ -260,6 +264,20 @@ public class DB
 
 		return lstModule;
 	}
+
+	public ResultSet getModule(String codMod)
+	{
+		ResultSet resultSet = null;
+
+		try {
+			this.psSelectModule.setString(1, codMod);
+			resultSet = this.psSelectModule.executeQuery(); }
+		catch (Exception e) { e.printStackTrace(); }
+
+		return resultSet;
+	}
+
+	
 	
 	/*
 	public HashMap<String,ArrayList<String>> getPreviModuleRessource(String codTypMod) //PAS TEST

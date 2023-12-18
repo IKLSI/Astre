@@ -4,11 +4,12 @@ import java.sql.*;
 
 public class GenererHTML
 {
-	public static void GenererIntervenant(String nom, ResultSet resultSetAffect)
+	public static void GenererIntervenant(String nom,int codInter)
 	{
 		try
 		{
-            ResultSet resultSetInter = Controleur.getIntervenant_final();
+            ResultSet resultSetInter = Controleur.getIntervenant_final(codInter);
+            ResultSet resultSetAffect = Controleur.getModuleParIntervenant(codInter);
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".html") );
 			pw.println ("<!DOCTYPE html>\n" + //
 						"<html lang=\"fr\">\n" + //
@@ -85,10 +86,12 @@ public class GenererHTML
 		catch (Exception e){ e.printStackTrace(); }
 	}
 
-	public static void GenererModule(String nom, ResultSet resultSetModule, ResultSet resultSetAffect)
+	public static void GenererModule(String nom, String codMod)
 	{
 		try
 		{
+            ResultSet resultSetModule = Controleur.getModule(codMod);
+            ResultSet resultSetAffect = Controleur.getAffectationRessource(codMod);
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".html") );
 			pw.println ("<!DOCTYPE html>\n" + //
 						"<html lang=\"fr\">\n" + //
@@ -159,9 +162,10 @@ public class GenererHTML
 		catch (Exception e){ e.printStackTrace(); }
 	}
 
-	public static void genererCSV(String nom, ResultSet rs) {
+	public static void genererCSV(String nom) {
 		try
 		{
+            ResultSet rs = Controleur.getIntervenant_final();
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".csv") );
 			for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++) {
 				if(cpt != 1)
@@ -180,18 +184,5 @@ public class GenererHTML
 			pw.close();
 		}
 		catch (Exception e){ e.printStackTrace(); }
-	}
-
-	public static void main(String[] a)
-	{
-		try {
-			Connection connec = DriverManager.getConnection("jdbc:postgresql://woody/la222551", "la222551", "r3F5n1a");
-			ResultSet rs = connec.createStatement().executeQuery("SELECT * FROM intervenant_final");
-			genererCSV("truc",rs);
-			GenererIntervenant("inter",connec.createStatement().executeQuery("SELECT * FROM affectation_final WHERE nom='Le Pivert'"));
-			GenererModule("mod",connec.createStatement().executeQuery("SELECT codmod,codsem,liblong,libcourt FROM module WHERE codMod = 'R1.01'"),connec.createStatement().executeQuery("SELECT * FROM affectation_final WHERE codMod='R1.01'"));
-		}
-		catch (SQLException e){ e.printStackTrace(); }
-
 	}
 }
