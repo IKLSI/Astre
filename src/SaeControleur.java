@@ -52,6 +52,61 @@ public class SaeControleur implements Initializable
 	@FXML
 	private void remplirTableau()
 	{
+		tableView.getColumns().clear();
+		tableView.getItems().clear();
+
+		ObservableList<Affectation> listeAffectation = FXCollections.observableArrayList();
+
 		
+		ArrayList<Affectation> lst = new ArrayList<Affectation>();
+
+		try
+		{
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM affectation_final WHERE codmod='S1.1'");
+
+			while (resultSet.next())
+			{
+				String nom = resultSet.getString("nom");
+				String type = resultSet.getString("nomcatheure");
+				int nbH = resultSet.getInt("nbH");
+				int totalEqTd = resultSet.getInt("tot eqtd");
+
+				//lst.add(new Affectation(nom, type, nbH, totalEqTd));
+			}
+
+			for (Affectation affectation : lst)
+			{
+				String nom = affectation.getNom();
+				String type = affectation.getType();
+				int nbSem = affectation.getNbSem();
+				int nbGp = affectation.getNbGp();
+				int totalEqTd = affectation.getTotalEqTd();
+
+				listeAffectation.add(new Affectation(nom, type, nbSem, nbGp, totalEqTd));
+			}
+
+			// Remplit la table avec les données de la liste
+
+			TableColumn<Affectation, String> nomCol = new TableColumn<>("Intervenant");
+			nomCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
+
+			TableColumn<Affectation, String> typeCol = new TableColumn<>("Type");
+			typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+			TableColumn<Affectation, Integer> nbSemCol = new TableColumn<>("Nb sem");
+			nbSemCol.setCellValueFactory(new PropertyValueFactory<>("nbSem"));
+
+			TableColumn<Affectation, Integer> nbGpCol = new TableColumn<>("Nb Gp / nb h");
+			nbGpCol.setCellValueFactory(new PropertyValueFactory<>("nbGp"));
+
+			TableColumn<Affectation, Integer> totalEqTdCol = new TableColumn<>("Total eqtd");
+			totalEqTdCol.setCellValueFactory(new PropertyValueFactory<>("totalEqTd"));
+
+			tableView.getColumns().addAll(nomCol, typeCol, nbSemCol, nbGpCol, totalEqTdCol);
+			tableView.setItems(listeAffectation);
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 }

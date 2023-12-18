@@ -76,6 +76,6 @@
       <Button layoutX="260.0" layoutY="435.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="ajouter" />
       <Button layoutX="339.0" layoutY="435.0" mnemonicParsing="false" text="supprimer" />
       <Button layoutX="17.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Enregistrer" />
-      <Button layoutX="115.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Annuler" />
+      <Button layoutX="115.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Annuler" onAction="#annuler"/>
    </children>
 </AnchorPane>
