@@ -16,6 +16,7 @@ public class DB
 
 	private PreparedStatement psSelectIntervenants;
 	private PreparedStatement psSelectIntervenant_final;
+	private PreparedStatement psSelect1Intervenant_final;
 	private PreparedStatement psSelectCodInter;
 	private PreparedStatement psSelectCategorieIntervenant;
 	private PreparedStatement psSelectCategorieHeure;
@@ -55,6 +56,7 @@ public class DB
 			// Préparation des Requêtes
 			this.psSelectIntervenants          = DB.connec.prepareStatement("SELECT * FROM Intervenant");
 			this.psSelectIntervenant_final     = DB.connec.prepareStatement("SELECT * FROM intervenant_final");
+			this.psSelectIntervenant_final     = DB.connec.prepareStatement("SELECT * FROM intervenant_final WHERE codInter = ?");
 			this.psSelectCategorieIntervenant  = DB.connec.prepareStatement("SELECT * FROM CategorieIntervenant");
 			this.psSelectCodInter              = DB.connec.prepareStatement("SELECT codInter FROM Intervenant WHERE nom = ?");
 			this.psSelectCategorieHeure        = DB.connec.prepareStatement("SELECT * FROM CategorieHeure");
@@ -146,11 +148,23 @@ public class DB
 		return resultSet;
 	}
 
+	public ResultSet getIntervenant_final(int codInter)
+	{
+		ResultSet resultSet = null;
+
+		try { resultSet = this.psSelect1Intervenant_final.executeQuery(); }
+		catch (Exception e) { e.printStackTrace(); }
+
+		return resultSet;
+	}
+
 	public ResultSet getModulParIntervenant(int codInter)
 	{
 		ResultSet resultSet = null;
 
-		try { resultSet = this.psSelectModuleParIntervenant.executeQuery(); }
+		try { 
+			this.psSelectModuleParIntervenant.setInt(1, codInter);
+			resultSet = this.psSelectModuleParIntervenant.executeQuery(); }
 		catch (Exception e) { e.printStackTrace(); }
 
 		return resultSet;

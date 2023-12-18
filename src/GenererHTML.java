@@ -4,10 +4,11 @@ import java.sql.*;
 
 public class GenererHTML
 {
-	public static void GenererIntervenant(String nom, ResultSet resultSetInter, ResultSet resultSetAffect)
+	public static void GenererIntervenant(String nom, ResultSet resultSetAffect)
 	{
 		try
 		{
+            ResultSet resultSetInter = Controleur.getIntervenant_final();
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".html") );
 			pw.println ("<!DOCTYPE html>\n" + //
 						"<html lang=\"fr\">\n" + //
@@ -187,8 +188,8 @@ public class GenererHTML
 			Connection connec = DriverManager.getConnection("jdbc:postgresql://woody/la222551", "la222551", "r3F5n1a");
 			ResultSet rs = connec.createStatement().executeQuery("SELECT * FROM intervenant_final");
 			genererCSV("truc",rs);
-			GenererIntervenant("inter",connec.createStatement().executeQuery("SELECT * FROM intervenant_final WHERE nom = 'Le Pivert'"),connec.createStatement().executeQuery("SELECT * FROM affectation_final WHERE nom='Le Pivert'"));
-			GenererIntervenant("mod",connec.createStatement().executeQuery("SELECT codmod,codsem,liblong,libcourt FROM module WHERE codMod = 'R1.01'"),connec.createStatement().executeQuery("SELECT * FROM affectation_final WHERE codMod='R1.01'"));
+			GenererIntervenant("inter",connec.createStatement().executeQuery("SELECT * FROM affectation_final WHERE nom='Le Pivert'"));
+			GenererModule("mod",connec.createStatement().executeQuery("SELECT codmod,codsem,liblong,libcourt FROM module WHERE codMod = 'R1.01'"),connec.createStatement().executeQuery("SELECT * FROM affectation_final WHERE codMod='R1.01'"));
 		}
 		catch (SQLException e){ e.printStackTrace(); }
 
