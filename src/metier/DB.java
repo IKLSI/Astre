@@ -14,6 +14,7 @@ public class DB
 	// Attribut requête Select
 	private PreparedStatement psSelectIntervenants;
 	private PreparedStatement psSelectIntervenant_final;
+	private PreparedStatement psSelectIntervenant_complet;
 	private PreparedStatement psSelect1Intervenant_final;
 	private PreparedStatement psSelectCodInter;
 	private PreparedStatement psSelectCategorieIntervenant;
@@ -56,6 +57,7 @@ public class DB
 			// Préparation des Requêtes
 			this.psSelectIntervenants          = DB.connec.prepareStatement("SELECT * FROM Intervenant");
 			this.psSelectIntervenant_final     = DB.connec.prepareStatement("SELECT * FROM intervenant_final");
+			this.psSelectIntervenant_complet   = DB.connec.prepareStatement("SELECT * FROM intervenant_complet");
 			this.psSelect1Intervenant_final    = DB.connec.prepareStatement("SELECT * FROM intervenant_final WHERE codInter = ?");
 			this.psSelectCategorieIntervenant  = DB.connec.prepareStatement("SELECT * FROM CategorieIntervenant");
 			this.psSelectCodInter              = DB.connec.prepareStatement("SELECT codInter FROM Intervenant WHERE nom = ?");
@@ -159,7 +161,9 @@ public class DB
 	{
 		ResultSet resultSet = null;
 
-		try { resultSet = this.psSelect1Intervenant_final.executeQuery(); }
+		try {
+			this.psSelect1Intervenant_final.setInt(1,codInter);
+			 resultSet = this.psSelect1Intervenant_final.executeQuery(); }
 		catch (Exception e) { e.printStackTrace(); }
 
 		return resultSet;
@@ -179,6 +183,16 @@ public class DB
 
 	// Récupère toutes les categories d'intervenants
 	public ResultSet getCategorieInter()
+	{
+		ResultSet resultSet = null;
+
+		try { resultSet = this.psSelectCategorieIntervenant.executeQuery(); }
+		catch (Exception e) { e.printStackTrace(); }
+
+		return resultSet;
+	}
+
+	public ResultSet getIntervenant_complet()
 	{
 		ResultSet resultSet = null;
 
@@ -218,6 +232,7 @@ public class DB
 
 		try
 		{
+			this.psSelectListeSemestre.setString(1,nomSem);
 			ResultSet rs = this.psSelectListeSemestre.executeQuery();
 
 			while(rs.next())
@@ -349,11 +364,10 @@ public class DB
 	{
 		try
 		{
-			this.psInstertAffectation.setString(1,affec.getNom());
-			this.psInstertAffectation.setString(2,affec.getType());
-			this.psInstertAffectation.setInt(3,affec.getNbSem());
-			this.psInstertAffectation.setInt(4,affec.getNbGp());
-			this.psInstertAffectation.setInt(5,affec.getTotalEqTd());
+			this.psInstertAffectation.setString(1,affec.getCodMod());
+			this.psInstertAffectation.setInt(2,affec.getCodInter());
+			this.psInstertAffectation.setInt(3,affec.getCodCatHeure());
+			this.psInstertAffectation.setString(4,affec.getCommentaire());
 			this.psInstertAffectation.executeUpdate();
 		}
 		catch (SQLException e) { e.printStackTrace(); }
