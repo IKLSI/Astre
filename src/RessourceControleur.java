@@ -21,10 +21,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import metier.*;
-import metier.Affectation;
 
 public class RessourceControleur implements Initializable
 {
+	
 	public static String intitule;
 
 	@FXML
@@ -32,6 +32,15 @@ public class RessourceControleur implements Initializable
 
 	@FXML
 	public TableView tableView = new TableView<>();
+
+	@FXML
+	public TextField nbEtd = new TextField();
+
+	@FXML
+	public TextField nbTP = new TextField();
+
+	@FXML
+	public TextField nbTD = new TextField();
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
@@ -56,8 +65,6 @@ public class RessourceControleur implements Initializable
 		tableView.getItems().clear();
 
 		ObservableList<Affectation> listeAffectation = FXCollections.observableArrayList();
-
-		
 		ArrayList<Affectation> lst = new ArrayList<Affectation>();
 
 		try
@@ -71,10 +78,15 @@ public class RessourceControleur implements Initializable
 				String nom = resultSet.getString("nom");
 				String type = resultSet.getString("nomcatheure");
 				int nbSem = resultSet.getInt("nbsem");
-				int nbGp = resultSet.getInt("nbgrp");
+				int nbGrp = resultSet.getInt("nbgrp");
 				int totalEqTd = resultSet.getInt("tot eqtd");
-
-				lst.add(new Affectation(nom, type, nbSem, nbGp, totalEqTd));
+				String codMod = resultSet.getString("codMod");
+				int codInter = resultSet.getInt("codInter");
+				int codCatHeure = resultSet.getInt("codCatHeure");
+				String commentaire = resultSet.getString("commentaire");
+				int nbH = resultSet.getInt("nbH");
+				
+				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH));
 			}
 
 			for (Affectation affectation : lst)
@@ -82,10 +94,15 @@ public class RessourceControleur implements Initializable
 				String nom = affectation.getNom();
 				String type = affectation.getType();
 				int nbSem = affectation.getNbSem();
-				int nbGp = affectation.getNbGp();
+				int nbGrp = affectation.getNbGrp();
 				int totalEqTd = affectation.getTotalEqTd();
+				String codMod = affectation.getCodMod();
+				int codInter = affectation.getCodInter();
+				int codCatHeure = affectation.getCodCatHeure();
+				String commentaire = affectation.getCommentaire();
+				int nbH = affectation.getNbH();
 
-				listeAffectation.add(new Affectation(nom, type, nbSem, nbGp, totalEqTd));
+				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH));
 			}
 
 			// Remplit la table avec les données de la liste
@@ -100,13 +117,26 @@ public class RessourceControleur implements Initializable
 			nbSemCol.setCellValueFactory(new PropertyValueFactory<>("nbSem"));
 
 			TableColumn<Affectation, Integer> nbGpCol = new TableColumn<>("Nb Gp / nb h");
-			nbGpCol.setCellValueFactory(new PropertyValueFactory<>("nbGp"));
+			nbGpCol.setCellValueFactory(new PropertyValueFactory<>("nbGrp"));
 
 			TableColumn<Affectation, Integer> totalEqTdCol = new TableColumn<>("Total eqtd");
 			totalEqTdCol.setCellValueFactory(new PropertyValueFactory<>("totalEqTd"));
 
-			tableView.getColumns().addAll(nomCol, typeCol, nbSemCol, nbGpCol, totalEqTdCol);
+			TableColumn<Affectation, Integer> commentaire = new TableColumn<>("Commentaire");
+			commentaire.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
+
+			tableView.getColumns().addAll(nomCol, typeCol, nbSemCol, nbGpCol, totalEqTdCol, commentaire);
 			tableView.setItems(listeAffectation);
+
+			ArrayList<Semestre> lstSem = Controleur.getSemestre(intitule);
+
+			for (Semestre sem : lstSem)
+			{
+				this.nbEtd.setText(String.valueOf(sem.getNbEtd()));
+				this.nbTP.setText(String.valueOf(sem.getNbGrpTP()));
+				this.nbTD.setText(String.valueOf(sem.getNbGrpTD()));
+			}
+			
 		}
 		catch (SQLException e) { e.printStackTrace(); }
 	}
