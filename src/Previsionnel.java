@@ -13,12 +13,8 @@ public class Previsionnel
 	@FXML
 	private MenuButton menuButton;
 
-	@FXML
-	private AnchorPane panelCentre;
-
 	public Previsionnel(AnchorPane panelCentre)
 	{
-		this.panelCentre = panelCentre;
 		try
 		{
 			panelCentre.getChildren().clear();
@@ -27,6 +23,7 @@ public class Previsionnel
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());
+			PrevisionnelController.panelCentre = panelCentre;
 		}
 		catch (Exception e) { e.printStackTrace(); }
 	}
