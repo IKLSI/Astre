@@ -347,8 +347,8 @@ EXECUTE FUNCTION delAffectationCatHFonc();
 
 CREATE OR REPLACE VIEW affectation_final AS 
 SELECT  m.codMod,i.codInter,i.nom,c.nomCatHeure,
-		a.nbSem,a.nbGrp,
-		nbH,
+		a.nbSem,a.nbGrp, a.commentaire, c.codCatHeure,
+		a.nbH,
 		ROUND(
 		CASE
 			WHEN m.codTypMod = 1 THEN COALESCE(a.nbSem,1)*COALESCE(a.nbGrp,1)*
@@ -374,7 +374,7 @@ FROM affectation_final a JOIN Module            m ON a.codMod      = m.codMod
 GROUP BY i.nom,s.codSem;
 
 CREATE OR REPLACE VIEW intervenant_final AS
-SELECT  c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
+SELECT  i.codInter,c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
 		COALESCE(MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END),0) AS S1,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END),0) AS S3,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END),0) AS S5,
@@ -524,3 +524,25 @@ BEGIN
 	WHERE codInter = $1;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE VIEW intervenant_complet AS
+SELECT (f.nom || ' ' || f.prenom)::VARCHAR AS nom, nomCat, 
+		S1 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS1,
+		S1 AS ReelS1,
+		S3 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS3,
+		S3 AS ReelS3,
+		S5 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS5,
+		S5 AS ReelS5,
+		sTotImpair * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheossImpTot,
+		sTotImpair AS ReelssImpTot,
+		S2 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS2,
+		S2 AS ReelS2,
+		S4 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS4,
+		S4 AS ReelS4,
+		S6 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS6,
+		S6 AS ReelS6,
+		sTotPair * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheossPairTot,
+		sTotPair AS ReelssPairTot,
+		Total * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoTot,
+		Total AS ReelTot
+FROM intervenant_final f JOIN intervenant i ON f.codInter = i.codInter;
