@@ -269,6 +269,8 @@ public class Intervenants
 
 		if (selectedIndex >= 0)
 			tableView.getItems().remove(selectedIndex);
+
+		this.idIntervenant.add(Integer.parseInt(tableView.getItems().get(selectedIndex).get(0)));
 	}
 
 	@FXML
@@ -293,13 +295,14 @@ public class Intervenants
 	{
 		ObservableList<String> row = event.getRowValue();
 		String newValue = event.getNewValue();
+		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		int index = event.getTablePosition().getColumn();
-
-		int code = Controleur.getCodInter(row.get(1)).get(0);
+		System.out.println(tableView.getItems().get(selectedIndex));
+		int code = Integer.parseInt(row.get(0));
 
 		row.set(index, newValue);
 
-		Intervenant inter = new Intervenant(code, row.get(1), row.get(2), Integer.parseInt(row.get(3)), Integer.parseInt(row.get(4)));
-		Controleur.updateInter(inter);
+		Intervenant intervenant = new Intervenant(code, row.get(2), row.get(3), Integer.parseInt(row.get(4)), Integer.parseInt(row.get(5)));
+		Controleur.updateInter(intervenant);
 	}
 }

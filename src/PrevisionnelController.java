@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.collections.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -247,6 +248,10 @@ public class PrevisionnelController implements Initializable
 
 		TableColumn<Modules, String> codModCol = new TableColumn<>("Code Module");
 		codModCol.setCellValueFactory(new PropertyValueFactory<>("codMod"));
+		// codModCol.setCellFactory(TextFieldTableCell.forTableColumn());
+		// codModCol.setOnEditCommit((TableColumn.CellEditEvent<Modules, String> event) -> {
+		// 	modifier();
+		// });
 
 		TableColumn<Modules, String> libLongCol = new TableColumn<>("Libellé Long");
 		libLongCol.setCellValueFactory(new PropertyValueFactory<>("libLong"));
@@ -259,6 +264,8 @@ public class PrevisionnelController implements Initializable
 
 		if (this.intitule.equals("S1"))
 		{
+			tableView.setEditable(true);
+			tableView.getSelectionModel().setCellSelectionEnabled(true);
 			tableView.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableView.setItems(listeModules);
 		}
@@ -301,6 +308,7 @@ public class PrevisionnelController implements Initializable
 	@FXML
 	private void modification(ActionEvent event)
 	{
+		System.out.println("Modification");
 		TextField textField   = (TextField) event.getSource();
 		String    textFieldId = textField.getId();
 		textFieldId = textFieldId.substring(0, textFieldId.length() - 2);
@@ -309,25 +317,59 @@ public class PrevisionnelController implements Initializable
 	}
 
 	@FXML
-	private void afficheRessource() {
+	private void supprimer(ActionEvent event)
+	{
+		Modules module = (Modules) tableView.getSelectionModel().getSelectedItem();
+		System.out.println(module.getCodMod());
+
+		Connection conn = null;
+		try
+		{
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("DELETE FROM Module WHERE codMod = '" + module.getCodMod() + "';");
+		}
+		catch (SQLException e) { e.printStackTrace(); }
+		catch (ClassNotFoundException e) { e.printStackTrace(); }
+
+		remplirTableau();
+	}
+
+	@FXML
+	private void modifier( )
+	{
+		Modules module = (Modules) tableView.getSelectionModel().getSelectedItem();
+		RessourceControleur.intitule = this.intitule;
+		RessourceControleur.setCode(module.getCodMod());
+		System.out.println(module.getCodMod());
+		new Ressource(PrevisionnelController.panelCentre);
+	}
+
+	@FXML
+	private void afficheRessource()
+	{
 		RessourceControleur.intitule = this.intitule;
 		new Ressource(PrevisionnelController.panelCentre);
 	}
 
 	@FXML
-	private void afficheSAE() {
+	private void afficheSAE()
+	{
 		RessourceControleur.intitule = this.intitule;
 		new Sae(PrevisionnelController.panelCentre);
 	}
 
 	@FXML
-	private void afficheStage() {
+	private void afficheStage()
+	{
 		RessourceControleur.intitule = this.intitule;
 		new Stages(PrevisionnelController.panelCentre);
 	}
 
 	@FXML
-	private void affichePPP() {
+	private void affichePPP()
+	{
 		RessourceControleur.intitule = this.intitule;
 		new Ppp(PrevisionnelController.panelCentre);
 	}

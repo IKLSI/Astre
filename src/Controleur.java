@@ -1,5 +1,4 @@
 import metier.*;
-import metier.Affectation;
 
 import java.util.ArrayList;
 import java.sql.*;
@@ -39,6 +38,7 @@ public class Controleur
 	public static void updateInter(Intervenant nouveauInter)						{ Controleur.dataBase.updateInter(nouveauInter); }
 	public static void updateSem(String textFieldId, String intitule, int newVal)   { Controleur.dataBase.updateSem(textFieldId, intitule, newVal); }
 	//public static void updateMod(Modules nouveauModules, String codModTyp)          { Controleur.dataBase.updateMod(nouveauModules, codModTyp); }
+	public static void updateBool(String tuple, boolean newVal, String codMod)   { Controleur.dataBase.updateBool(tuple, newVal, codMod); }
 
 	// Suppression
 	public static void supprInter(int codInter){ Controleur.dataBase.supprInter(codInter); }

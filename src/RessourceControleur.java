@@ -42,6 +42,11 @@ public class RessourceControleur implements Initializable
 	@FXML
 	public TextField nbTD = new TextField();
 
+	@FXML
+	public static TextField code = new TextField();
+
+	public String codes;
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
 
@@ -49,13 +54,19 @@ public class RessourceControleur implements Initializable
 	public void affichageDefaut( )
 	{
 		this.semestre.setText(RessourceControleur.intitule);
-		remplirTableau();
 	}
 
 	@FXML
 	public void annuler(ActionEvent event)
 	{
 		new Previsionnel(PrevisionnelController.panelCentre);
+	}
+
+	@FXML
+	public void chargerRessource(ActionEvent event)
+	{
+		codes = code.getText();
+		remplirTableau();
 	}
 
 	@FXML
@@ -71,7 +82,7 @@ public class RessourceControleur implements Initializable
 		{
 			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM affectation_final WHERE codmod='R1.01'");
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM affectation_final WHERE codmod='" + codes + "'");
 
 			while (resultSet.next())
 			{
@@ -105,8 +116,6 @@ public class RessourceControleur implements Initializable
 				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH));
 			}
 
-			// Remplit la table avec les données de la liste
-
 			TableColumn<Affectation, String> nomCol = new TableColumn<>("Intervenant");
 			nomCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
 
@@ -136,8 +145,14 @@ public class RessourceControleur implements Initializable
 				this.nbTP.setText(String.valueOf(sem.getNbGrpTP()));
 				this.nbTD.setText(String.valueOf(sem.getNbGrpTD()));
 			}
-			
 		}
 		catch (SQLException e) { e.printStackTrace(); }
+	}
+
+	// methode accessible depuis RessourceController permettant de set le textfield de code
+
+	public static void setCode(String newCode)
+	{
+		code.setText(newCode);
 	}
 }

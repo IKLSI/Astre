@@ -68,7 +68,7 @@ public class DB
 			this.psSelectModuleParIntervenant  = DB.connec.prepareStatement("SELECT * FROM affectation_final");
 			this.psSelectModulePar1Intervenant = DB.connec.prepareStatement("SELECT * FROM affectation_final WHERE ?");
 			this.psSelectModule                = DB.connec.prepareStatement("SELECT codmod,codsem,liblong,libcourt FROM module WHERE codMod = ?");
-			this.psSelectPreviModuleRessource  = DB.connec.prepareStatement("SELECT * FROM module_final WHERE codTypMod = ?");
+			this.psSelectPreviModuleRessource  = DB.connec.prepareStatement("SELECT * FROM module_final WHERE codMod = ?");
 			this.psSelectAffectModuleRessource = DB.connec.prepareStatement("SELECT * FROM affectation_final WHERE codMod = ?;");
 
 			// Préparation des Insertions
@@ -82,6 +82,7 @@ public class DB
 			this.psUpdateModStage      = DB.connec.prepareStatement("UPDATE Module SET libLong = ?, libCourt = ?, valid = ?, nbHPnREH = ?, nbHPnTut = ?, nbHREH = ?, nbHTut = ? WHERE codMod = ?");
 			this.psUpdateModPPP        = DB.connec.prepareStatement("UPDATE Module SET libLong = ?, libCourt = ?, valid = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?, nbHPnTut = ?, nbHTut = ?, nbHPnHTut = ? WHERE codMod = ?");
 
+			HashMap<String,String> lstVal = getPreviModuleRessource("R1.01");
 
 			// Preparation des Deletes
 			this.psDeleteInter = DB.connec.prepareStatement("DELETE FROM Intervenant WHERE codInter = ?");
@@ -288,42 +289,53 @@ public class DB
 		return resultSet;
 	}
 
-	public HashMap<String,ArrayList<String>> getPreviModuleRessource(String codMod) //PAS TEST
-	{
-		HashMap<String,ArrayList<String>> lstVal = new HashMap<String,ArrayList<String>>();
-		try
-		{
-			this.psSelectPreviModuleRessource.setString(1,codMod);
+	public HashMap<String, String> getPreviModuleRessource(String codMod) {
+		HashMap<String, String> lstVal = new HashMap<String, String>();
+		try {
+			this.psSelectPreviModuleRessource.setString(1, codMod);
 			ResultSet rs = this.psSelectPreviModuleRessource.executeQuery();
 			rs.next();
-			for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++)
-			{
-				lstVal.put(rs.getMetaData().getColumnName(cpt),new ArrayList<String>());
+			
+			// Initialisation de la HashMap avec des listes vides
+			for (int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++) {
+				lstVal.put(rs.getMetaData().getColumnName(cpt), null);
 			}
 			
-			while(rs.next())
-			{
-				for(String col : lstVal.keySet()) 
+			// Ajout des valeurs à chaque liste
+			do {
+				for (String col : lstVal.keySet()) {
+					lstVal.put(col,rs.getString(col));
+				}
+			} while (rs.next());
 
-					lstVal.get(col).add(rs.getString(col));
+			// Supprimer les colonnes avec des valeurs nulles
+			List<String> keysToRemove = new ArrayList<>();
+			for (String col : lstVal.keySet()) {
+				if (lstVal.get(col) == null) {
+					keysToRemove.add(col);
+				}
 			}
 
-			for(String col : lstVal.keySet())
-				if(verifNull(lstVal.get(col)))
-					lstVal.remove(col);
+			// Supprimer les colonnes de la HashMap
+			for (String key : keysToRemove) {
+				lstVal.remove(key);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		catch(Exception e){ e.printStackTrace(); };
 		return lstVal;
 	}
-	
 
-	public boolean verifNull(ArrayList<String> lstVal) //PAS TEST
+	public void updateBool(String tuple, boolean newVal, String codMod)
 	{
-		for(String str : lstVal)
-			if(str != null) return false;
-		return true;
+		try 
+		{
+			String query = "UPDATE Module SET valid = " + newVal + " WHERE " + tuple + " = '" + codMod + "'";
+			Statement statement = DB.connec.createStatement();
+			statement.executeUpdate(query);
+			statement.close();
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
-	
 
 	// Récupère les affectations d'un module.
 	public ResultSet getAffectationRessource(String codMod)
@@ -416,7 +428,7 @@ public class DB
 	// {
 	// 	try
 	// 	{
-    // 		switch(codModTyp)
+	// 		switch(codModTyp)
 	// 		{
 	// 			case "Ressources": 
 	// 				this.psUpdateModRessources.setString(1,nouveauModules.getLibLong);
@@ -489,7 +501,6 @@ public class DB
 		{
 			this.psDeleteInter.setInt(1,codInter);
 			this.psDeleteInter.executeUpdate();
-			this.psDeleteInter.close();
 		}
 		catch (SQLException e) { e.printStackTrace(); }
 	}

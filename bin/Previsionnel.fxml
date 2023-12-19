@@ -135,8 +135,8 @@
          </Label>
       </top>
    </BorderPane>
-   <Button id="modifier" layoutX="268.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="modifier" />
-   <Button id="supprimer" layoutX="393.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="supprimer" />
+   <Button id="modifier" layoutX="268.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="modifier" onAction="#modifier" />
+   <Button id="supprimer" layoutX="393.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="supprimer" onAction="#supprimer" />
    <MenuButton layoutX="143.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" stylesheets="@../lib/style/Previsionnel.css" text="Création" fx:id="menuButton">
      <items>
      </items>
