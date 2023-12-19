@@ -6,11 +6,10 @@ public class Etats{
 		try
 		{
 			panelCentre.getChildren().clear();
-
-			/*FXMLLoader loader = new FXMLLoader(getClass().getResource("Parametres.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Etats.fxml"));
 			AnchorPane loadedPane = loader.load();
 
-			panelCentre.getChildren().setAll(loadedPane.getChildren());*/
+			panelCentre.getChildren().setAll(loadedPane.getChildren());
 		}
 		catch (Exception e) { e.printStackTrace(); }
 	}

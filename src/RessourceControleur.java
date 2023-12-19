@@ -10,15 +10,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.HashMap;
 
 import metier.*;
 
@@ -144,6 +145,24 @@ public class RessourceControleur implements Initializable
 				this.nbEtd.setText(String.valueOf(sem.getNbEtd()));
 				this.nbTP.setText(String.valueOf(sem.getNbGrpTP()));
 				this.nbTD.setText(String.valueOf(sem.getNbGrpTD()));
+			}
+
+			HashMap<String, String> map = Controleur.getPreviModuleRessource(codes);
+
+			for (String key : map.keySet())
+			{
+				if (key.equals("nbEtd"))
+				{
+					this.nbEtd.setText(map.get(key));
+				}
+				else if (key.equals("nbGrpTP"))
+				{
+					this.nbTP.setText(map.get(key));
+				}
+				else if (key.equals("nbGrpTD"))
+				{
+					this.nbTD.setText(map.get(key));
+				}
 			}
 		}
 		catch (SQLException e) { e.printStackTrace(); }

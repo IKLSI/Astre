@@ -27,6 +27,9 @@ public class DB
 	private PreparedStatement psSelectPreviModuleRessource;
 	private PreparedStatement psSelectAffectModuleRessource;
 	private PreparedStatement psSelectModule;
+	private PreparedStatement psSelectNomModule;
+	private PreparedStatement psSelectNomSemestre;
+	private PreparedStatement psSelectNomInter;
 
 	// Attribut requête Insert
 	private PreparedStatement psInstertIntervenant;
@@ -70,6 +73,10 @@ public class DB
 			this.psSelectModule                = DB.connec.prepareStatement("SELECT codmod,codsem,liblong,libcourt FROM module WHERE codMod = ?");
 			this.psSelectPreviModuleRessource  = DB.connec.prepareStatement("SELECT * FROM module_final WHERE codMod = ?");
 			this.psSelectAffectModuleRessource = DB.connec.prepareStatement("SELECT * FROM affectation_final WHERE codMod = ?;");
+			this.psSelectNomModule = DB.connec.prepareStatement("SELECT codMod, libCourt FROM Module");
+			this.psSelectNomSemestre = DB.connec.prepareStatement("SELECT codSem FROM SEMESTRE");
+			this.psSelectNomInter = DB.connec.prepareStatement("SELECT * FROM Intervenant WHERE nom = ? AND prenom = ?");
+
 
 			// Préparation des Insertions
 			this.psInstertIntervenant = DB.connec.prepareStatement("INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure)  VALUES(?,?,?,?,?)");
@@ -83,6 +90,10 @@ public class DB
 			this.psUpdateModPPP        = DB.connec.prepareStatement("UPDATE Module SET libLong = ?, libCourt = ?, valid = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?, nbHPnTut = ?, nbHTut = ?, nbHPnHTut = ? WHERE codMod = ?");
 
 			HashMap<String,String> lstVal = getPreviModuleRessource("R1.01");
+
+			for (Map.Entry<String,String> entry : lstVal.entrySet()) {
+				System.out.println(entry.getKey() + " " + entry.getValue());
+			}
 
 			// Preparation des Deletes
 			this.psDeleteInter = DB.connec.prepareStatement("DELETE FROM Intervenant WHERE codInter = ?");
@@ -326,11 +337,45 @@ public class DB
 		return lstVal;
 	}
 
-	public void updateBool(String tuple, boolean newVal, String codMod)
+	public ArrayList<String> getNomModule(){
+		ArrayList<String> lstModule = new ArrayList<String>();
+		try {
+			ResultSet rs = this.psSelectNomModule.executeQuery();
+			while (rs.next()) {
+				lstModule.add(rs.getString("codMod") + " " + rs.getString("libCourt"));
+			}
+
+		} catch (SQLException e) {e.printStackTrace();}
+		return lstModule;
+	}
+
+	public ArrayList<String> getNomSemestre(){
+		ArrayList<String> lstSem = new ArrayList<String>();
+		try {
+			ResultSet rs = this.psSelectNomSemestre.executeQuery();
+			while (rs.next()) {
+				lstSem.add(rs.getString("codSem"));
+			}
+
+		} catch (SQLException e) {e.printStackTrace();}
+		return lstSem;
+	}
+
+	public boolean intervenantExist(String nomInter,String prenomInter){
+		try {
+			this.psSelectNomInter.setString(1, nomInter);
+			this.psSelectNomInter.setString(2, prenomInter);
+			ResultSet rs = psSelectNomInter.executeQuery();
+			if(rs.next()) return true;
+		} catch (SQLException e) {e.printStackTrace();}
+		return false;
+	}
+
+	public void updateBool(boolean newVal, String codMod)
 	{
 		try 
 		{
-			String query = "UPDATE Module SET valid = " + newVal + " WHERE " + tuple + " = '" + codMod + "'";
+			String query = "UPDATE Module SET valid = " + newVal + " WHERE codMod  = '" + codMod + ";'";
 			Statement statement = DB.connec.createStatement();
 			statement.executeUpdate(query);
 			statement.close();

@@ -266,11 +266,10 @@ public class Intervenants
 	{
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		this.idIntervenant = Controleur.getCodInter(tableView.getItems().get(selectedIndex).get(1));
+		this.idIntervenant.add(Integer.parseInt(tableView.getItems().get(selectedIndex).get(0)));
 
 		if (selectedIndex >= 0)
 			tableView.getItems().remove(selectedIndex);
-
-		this.idIntervenant.add(Integer.parseInt(tableView.getItems().get(selectedIndex).get(0)));
 	}
 
 	@FXML

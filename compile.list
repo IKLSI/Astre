@@ -2,6 +2,9 @@
 ./src/Controleur.java
 ./src/AppControleur.java
 ./src/Etats.java
+./src/EtatsControleur.java
+./src/Exportation.java
+./src/Annees.java
 ./src/App.java
 ./src/Intervenants.java
 ./src/Previsionnel.java

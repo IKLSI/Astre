@@ -1,6 +1,7 @@
 import metier.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.sql.*;
 
 public class Controleur
@@ -27,8 +28,10 @@ public class Controleur
 	public static ResultSet 				getModuleParIntervenant(int codInter) 	{ return Controleur.dataBase.getModulParIntervenant(codInter);}
 	public static ResultSet 				getModule(String codMod)				{ return Controleur.dataBase.getModule(codMod);}
 	public static ResultSet                 getAffectationRessource(String codMod)  { return Controleur.dataBase.getAffectationRessource(codMod);}
-
-	// Insertion
+	public static ArrayList<String> getNomModule(){return Controleur.dataBase.getNomModule();}
+	public static ArrayList<String> getNomSemestre(){return Controleur.dataBase.getNomSemestre();}
+	public static boolean intervenantExist(String nomInter,String prenomInter){return Controleur.dataBase.intervenantExist(nomInter,prenomInter);}
+	public static HashMap<String, String>   getPreviModuleRessource(String codMod)  { return Controleur.dataBase.getPreviModuleRessource(codMod);}
 
 	// Insertion
 	public static void insertIntervenant(Intervenant inter) { Controleur.dataBase.insertIntervenant(inter); }
@@ -38,7 +41,7 @@ public class Controleur
 	public static void updateInter(Intervenant nouveauInter)						{ Controleur.dataBase.updateInter(nouveauInter); }
 	public static void updateSem(String textFieldId, String intitule, int newVal)   { Controleur.dataBase.updateSem(textFieldId, intitule, newVal); }
 	//public static void updateMod(Modules nouveauModules, String codModTyp)          { Controleur.dataBase.updateMod(nouveauModules, codModTyp); }
-	public static void updateBool(String tuple, boolean newVal, String codMod)   { Controleur.dataBase.updateBool(tuple, newVal, codMod); }
+	public static void updateBool(boolean newVal, String codMod)   { Controleur.dataBase.updateBool(newVal, codMod); }
 
 	// Suppression
 	public static void supprInter(int codInter){ Controleur.dataBase.supprInter(codInter); }

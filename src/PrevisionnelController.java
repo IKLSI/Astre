@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.collections.*;
@@ -248,10 +249,6 @@ public class PrevisionnelController implements Initializable
 
 		TableColumn<Modules, String> codModCol = new TableColumn<>("Code Module");
 		codModCol.setCellValueFactory(new PropertyValueFactory<>("codMod"));
-		// codModCol.setCellFactory(TextFieldTableCell.forTableColumn());
-		// codModCol.setOnEditCommit((TableColumn.CellEditEvent<Modules, String> event) -> {
-		// 	modifier();
-		// });
 
 		TableColumn<Modules, String> libLongCol = new TableColumn<>("Libellé Long");
 		libLongCol.setCellValueFactory(new PropertyValueFactory<>("libLong"));
@@ -259,38 +256,45 @@ public class PrevisionnelController implements Initializable
 		TableColumn<Modules, String> hAPCol = new TableColumn<>("Heure Affectée / Heure Prévue");
 		hAPCol.setCellValueFactory(new PropertyValueFactory<>("HAP"));
 
-		TableColumn<Modules, String> validCol = new TableColumn<>("Valid");
+		TableColumn<Modules, Boolean> validCol = new TableColumn<>("Valid");
 		validCol.setCellValueFactory(new PropertyValueFactory<>("valid"));
+
+		validCol.setCellFactory(CheckBoxTableCell.forTableColumn(validCol));
+		validCol.setEditable(true);
 
 		if (this.intitule.equals("S1"))
 		{
 			tableView.setEditable(true);
-			tableView.getSelectionModel().setCellSelectionEnabled(true);
 			tableView.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableView.setItems(listeModules);
 		}
 		else if (this.intitule.equals("S2"))
 		{
+			tableViewS2.setEditable(true);
 			tableViewS2.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS2.setItems(listeModules);
 		}
 		else if (this.intitule.equals("S3"))
 		{
+			tableViewS3.setEditable(true);
 			tableViewS3.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS3.setItems(listeModules);
 		}
 		else if (this.intitule.equals("S4"))
 		{
+			tableViewS5.setEditable(true);
 			tableViewS4.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS4.setItems(listeModules);
 		}
 		else if (this.intitule.equals("S5"))
 		{
+			tableViewS5.setEditable(true);
 			tableViewS5.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS5.setItems(listeModules);
 		}
 		else if (this.intitule.equals("S6"))
 		{
+			tableViewS6.setEditable(true);
 			tableViewS6.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS6.setItems(listeModules);
 		}

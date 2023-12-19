@@ -19,7 +19,6 @@ public class App extends Application
 	@Override
 	public void start(Stage primaryStage)
 	{
-		Controleur.ouvrirConnection();
 		try
 		{
 			// Frame Accueil
@@ -44,6 +43,7 @@ public class App extends Application
 	@FXML
 	private void chargement(ActionEvent event)
 	{
+		Controleur.ouvrirConnection();
 		try
 		{
 			this.primaryStage = new Stage();

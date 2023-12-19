@@ -57,8 +57,7 @@ public class AppControleur implements Initializable
 	@FXML
 	private void afficheEtats(ActionEvent event)
 	{
-		try { panelCentre.getChildren().clear(); } 
-		catch (Exception e) { e.printStackTrace(); }
+		new Etats(panelCentre);
 	}
 
 	private void afficheRessources(ActionEvent event){ new Ressource(this.panelCentre); }
