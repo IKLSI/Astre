@@ -300,9 +300,9 @@ public class PrevisionnelController implements Initializable
 			module = (Modules) tableViewS6.getSelectionModel().getSelectedItem();
 		}
 
-		SaeControleur.intitule = this.intitule;
-		SaeControleur.codes = module.getCodMod();
-		new Sae(PrevisionnelController.panelCentre);
+		StageControleur.intitule = this.intitule;
+		StageControleur.codes = module.getCodMod();
+		new Stages(PrevisionnelController.panelCentre);
 	}
 
 	@FXML

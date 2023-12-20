@@ -7,6 +7,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -34,6 +35,44 @@ public class StageControleur implements Initializable
 	@FXML
 	public TextField nbTD = new TextField();
 
+	@FXML
+	public TextField code = new TextField();
+
+	@FXML
+	public TextField libCourt = new TextField();
+
+	@FXML
+	public TextField libLong = new TextField();
+
+	@FXML
+	public TextField nbHPnREH = new TextField();
+
+	@FXML
+	public TextField nbHPnTut = new TextField();
+
+	@FXML
+	public TextField sommeHPnStage = new TextField();
+
+	@FXML
+	public TextField nbHREH = new TextField();
+
+	@FXML
+	public TextField nbHTut = new TextField();
+
+	@FXML
+	public TextField sommeTotPromoEqtd = new TextField();
+
+	@FXML
+	public TextField nbHAffecteREH = new TextField();
+
+	@FXML
+	public TextField nbHAffecteHT = new TextField();
+
+	@FXML
+	public TextField sommeTotAffectEqtd = new TextField();
+
+	public static String codes;
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
 
@@ -41,7 +80,7 @@ public class StageControleur implements Initializable
 	public void affichageDefaut( )
 	{
 		this.semestre.setText(StageControleur.intitule);
-		remplirTableau();
+		chargerRessource(new ActionEvent());
 	}
 
 	@FXML
@@ -51,21 +90,25 @@ public class StageControleur implements Initializable
 	}
 
 	@FXML
+	public void chargerRessource(ActionEvent event)
+	{
+		code.setText(StageControleur.codes);
+		remplirTableau();
+	}
+
+	@FXML
 	private void remplirTableau()
 	{
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
 
 		ObservableList<Affectation> listeAffectation = FXCollections.observableArrayList();
-
 		
 		ArrayList<Affectation> lst = new ArrayList<Affectation>();
 
 		try
 		{
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM affectation_final WHERE codmod='S4.ST'");
+			ResultSet resultSet = Controleur.getAffectation(codes);
 
 			while (resultSet.next())
 			{
@@ -119,13 +162,30 @@ public class StageControleur implements Initializable
 			tableView.getColumns().addAll(nomCol, typeCol, nbHCol, totalEqTdCol, comCol);
 			tableView.setItems(listeAffectation);
 
-			ArrayList<Semestre> lstSem = Controleur.getSemestre(intitule);
+			HashMap<String, String> map = Controleur.getPreviModule(codes);
 
-			for (Semestre sem : lstSem)
+			HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
+			{{
+				put("nbetd",nbEtd);
+				put("nbgrptp",nbTP);
+				put("nbgrptd",nbTD);
+				put("libcourt",libCourt);
+				put("liblong",libLong);
+				put("nbhpnreh", nbHPnREH);
+				put("nbhpntut", nbHPnTut);
+				put("sommehpnstage", sommeHPnStage);
+				put("nbhreh", nbHREH);
+				put("nbhtut", nbHTut);
+				put("sommetotpromoeqtd", sommeTotPromoEqtd);
+				put("nbhaffectereh", nbHAffecteREH);
+				put("nbhaffecteht", nbHAffecteHT );
+				put("sommetotaffecteqtd", sommeTotAffectEqtd);
+			}};
+
+			for (String key : map.keySet())
 			{
-				this.nbEtd.setText(String.valueOf(sem.getNbEtd()));
-				this.nbTP.setText(String.valueOf(sem.getNbGrpTP()));
-				this.nbTD.setText(String.valueOf(sem.getNbGrpTD()));
+				if(lstButton.containsKey(key))
+					lstButton.get(key).setText(map.get(key));
 			}
 		}
 		catch (SQLException e) { e.printStackTrace(); }
