@@ -300,9 +300,9 @@ public class PrevisionnelController implements Initializable
 			module = (Modules) tableViewS6.getSelectionModel().getSelectedItem();
 		}
 
-		RessourceControleur.intitule = this.intitule;
-		RessourceControleur.codes = module.getCodMod();
-		new Ressource(PrevisionnelController.panelCentre);
+		SaeControleur.intitule = this.intitule;
+		SaeControleur.codes = module.getCodMod();
+		new Sae(PrevisionnelController.panelCentre);
 	}
 
 	@FXML

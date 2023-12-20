@@ -1,8 +1,15 @@
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.Node;
 
 import java.net.URL;
 import java.sql.*;
@@ -10,17 +17,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import metier.*;
 import metier.Affectation;
-import controleur.Controleur;
+import controleur.*;
 
 public class SaeControleur implements Initializable
 {
 	public static String intitule;
 
-	@FXML public TextField semestre = new TextField();
+	@FXML
+	public TextField semestre = new TextField();
 
 	@FXML
 	public TableView tableView = new TableView<>();
@@ -164,51 +174,29 @@ public class SaeControleur implements Initializable
 
 			HashMap<String, String> map = Controleur.getPreviModule(codes);
 
-		// 	HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
-		// 	{{
-		// 		put("nbetd",nbEtd);
-		// 		put("nbgrptp",nbTP);
-		// 		put("nbgrptd",nbTD);
-		// 		put("libcourt",libCourt);
-		// 		put("liblong",libLong);
-		// 		put("nbsemainecm",nbSemaineCM);
-		// 		put("nbhparsemainecm",nbHSemaineCM);
-		// 		put("nbsemainetd",nbSemaineTD);
-		// 		put("nbhparsemainetd",nbHSemaineTD);
-		// 		put("nbsemainetp",nbSemaineTP);
-		// 		put("nbhparsemainetp",nbHSemaineTP);
-		// 		put("nbhpntd",nbHPnTD);
-		// 		put("nbhpntp",nbHPnTP);
-		// 		put("nbhpncm",nbHPnCM);
-		// 		put("promoeqtdtp",promoEqtdTP);
-		// 		put("sommenbsxnbh",sommeNbsxNbH);
-		// 		put("promoeqtdhp",promoEqtdHP);
-		// 		put("nbsxnbhtd",nbsxNbHTD);
-		// 		put("nbsxnbhcm",nbsxNbHCM);
-		// 		put("sommepn",sommePn);
-		// 		put("hponctuelle",hPonctuelle);
-		// 		put("codmod",codMod);
-		// 		put("promoeqtdtd",promoEqtdTD);
-		// 		put("sommetotpromoeqtd",sommeTotPromoEqtd);
-		// 		put("nbsxnbhtp",nbsxNbHTP);
-		// 		put("promoeqtdcm",promoEqtdCM);
-		// 		put("totaleqtdpromopncm",totalEqtdPromoPnCM);
-		// 		put("eqtdtd",eqtdTD);
-		// 		put("sommetotaleqtdpromopn",sommeTotalEqtdPromoPn);
-		// 		put("totaleqtdpromopntd",totalEqtdPromoPnTD);
-		// 		put("eqtdcm",eqtdCM);
-		// 		put("eqtdtp",eqtdTP);
-		// 		put("sommetotpromoeqtd",sommeTotalEqtdPromoPnTP);
-		// 		put("sommetotaffecteqtd",sommeTotAffectEqtd);
-		// 		put("totaleqtdpromopntp",totalEqtdPromoPnTP);
-		// 		put("eqtdhp",eqtdHP);
-		// 	}};
+			HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
+			{{
+				put("nbetd",nbEtd);
+				put("nbgrptp",nbTP);
+				put("nbgrptd",nbTD);
+				put("libcourt",libCourt);
+				put("liblong",libLong);
+				put("nbhpnsaeparsemestre", nbHSaePN);
+				put("nbhpntutparsemestre", nbHTutPN);
+				put("sommehpnsae", sommePN);
+				put("nbhsaeparsemestre", nbHSaeProm);
+				put("nbhtutparsemestre", nbHTutProm);
+				put("sommetotpromoeqtd", sommeProm);
+				put("nbhaffectesae", nbHSaeAff);
+				put("nbhaffecteht", nbHTutAff);
+				put("sommetotaffecteqtd", sommeAff);
+			}};
 
-		// 	for (String key : map.keySet())
-		// 	{
-		// 		if(lstButton.containsKey(key))
-		// 			lstButton.get(key).setText(map.get(key));
-		// 	}
+			for (String key : map.keySet())
+			{
+				if(lstButton.containsKey(key))
+					lstButton.get(key).setText(map.get(key));
+			}
 		}
 		catch (SQLException e) { e.printStackTrace(); }
 	}
