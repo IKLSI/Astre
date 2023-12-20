@@ -6,6 +6,7 @@
 -- NB : cela supprime donc les éventuels tuples contenus
 
 -- Table
+DROP TABLE IF EXISTS Annee                  CASCADE ; 
 DROP TABLE IF EXISTS Intervenant 			CASCADE ;
 DROP TABLE IF EXISTS Module 				CASCADE ;
 DROP TABLE IF EXISTS Semestre 				CASCADE ;
@@ -63,6 +64,10 @@ DROP VIEW IF EXISTS liste_module 		CASCADE;
 
 -- creation de la table CategorieIntervenant
 
+CREATE TABLE Annee (
+	annee YEAR PRIMARY KEY
+);
+
 CREATE TABLE CategorieIntervenant (
 	codCatInter        SERIAL PRIMARY KEY,
 	nomCat             VARCHAR(20) NOT NULL,
@@ -76,12 +81,14 @@ CREATE TABLE CategorieIntervenant (
 -- creation de la table Intervenant
 
 CREATE TABLE Intervenant (
-	codInter    SERIAL PRIMARY KEY,
+	codInter    SERIAL,
 	nom         VARCHAR(40),
 	prenom      VARCHAR(40),
 	codCatInter INTEGER REFERENCES CategorieIntervenant(codCatInter),
 	hServ       INTEGER,
-	maxHeure    INTEGER 
+	maxHeure    INTEGER,
+	annee YEAR REFERENCES Annee(annee),
+	PRIMARY KEY(codInter,annee)
 );
 
 /*Ajout d'un trigger s'executant avant un insert sur Intervenant qui initialise hServ a service de 
@@ -163,11 +170,13 @@ $$ LANGUAGE plpgsql;
 -- creation de la table Semestre
 
 CREATE TABLE Semestre (
-	codSem     VARCHAR(2) PRIMARY KEY,
+	codSem     VARCHAR(2),
 	nbGrpTD    INTEGER,
 	nbGrpTP    INTEGER,
 	nbEtd      INTEGER,
-	nbSemaines INTEGER
+	nbSemaines INTEGER,
+	annee YEAR REFERENCES Annee(annee),
+	PRIMARY KEY(codSem,annee)
 );
 
 CREATE TABLE TypeModule (
@@ -319,6 +328,8 @@ BEGIN
 	IF EXISTS (SELECT 1 FROM Affectation WHERE codMod = OLD.codMod) THEN
 		RAISE EXCEPTION 'Impossible de supprimer le module car il existe des affectations liés a lui.';
 	END IF;
+
+    RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -494,7 +505,7 @@ SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.n
 	   	-- Répartition 2 EFFECTUER ??
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'CM') END AS nbHAffecteCM,
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'TD') END AS nbHAffecteTD,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'TP') END AS nbHAffecteTP,
+	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.cosdMod,'TP') END AS nbHAffecteTP,
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'HP') END AS nbHAffecteHP,
 	   
 	   m.valid
@@ -504,7 +515,8 @@ FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
 
 CREATE OR REPLACE VIEW liste_module AS 
 SELECT codSem, codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS hAP, valid
-FROM module_final;
+FROM module_final
+ORDER BY codMod;
 
 CREATE OR REPLACE FUNCTION getCatInter(VARCHAR)
 RETURNS INTEGER AS $$

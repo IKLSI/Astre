@@ -1,19 +1,23 @@
+package ihm;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ProgressBar;
 
-public class Annees implements Initializable{
+public class Chargement implements Initializable{
+
+	@FXML
+	private ProgressBar bar;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
 	}
 
-
-	@FXML
-	private void test(ActionEvent event){
-		System.out.println("ok");
+	public void charger(){
+		this.bar.setProgress(100);
 	}
 }

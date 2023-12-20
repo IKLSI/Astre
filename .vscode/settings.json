@@ -4,5 +4,10 @@
         "c:\\IUT\\TP\\java\\paquetage_class\\jbdc.jar",
         "c:\\IUT\\TP\\java\\paquetage_class\\mysql-connector-j-8.1.0.jar",
         "c:\\IUT\\TP\\java\\paquetage_class\\postgresql-42.7.1.jar"
+    ],
+    "java.project.sourcePaths": [
+        "src",
+        "sql",
+        "bin"
     ]
 }

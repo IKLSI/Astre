@@ -44,9 +44,108 @@ public class RessourceControleur implements Initializable
 	public TextField nbTD = new TextField();
 
 	@FXML
-	public static TextField code = new TextField();
+	public TextField code = new TextField();
 
-	public String codes;
+	@FXML
+	public TextField libCourt = new TextField();
+
+	@FXML
+	public TextField libLong = new TextField();
+
+	@FXML
+	public TextField nbSemaineCM = new TextField();
+
+	@FXML
+	public TextField nbHSemaineCM = new TextField();
+
+	@FXML
+	public TextField nbSemaineTD = new TextField();
+
+	@FXML
+	public TextField nbHSemaineTD = new TextField();
+
+	@FXML
+	public TextField nbSemaineTP = new TextField();
+
+	@FXML
+	public TextField nbHSemaineTP = new TextField();
+
+	@FXML
+	public TextField nbHPnTD = new TextField();
+
+	@FXML
+	public TextField nbHPnTP = new TextField();
+
+	@FXML
+	public TextField nbHPnCM = new TextField();
+
+	@FXML
+	public TextField promoEqtdTP = new TextField();
+
+	@FXML
+	public TextField sommeNbsxNbH = new TextField();
+
+	@FXML
+	public TextField promoEqtdHP = new TextField();
+
+	@FXML
+	public TextField nbsxNbHTD = new TextField();
+
+	@FXML
+	public TextField nbsxNbHCM = new TextField();
+
+	@FXML
+	public TextField sommePn = new TextField();
+
+	@FXML
+	public TextField hPonctuelle = new TextField();
+
+	@FXML
+	public TextField codMod = new TextField();
+
+	@FXML
+	public TextField promoEqtdTD = new TextField();
+
+	@FXML
+	public TextField sommeTotPromoEqtd = new TextField();
+
+	@FXML
+	public TextField nbsxNbHTP = new TextField();
+
+	@FXML
+	public TextField promoEqtdCM = new TextField();
+
+	@FXML
+	public TextField totalEqtdPromoPnCM = new TextField();
+
+	@FXML
+	public TextField eqtdTD = new TextField();
+
+	@FXML
+	public TextField sommeTotalEqtdPromoPn = new TextField();
+
+	@FXML
+	public TextField totalEqtdPromoPnTD = new TextField();
+
+	@FXML
+	public TextField totalEqtdPromoPnTP = new TextField();
+
+	@FXML
+	public TextField eqtdCM = new TextField();
+
+	@FXML
+	public TextField eqtdTP = new TextField();
+
+	@FXML
+	public TextField sommeTotalEqtdPromoPnTP = new TextField();
+
+	@FXML
+	public TextField sommeTotAffectEqtd = new TextField();
+
+	@FXML
+	public TextField eqtdHP = new TextField();
+	
+	public static String codes;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
@@ -55,6 +154,7 @@ public class RessourceControleur implements Initializable
 	public void affichageDefaut( )
 	{
 		this.semestre.setText(RessourceControleur.intitule);
+		chargerRessource(new ActionEvent());
 	}
 
 	@FXML
@@ -66,7 +166,7 @@ public class RessourceControleur implements Initializable
 	@FXML
 	public void chargerRessource(ActionEvent event)
 	{
-		codes = code.getText();
+		code.setText(RessourceControleur.codes);
 		remplirTableau();
 	}
 
@@ -81,9 +181,7 @@ public class RessourceControleur implements Initializable
 
 		try
 		{
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM affectation_final WHERE codmod='" + codes + "'");
+			ResultSet resultSet = Controleur.getAffectation(codes);
 
 			while (resultSet.next())
 			{
@@ -138,40 +236,118 @@ public class RessourceControleur implements Initializable
 			tableView.getColumns().addAll(nomCol, typeCol, nbSemCol, nbGpCol, totalEqTdCol, commentaire);
 			tableView.setItems(listeAffectation);
 
-			ArrayList<Semestre> lstSem = Controleur.getSemestre(intitule);
+			HashMap<String, String> map = Controleur.getPreviModule(codes);
 
-			for (Semestre sem : lstSem)
-			{
-				this.nbEtd.setText(String.valueOf(sem.getNbEtd()));
-				this.nbTP.setText(String.valueOf(sem.getNbGrpTP()));
-				this.nbTD.setText(String.valueOf(sem.getNbGrpTD()));
-			}
-
-			HashMap<String, String> map = Controleur.getPreviModuleRessource(codes);
+			HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
+			{{
+				put("nbetd",nbEtd);
+				put("nbgrptp",nbTP);
+				put("nbgrptd",nbTD);
+				put("libcourt",libCourt);
+				put("liblong",libLong);
+				put("nbsemainecm",nbSemaineCM);
+				put("nbhparsemainecm",nbHSemaineCM);
+				put("nbsemainetd",nbSemaineTD);
+				put("nbhparsemainetd",nbHSemaineTD);
+				put("nbsemainetp",nbSemaineTP);
+				put("nbhparsemainetp",nbHSemaineTP);
+				put("nbhpntd",nbHPnTD);
+				put("nbhpntp",nbHPnTP);
+				put("nbhpncm",nbHPnCM);
+				put("promoeqtdtp",promoEqtdTP);
+				put("sommenbsxnbh",sommeNbsxNbH);
+				put("promoeqtdhp",promoEqtdHP);
+				put("nbsxnbhtd",nbsxNbHTD);
+				put("nbsxnbhcm",nbsxNbHCM);
+				put("sommepn",sommePn);
+				put("hponctuelle",hPonctuelle);
+				put("promoeqtdtd",promoEqtdTD);
+				put("sommetotpromoeqtd",sommeTotPromoEqtd);
+				put("nbsxnbhtp",nbsxNbHTP);
+				put("promoeqtdcm",promoEqtdCM);
+				put("totaleqtdpromopncm",totalEqtdPromoPnCM);
+				put("eqtdtd",eqtdTD);
+				put("sommetotaleqtdpromopn",sommeTotalEqtdPromoPn);
+				put("totaleqtdpromopntd",totalEqtdPromoPnTD);
+				put("eqtdcm",eqtdCM);
+				put("eqtdtp",eqtdTP);
+				put("sommetotpromoeqtd",sommeTotalEqtdPromoPnTP);
+				put("sommetotaffecteqtd",sommeTotAffectEqtd);
+				put("totaleqtdpromopntp",totalEqtdPromoPnTP);
+				put("eqtdhp",eqtdHP);
+			}};
 
 			for (String key : map.keySet())
 			{
-				if (key.equals("nbEtd"))
-				{
-					this.nbEtd.setText(map.get(key));
-				}
-				else if (key.equals("nbGrpTP"))
-				{
-					this.nbTP.setText(map.get(key));
-				}
-				else if (key.equals("nbGrpTD"))
-				{
-					this.nbTD.setText(map.get(key));
-				}
+				if(lstButton.containsKey(key))
+					lstButton.get(key).setText(map.get(key));
 			}
 		}
 		catch (SQLException e) { e.printStackTrace(); }
 	}
 
-	// methode accessible depuis RessourceController permettant de set le textfield de code
+	@FXML
+	public void modifier(ActionEvent event) {
+		System.out.println(code.getText());
+		System.out.println(codMod.getText());
+			Modules module = new Modules(
+				code.getText(),
+				semestre.getText(),
+				Integer.valueOf(1),
+				libLong.getText(),
+				libCourt.getText(),
+				true,
+				Integer.valueOf(nbHPnCM.getText()),
+				Integer.valueOf(nbHPnTD.getText()),
+				Integer.valueOf(nbHPnTP.getText()),
+				Integer.valueOf(nbSemaineTD.getText()),
+				Integer.valueOf(nbSemaineTP.getText()),
+				Integer.valueOf(nbSemaineCM.getText()),
+				Integer.valueOf(nbHSemaineTD.getText()),
+				Integer.valueOf(nbHSemaineTP.getText()),
+				Integer.valueOf(nbHSemaineCM.getText()),
+				Integer.valueOf(hPonctuelle.getText()),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0)
+			);
+	
+			Controleur.updateMod(module, codMod.getText(), codes);
+	}
 
-	public static void setCode(String newCode)
+	@FXML
+	public void ajouter(ActionEvent event)
 	{
-		code.setText(newCode);
+		/*
+		try {
+			Modules module = new Modules(
+				codMod.getText(),
+				semestre.getText(),
+				Integer.parseInt(libLong.getText()),
+				Integer.parseInt(libCourt.getText()),
+				true,
+				Integer.parseInt(nbHPnCM.getText()),
+				Integer.parseInt(nbHPnTD.getText()),
+				Integer.parseInt(nbHPnTP.getText()),
+
+				Integer.parseInt(nbSemaineTD.getText()),
+				Integer.parseInt(nbSemaineTP.getText()),
+				Integer.parseInt(nbSemaineCM.getText()),
+				Integer.parseInt(nbHSemaineTD.getText()),
+				Integer.parseInt(nbHSemaineTP.getText()),
+				Integer.parseInt(nbHSemaineCM.getText()),
+				Integer.parseInt(hPonctuelle.getText())
+			);
+	
+			Controleur.insertMod(module);
+		} catch (SQLException | NumberFormatException e) {
+			e.printStackTrace();
+		}*/
 	}
 }

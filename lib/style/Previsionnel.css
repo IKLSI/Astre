@@ -1,3 +1,7 @@
+.lbl {
+	-fx-font-weight: bold
+}
+
 .btn {
 	-fx-background-color : #7F23A7;
 	-fx-text-fill : white;

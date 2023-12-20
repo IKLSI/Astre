@@ -78,6 +78,10 @@ public class Intervenants
 			lbl.setStyle("-fx-font-weight: bold");
 
 			Button bouton = new Button("Ajouter");
+			bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;");
+			bouton.setOnMouseEntered(e -> bouton.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
+			bouton.setOnMouseExited(e -> bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
+			bouton.setPrefSize(75, 20);
 			bouton.setOnAction((ActionEvent event) -> {
 				try
 				{
@@ -87,6 +91,10 @@ public class Intervenants
 			});
 
 			Button bouton2 = new Button("Supprimer");
+			bouton2.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;");
+			bouton2.setOnMouseEntered(e -> bouton2.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
+			bouton2.setOnMouseExited(e -> bouton2.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
+			bouton2.setPrefSize(75, 20);
 			bouton2.setOnAction((ActionEvent event) -> {
 				try
 				{
@@ -96,6 +104,10 @@ public class Intervenants
 			});
 
 			Button boutonE = new Button("Enregistrer");
+			boutonE.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;");
+			boutonE.setOnMouseEntered(e -> boutonE.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
+			boutonE.setOnMouseExited(e -> boutonE.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
+			boutonE.setPrefSize(75, 20);
 			boutonE.setOnAction((ActionEvent event) -> {
 				try
 				{
@@ -105,6 +117,10 @@ public class Intervenants
 			});
 
 			Button buttonA = new Button("Annuler");
+			buttonA.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;");
+			buttonA.setOnMouseEntered(e -> buttonA.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
+			buttonA.setOnMouseExited(e -> buttonA.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
+			buttonA.setPrefSize(75, 20);
 			buttonA.setOnAction((ActionEvent event) -> {
 				try
 				{
@@ -113,16 +129,16 @@ public class Intervenants
 				catch (Exception e)	{ e.printStackTrace(); }
 			});
 
-			AnchorPane.setTopAnchor(bouton, 400.0);
+			AnchorPane.setTopAnchor(bouton, 390.0);
 			AnchorPane.setLeftAnchor(bouton, 20.0);
 
-			AnchorPane.setTopAnchor(bouton2, 400.0);
-			AnchorPane.setLeftAnchor(bouton2, 80.0);
+			AnchorPane.setTopAnchor(bouton2, 390.0);
+			AnchorPane.setLeftAnchor(bouton2, 110.0);
 
-			AnchorPane.setTopAnchor(boutonE, 450.0);
+			AnchorPane.setTopAnchor(boutonE, 440.0);
 			AnchorPane.setLeftAnchor(boutonE, 20.0);
 
-			AnchorPane.setTopAnchor(buttonA, 450.0);
+			AnchorPane.setTopAnchor(buttonA, 440.0);
 			AnchorPane.setLeftAnchor(buttonA, 110.0);
 
 			AnchorPane.setTopAnchor(lbl, 20.0);
@@ -189,6 +205,9 @@ public class Intervenants
 		Label lblMaxheure = new Label("Max heures :");
 
 		Button bouton = new Button("Ajouter");
+		bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;");
+		bouton.setOnMouseEntered(e -> bouton.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
+		bouton.setOnMouseExited(e -> bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
 		bouton.setOnAction((ActionEvent event2) -> {
 			Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getText()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()));
 			this.intervenants.add(intervenant);
@@ -198,6 +217,9 @@ public class Intervenants
 		});
 
 		Button buttonA = new Button("Annuler");
+		buttonA.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;");
+		buttonA.setOnMouseEntered(e -> buttonA.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
+		buttonA.setOnMouseExited(e -> buttonA.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));	
 		buttonA.setOnAction((ActionEvent event2) -> {
 			try
 			{

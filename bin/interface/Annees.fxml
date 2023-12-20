@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Annees">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.Annees">
    <children>
       <AnchorPane layoutX="44.0" layoutY="139.0" prefHeight="122.0" prefWidth="266.0" styleClass="panel" stylesheets="@../../lib/style/Etats.css">
          <children>
-            <ComboBox layoutX="14.0" layoutY="61.0" prefHeight="34.0" prefWidth="102.0" style="-fx-background-color: #7F23A7; -fx-background-radius: 15px;" />
+            <ComboBox fx:id="lstAnnee" layoutX="14.0" layoutY="61.0" prefHeight="34.0" prefWidth="102.0" style="-fx-background-color: #7F23A7; -fx-background-radius: 15px;" />
             <Label layoutX="14.0" layoutY="13.0" prefHeight="46.0" prefWidth="218.0" text="Sélectionnez une année scolaire" wrapText="true">
                <font>
                   <Font name="Arial Bold" size="14.0" />
@@ -20,17 +20,17 @@
       </AnchorPane>
       <AnchorPane layoutX="376.0" layoutY="114.0" prefHeight="171.0" prefWidth="198.0" styleClass="panel" stylesheets="@../../lib/style/Etats.css">
          <children>
-            <Button layoutX="34.0" layoutY="23.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="131.0" styleClass="btnAnnee" stylesheets="@../../lib/style/Etats.css" text="Dupliquer l'année">
+            <Button layoutX="34.0" layoutY="23.0" mnemonicParsing="false" onAction="#dupliquerAnnee" prefHeight="34.0" prefWidth="131.0" styleClass="btnAnnee" stylesheets="@../../lib/style/Etats.css" text="Dupliquer l'année">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font>
             </Button>
-            <Button layoutX="34.0" layoutY="72.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="131.0" styleClass="btnAnnee" stylesheets="@../../lib/style/Etats.css" text="Supprimer l'année">
+            <Button layoutX="34.0" layoutY="72.0" mnemonicParsing="false" onAction="#supprimerAnnee" prefHeight="34.0" prefWidth="131.0" styleClass="btnAnnee" stylesheets="@../../lib/style/Etats.css" text="Supprimer l'année">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font>
             </Button>
-            <Button layoutX="34.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="131.0" styleClass="btnAnnee" stylesheets="@../../lib/style/Etats.css" text="Valider">
+            <Button layoutX="34.0" layoutY="119.0" mnemonicParsing="false" onAction="#valider" prefHeight="34.0" prefWidth="131.0" styleClass="btnAnnee" stylesheets="@../../lib/style/Etats.css" text="Valider">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font>

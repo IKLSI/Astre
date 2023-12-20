@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,7 +24,8 @@ import javafx.collections.ObservableList;
 import metier.*;
 import metier.Affectation;
 
-public class SaeControleur implements Initializable{
+public class SaeControleur implements Initializable
+{
 	public static String intitule;
 
 	@FXML
@@ -32,20 +34,75 @@ public class SaeControleur implements Initializable{
 	@FXML
 	public TableView tableView = new TableView<>();
 
+	@FXML
+	public TextField nbEtd = new TextField();
+
+	@FXML
+	public TextField nbTP = new TextField();
+
+	@FXML
+	public TextField nbTD = new TextField();
+
+	@FXML
+	public TextField code = new TextField();
+
+	@FXML
+	public TextField libCourt = new TextField();
+
+	@FXML
+	public TextField libLong = new TextField();
+
+	@FXML
+	public TextField nbHSaePN = new TextField();
+
+	@FXML
+	public TextField nbHTutPN = new TextField();
+
+	@FXML
+	public TextField sommePN = new TextField();
+
+	@FXML
+	public TextField nbHSaeProm = new TextField();
+
+	@FXML
+	public TextField nbHTutProm = new TextField();
+
+	@FXML
+	public TextField sommeProm = new TextField();
+
+	@FXML
+	public TextField nbHSaeAff = new TextField();
+
+	@FXML
+	public TextField nbHTutAff = new TextField();
+
+	@FXML
+	public TextField sommeAff = new TextField();
+
+
+	public static String codes;
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
 
 	@FXML
 	public void affichageDefaut( )
 	{
-		this.semestre.setText(RessourceControleur.intitule);
-		remplirTableau();
+		this.semestre.setText(SaeControleur.intitule);
+		chargerRessource(new ActionEvent());
 	}
 
 	@FXML
 	public void annuler(ActionEvent event)
 	{
 		new Previsionnel(PrevisionnelController.panelCentre);
+	}
+
+	@FXML
+	public void chargerRessource(ActionEvent event)
+	{
+		code.setText(SaeControleur.codes);
+		remplirTableau();
 	}
 
 	@FXML
@@ -56,14 +113,11 @@ public class SaeControleur implements Initializable{
 
 		ObservableList<Affectation> listeAffectation = FXCollections.observableArrayList();
 
-		
 		ArrayList<Affectation> lst = new ArrayList<Affectation>();
 
 		try
 		{
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM affectation_final WHERE codmod='R1.01'");
+			ResultSet resultSet = Controleur.getAffectation(codes);
 
 			while (resultSet.next())
 			{
@@ -105,21 +159,65 @@ public class SaeControleur implements Initializable{
 			TableColumn<Affectation, String> typeCol = new TableColumn<>("Type");
 			typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-			TableColumn<Affectation, Integer> nbSemCol = new TableColumn<>("Nb sem");
-			nbSemCol.setCellValueFactory(new PropertyValueFactory<>("nbSem"));
-
-			TableColumn<Affectation, Integer> nbGpCol = new TableColumn<>("Nb Gp / nb h");
-			nbGpCol.setCellValueFactory(new PropertyValueFactory<>("nbGrp"));
+			TableColumn<Affectation, Integer> nbHCol = new TableColumn<>("Nb h");
+			nbHCol.setCellValueFactory(new PropertyValueFactory<>("nbH"));
 
 			TableColumn<Affectation, Integer> totalEqTdCol = new TableColumn<>("Total eqtd");
 			totalEqTdCol.setCellValueFactory(new PropertyValueFactory<>("totalEqTd"));
 
-			TableColumn<Affectation, Integer> commentaire = new TableColumn<>("Commentaire");
-			commentaire.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
+			TableColumn<Affectation, Integer> comCol = new TableColumn<>("commentaire");
+			comCol.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
 
-			tableView.getColumns().addAll(nomCol, typeCol, nbSemCol, nbGpCol, totalEqTdCol, commentaire);
+			tableView.getColumns().addAll(nomCol, typeCol, nbHCol, totalEqTdCol, comCol);
 			tableView.setItems(listeAffectation);
-			
+
+			HashMap<String, String> map = Controleur.getPreviModule(codes);
+
+		// 	HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
+		// 	{{
+		// 		put("nbetd",nbEtd);
+		// 		put("nbgrptp",nbTP);
+		// 		put("nbgrptd",nbTD);
+		// 		put("libcourt",libCourt);
+		// 		put("liblong",libLong);
+		// 		put("nbsemainecm",nbSemaineCM);
+		// 		put("nbhparsemainecm",nbHSemaineCM);
+		// 		put("nbsemainetd",nbSemaineTD);
+		// 		put("nbhparsemainetd",nbHSemaineTD);
+		// 		put("nbsemainetp",nbSemaineTP);
+		// 		put("nbhparsemainetp",nbHSemaineTP);
+		// 		put("nbhpntd",nbHPnTD);
+		// 		put("nbhpntp",nbHPnTP);
+		// 		put("nbhpncm",nbHPnCM);
+		// 		put("promoeqtdtp",promoEqtdTP);
+		// 		put("sommenbsxnbh",sommeNbsxNbH);
+		// 		put("promoeqtdhp",promoEqtdHP);
+		// 		put("nbsxnbhtd",nbsxNbHTD);
+		// 		put("nbsxnbhcm",nbsxNbHCM);
+		// 		put("sommepn",sommePn);
+		// 		put("hponctuelle",hPonctuelle);
+		// 		put("codmod",codMod);
+		// 		put("promoeqtdtd",promoEqtdTD);
+		// 		put("sommetotpromoeqtd",sommeTotPromoEqtd);
+		// 		put("nbsxnbhtp",nbsxNbHTP);
+		// 		put("promoeqtdcm",promoEqtdCM);
+		// 		put("totaleqtdpromopncm",totalEqtdPromoPnCM);
+		// 		put("eqtdtd",eqtdTD);
+		// 		put("sommetotaleqtdpromopn",sommeTotalEqtdPromoPn);
+		// 		put("totaleqtdpromopntd",totalEqtdPromoPnTD);
+		// 		put("eqtdcm",eqtdCM);
+		// 		put("eqtdtp",eqtdTP);
+		// 		put("sommetotpromoeqtd",sommeTotalEqtdPromoPnTP);
+		// 		put("sommetotaffecteqtd",sommeTotAffectEqtd);
+		// 		put("totaleqtdpromopntp",totalEqtdPromoPnTP);
+		// 		put("eqtdhp",eqtdHP);
+		// 	}};
+
+		// 	for (String key : map.keySet())
+		// 	{
+		// 		if(lstButton.containsKey(key))
+		// 			lstButton.get(key).setText(map.get(key));
+		// 	}
 		}
 		catch (SQLException e) { e.printStackTrace(); }
 	}

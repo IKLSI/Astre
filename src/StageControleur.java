@@ -33,13 +33,22 @@ public class StageControleur implements Initializable
 	@FXML
 	public TableView tableView = new TableView<>();
 
+	@FXML
+	public TextField nbEtd = new TextField();
+
+	@FXML
+	public TextField nbTP = new TextField();
+
+	@FXML
+	public TextField nbTD = new TextField();
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
 
 	@FXML
 	public void affichageDefaut( )
 	{
-		this.semestre.setText(RessourceControleur.intitule);
+		this.semestre.setText(StageControleur.intitule);
 		remplirTableau();
 	}
 
@@ -52,6 +61,81 @@ public class StageControleur implements Initializable
 	@FXML
 	private void remplirTableau()
 	{
+		tableView.getColumns().clear();
+		tableView.getItems().clear();
+
+		ObservableList<Affectation> listeAffectation = FXCollections.observableArrayList();
+
 		
+		ArrayList<Affectation> lst = new ArrayList<Affectation>();
+
+		try
+		{
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM affectation_final WHERE codmod='S4.ST'");
+
+			while (resultSet.next())
+			{
+				String nom = resultSet.getString("nom");
+				String type = resultSet.getString("nomcatheure");
+				int nbSem = resultSet.getInt("nbsem");
+				int nbGrp = resultSet.getInt("nbgrp");
+				int totalEqTd = resultSet.getInt("tot eqtd");
+				String codMod = resultSet.getString("codMod");
+				int codInter = resultSet.getInt("codInter");
+				int codCatHeure = resultSet.getInt("codCatHeure");
+				String commentaire = resultSet.getString("commentaire");
+				int nbH = resultSet.getInt("nbH");
+				
+				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH));
+			}
+
+			for (Affectation affectation : lst)
+			{
+				String nom = affectation.getNom();
+				String type = affectation.getType();
+				int nbSem = affectation.getNbSem();
+				int nbGrp = affectation.getNbGrp();
+				int totalEqTd = affectation.getTotalEqTd();
+				String codMod = affectation.getCodMod();
+				int codInter = affectation.getCodInter();
+				int codCatHeure = affectation.getCodCatHeure();
+				String commentaire = affectation.getCommentaire();
+				int nbH = affectation.getNbH();
+
+				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH));
+			}
+
+			// Remplit la table avec les données de la liste
+
+			TableColumn<Affectation, String> nomCol = new TableColumn<>("Intervenant");
+			nomCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
+
+			TableColumn<Affectation, String> typeCol = new TableColumn<>("Type");
+			typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+			TableColumn<Affectation, Integer> nbHCol = new TableColumn<>("Nb h");
+			nbHCol.setCellValueFactory(new PropertyValueFactory<>("nbH"));
+
+			TableColumn<Affectation, Integer> totalEqTdCol = new TableColumn<>("Total eqtd");
+			totalEqTdCol.setCellValueFactory(new PropertyValueFactory<>("totalEqTd"));
+
+			TableColumn<Affectation, Integer> comCol = new TableColumn<>("commentaire");
+			comCol.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
+
+			tableView.getColumns().addAll(nomCol, typeCol, nbHCol, totalEqTdCol, comCol);
+			tableView.setItems(listeAffectation);
+
+			ArrayList<Semestre> lstSem = Controleur.getSemestre(intitule);
+
+			for (Semestre sem : lstSem)
+			{
+				this.nbEtd.setText(String.valueOf(sem.getNbEtd()));
+				this.nbTP.setText(String.valueOf(sem.getNbGrpTP()));
+				this.nbTD.setText(String.valueOf(sem.getNbGrpTD()));
+			}
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 }

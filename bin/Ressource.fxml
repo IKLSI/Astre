@@ -15,11 +15,11 @@
       <Label layoutX="168.0" layoutY="8.0" text="code" />
       <Label layoutX="218.0" layoutY="8.0" text="libellé long" />
       <Label layoutX="359.0" layoutY="8.0" text="libellé court" />
-      <TextField disable="true" layoutX="14.0" layoutY="27.0" prefHeight="4.0" prefWidth="82.0" text="Ressource" />
+      <TextField disable="true" layoutX="14.0" layoutY="27.0" prefHeight="4.0" prefWidth="82.0" text="Ressources" fx:id="codMod" />
       <TextField disable="true" layoutX="102.0" layoutY="27.0" prefHeight="26.0" prefWidth="58.0" fx:id="semestre" />
-      <TextField layoutX="165.0" layoutY="27.0" prefHeight="26.0" prefWidth="48.0" fx:id="code" onAction="#chargerRessource" />
-      <TextField layoutX="218.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" />
-      <TextField layoutX="359.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" />
+      <TextField layoutX="165.0" layoutY="27.0" prefHeight="26.0" prefWidth="48.0" fx:id="code" />
+      <TextField layoutX="218.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" fx:id="libLong" />
+      <TextField layoutX="359.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" fx:id="libCourt" />
       <Label layoutX="17.0" layoutY="58.0" text="nb etd" />
       <TextField disable="true" layoutX="17.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbEtd" />
       <Label layoutX="138.0" layoutY="58.0" text="nb gp TP" />
@@ -29,66 +29,66 @@
       <AnchorPane layoutX="16.0" layoutY="124.0" prefHeight="102.0" prefWidth="238.0" styleClass="pane" stylesheets="@../lib/style/module.css">
          <children>
             <Label alignment="CENTER" layoutX="111.0" layoutY="11.0" prefHeight="18.0" prefWidth="35.0" text="TD" />
-            <TextField layoutX="111.0" layoutY="28.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="111.0" layoutY="58.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField layoutX="111.0" layoutY="28.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbHPnTD" />
+            <TextField disable="true" layoutX="111.0" layoutY="58.0" prefHeight="26.0" prefWidth="35.0" fx:id="totalEqtdPromoPnTD" />
             <Label alignment="CENTER" layoutX="147.0" layoutY="11.0" prefHeight="18.0" prefWidth="35.0" text="TP" />
-            <TextField layoutX="147.0" layoutY="28.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="147.0" layoutY="58.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField layoutX="147.0" layoutY="28.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbHPnTP" />
+            <TextField disable="true" layoutX="147.0" layoutY="58.0" prefHeight="26.0" prefWidth="35.0" fx:id="totalEqtdPromoPnTP" />
             <Label alignment="CENTER" layoutX="75.0" layoutY="11.0" prefHeight="18.0" prefWidth="35.0" text="CM" />
-            <TextField layoutX="75.0" layoutY="28.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="75.0" layoutY="58.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField layoutX="75.0" layoutY="28.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbHPnCM" />
+            <TextField disable="true" layoutX="75.0" layoutY="58.0" prefHeight="26.0" prefWidth="35.0" fx:id="totalEqtdPromoPnCM" />
             <Label alignment="CENTER" layoutX="187.0" layoutY="11.0" prefHeight="18.0" prefWidth="35.0" text="∑" />
-            <TextField disable="true" layoutX="187.0" layoutY="28.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="187.0" layoutY="58.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField disable="true" layoutX="187.0" layoutY="28.0" prefHeight="26.0" prefWidth="35.0" fx:id="sommePn" />
+            <TextField disable="true" layoutX="187.0" layoutY="58.0" prefHeight="26.0" prefWidth="35.0" fx:id="sommeTotalEqtdPromoPn" />
             <Label layoutX="6.0" layoutY="56.0" prefHeight="35.0" prefWidth="67.0" text="Total (eqtd) promo" wrapText="true" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="259.0" layoutY="124.0" prefHeight="131.0" prefWidth="558.0" styleClass="pane" stylesheets="@../lib/style/module.css">
          <children>
             <Label alignment="CENTER" layoutX="354.0" layoutY="15.0" prefHeight="18.0" prefWidth="35.0" text="TD" />
-            <TextField disable="true" layoutX="354.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="354.0" layoutY="61.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField disable="true" layoutX="354.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbsxNbHTD" />
+            <TextField disable="true" layoutX="354.0" layoutY="61.0" prefHeight="26.0" prefWidth="35.0" fx:id="promoEqtdTD" />
             <Label alignment="CENTER" layoutX="390.0" layoutY="15.0" prefHeight="18.0" prefWidth="35.0" text="TP" />
-            <TextField disable="true" layoutX="390.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="390.0" layoutY="61.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField disable="true" layoutX="390.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbsxNbHTP"/>
+            <TextField disable="true" layoutX="390.0" layoutY="61.0" prefHeight="26.0" prefWidth="35.0" fx:id="promoEqtdTP" />
             <Label alignment="CENTER" layoutX="318.0" layoutY="15.0" prefHeight="18.0" prefWidth="35.0" text="CM" />
-            <TextField disable="true" layoutX="318.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="318.0" layoutY="61.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="354.0" layoutY="91.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="390.0" layoutY="91.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="318.0" layoutY="91.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField disable="true" layoutX="318.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbsxNbHCM" />
+            <TextField disable="true" layoutX="318.0" layoutY="61.0" prefHeight="26.0" prefWidth="35.0" fx:id="promoEqtdCM" />
+            <TextField disable="true" layoutX="354.0" layoutY="91.0" prefHeight="26.0" prefWidth="35.0" fx:id="eqtdTD" />
+            <TextField disable="true" layoutX="390.0" layoutY="91.0" prefHeight="26.0" prefWidth="35.0" fx:id="eqtdTP" />
+            <TextField disable="true" layoutX="318.0" layoutY="91.0" prefHeight="26.0" prefWidth="35.0" fx:id="eqtdCM" />
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="436.0" layoutY="1.0" prefHeight="35.0" prefWidth="67.0" text="heures ponctuelles" wrapText="true" />
-            <TextField layoutX="448.0" layoutY="33.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="448.0" layoutY="62.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="448.0" layoutY="91.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField layoutX="448.0" layoutY="33.0" prefHeight="26.0" prefWidth="35.0" fx:id="hPonctuelle" />
+            <TextField disable="true" layoutX="448.0" layoutY="62.0" prefHeight="26.0" prefWidth="35.0" fx:id="promoEqtdHP" />
+            <TextField disable="true" layoutX="448.0" layoutY="91.0" prefHeight="26.0" prefWidth="35.0" fx:id="eqtdHP"/>
             <Label alignment="CENTER" layoutX="508.0" layoutY="16.0" prefHeight="18.0" prefWidth="35.0" text="∑" />
-            <TextField disable="true" layoutX="508.0" layoutY="33.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="508.0" layoutY="62.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField disable="true" layoutX="508.0" layoutY="92.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField disable="true" layoutX="508.0" layoutY="33.0" prefHeight="26.0" prefWidth="35.0" fx:id="sommeNbsxNbH" />
+            <TextField disable="true" layoutX="508.0" layoutY="62.0" prefHeight="26.0" prefWidth="35.0" fx:id="sommeTotalEqtdPromoPnTP" />
+            <TextField disable="true" layoutX="508.0" layoutY="92.0" prefHeight="26.0" prefWidth="35.0" fx:id="sommeTotAffectEqtd" />
             <Label alignment="CENTER" layoutX="14.0" layoutY="4.0" prefHeight="18.0" prefWidth="82.0" text="CM" />
             <Label alignment="CENTER" layoutX="14.0" layoutY="16.0" prefHeight="18.0" prefWidth="90.0" text="nb Sem  nb h/sem">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <TextField layoutX="19.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField layoutX="58.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField layoutX="19.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbSemaineCM" />
+            <TextField layoutX="58.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbHSemaineCM"/>
             <Label alignment="CENTER" layoutX="104.0" layoutY="4.0" prefHeight="18.0" prefWidth="82.0" text="TD" />
             <Label alignment="CENTER" layoutX="104.0" layoutY="16.0" prefHeight="18.0" prefWidth="90.0" text="nb Sem  nb h/sem">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <TextField layoutX="109.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField layoutX="148.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField layoutX="109.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbSemaineTD"/>
+            <TextField layoutX="148.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbHSemaineTD"/>
             <Label alignment="CENTER" layoutX="197.0" layoutY="4.0" prefHeight="18.0" prefWidth="82.0" text="TP" />
             <Label alignment="CENTER" layoutX="197.0" layoutY="16.0" prefHeight="18.0" prefWidth="90.0" text="nb Sem  nb h/sem">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <TextField layoutX="202.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" />
-            <TextField layoutX="241.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField layoutX="202.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbSemaineTP" />
+            <TextField layoutX="241.0" layoutY="32.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbHSemaineTP" />
             <Label alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="209.0" layoutY="67.0" prefHeight="18.0" prefWidth="102.0" text="Total promo (eqtd)" wrapText="true" />
             <Label alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="209.0" layoutY="97.0" prefHeight="18.0" prefWidth="102.0" text="Total affecté (eqtd)" wrapText="true" />
          </children></AnchorPane>
@@ -96,9 +96,9 @@
       <CheckBox layoutX="16.0" layoutY="238.0" mnemonicParsing="false" text="Validation" />
       <TableView layoutX="259.0" layoutY="276.0" prefHeight="152.0" prefWidth="558.0" fx:id="tableView" />
       <Label alignment="CENTER" layoutX="472.0" layoutY="106.0" prefHeight="18.0" prefWidth="344.0" text="Répartition" />
-      <Button layoutX="260.0" layoutY="435.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="ajouter" />
-      <Button layoutX="339.0" layoutY="435.0" mnemonicParsing="false" text="supprimer" />
-      <Button layoutX="17.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Enregistrer" />
-      <Button layoutX="115.0" layoutY="472.0" mnemonicParsing="false" onAction="#annuler" prefHeight="26.0" prefWidth="90.0" text="Annuler" />
+      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="260.0" layoutY="435.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="ajouter" onAction="#ajouter" />
+      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="339.0" layoutY="435.0" mnemonicParsing="false" text="supprimer" />
+      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="17.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Enregistrer" onAction="#modifier" />
+      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="115.0" layoutY="472.0" mnemonicParsing="false" onAction="#annuler" prefHeight="26.0" prefWidth="90.0" text="Annuler" />
    </children>
 </AnchorPane>

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ParametrageControleur">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ParametrageControleur">
    <children>
       <TableView fx:id="tableView" layoutX="90.0" layoutY="100.0" prefHeight="200.0" prefWidth="433.0" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
@@ -33,42 +33,6 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
-            </Button>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" layoutY="318.0" prefHeight="74.0" prefWidth="600.0">
-         <children>
-            <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Annuler">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Ajouter">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-            </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Supprimer">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="90.0" styleClass="btn" stylesheets="@../lib/style/Parametre.css" text="Valider">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
             </Button>
          </children>
       </HBox>

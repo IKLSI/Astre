@@ -2,3 +2,12 @@
     -fx-border-color: grey;
     -fx-border-width: 0.7px;
 }
+
+.btn {
+	-fx-background-color : #7F23A7;
+	-fx-text-fill : white;
+}
+
+.btn:hover{
+	-fx-background-color: #D09AE8;
+}

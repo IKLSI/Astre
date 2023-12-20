@@ -91,7 +91,7 @@ public class GenererHTML
 		try
 		{
             ResultSet resultSetModule = Controleur.getModule(codMod);
-            ResultSet resultSetAffect = Controleur.getAffectationRessource(codMod);
+            ResultSet resultSetAffect = Controleur.getAffectation(codMod);
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".html") );
 			pw.println ("<!DOCTYPE html>\n" + //
 						"<html lang=\"fr\">\n" + //

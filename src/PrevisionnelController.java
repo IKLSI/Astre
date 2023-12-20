@@ -142,7 +142,6 @@ public class PrevisionnelController implements Initializable
 			});
 			nouveauItem.setStyle("-fx-text-fill : #000000");
 			menuButton.getItems().add(nouveauItem);
-			menuButton.setPrefWidth(85);
 		}
 	}
 
@@ -345,8 +344,7 @@ public class PrevisionnelController implements Initializable
 	{
 		Modules module = (Modules) tableView.getSelectionModel().getSelectedItem();
 		RessourceControleur.intitule = this.intitule;
-		RessourceControleur.setCode(module.getCodMod());
-		System.out.println(module.getCodMod());
+		RessourceControleur.codes = module.getCodMod();
 		new Ressource(PrevisionnelController.panelCentre);
 	}
 
@@ -354,27 +352,29 @@ public class PrevisionnelController implements Initializable
 	private void afficheRessource()
 	{
 		RessourceControleur.intitule = this.intitule;
+		RessourceControleur.codes = "R1.01";
 		new Ressource(PrevisionnelController.panelCentre);
 	}
 
 	@FXML
 	private void afficheSAE()
 	{
-		RessourceControleur.intitule = this.intitule;
+		SaeControleur.intitule = this.intitule;
+		SaeControleur.codes = "S1.1";
 		new Sae(PrevisionnelController.panelCentre);
 	}
 
 	@FXML
 	private void afficheStage()
 	{
-		RessourceControleur.intitule = this.intitule;
+		StageControleur.intitule = this.intitule;
 		new Stages(PrevisionnelController.panelCentre);
 	}
 
 	@FXML
 	private void affichePPP()
 	{
-		RessourceControleur.intitule = this.intitule;
+		PppControleur.intitule = this.intitule;
 		new Ppp(PrevisionnelController.panelCentre);
 	}
 }

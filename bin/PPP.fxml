@@ -21,11 +21,11 @@
       <TextField layoutX="218.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" />
       <TextField layoutX="359.0" layoutY="27.0" prefHeight="26.0" prefWidth="134.0" />
       <Label layoutX="17.0" layoutY="58.0" text="nb etd" />
-      <TextField disable="true" layoutX="17.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" />
+      <TextField fx:id="nbEtd" disable="true" layoutX="17.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" />
       <Label layoutX="138.0" layoutY="58.0" text="nb gp TP" />
-      <TextField disable="true" layoutX="137.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" />
+      <TextField fx:id="nbTP" disable="true" layoutX="137.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" />
       <Label layoutX="81.0" layoutY="58.0" text="nb gp TD" />
-      <TextField disable="true" layoutX="81.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" />
+      <TextField fx:id="nbTD" disable="true" layoutX="81.0" layoutY="75.0" prefHeight="26.0" prefWidth="35.0" />
       <AnchorPane layoutX="5.0" layoutY="124.0" prefHeight="102.0" prefWidth="259.0" styleClass="pane" stylesheets="@../lib/style/module.css">
          <children>
             <Label alignment="CENTER" layoutX="105.0" layoutY="24.0" prefHeight="18.0" prefWidth="35.0" text="TD" />
@@ -66,16 +66,11 @@
          </children></AnchorPane>
       <Label alignment="CENTER" layoutX="18.0" layoutY="106.0" prefHeight="18.0" prefWidth="238.0" text="PN loacal (nb h tot/etd)" />
       <CheckBox layoutX="16.0" layoutY="238.0" mnemonicParsing="false" text="Validation" />
-      <TableView layoutX="259.0" layoutY="276.0" prefHeight="152.0" prefWidth="558.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
+      <TableView layoutX="259.0" layoutY="276.0" prefHeight="152.0" prefWidth="558.0"/>
       <Label alignment="CENTER" layoutX="472.0" layoutY="106.0" prefHeight="18.0" prefWidth="344.0" text="Répartition" />
-      <Button layoutX="260.0" layoutY="435.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="ajouter" />
-      <Button layoutX="339.0" layoutY="435.0" mnemonicParsing="false" text="supprimer" />
-      <Button layoutX="17.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Enregistrer" />
-      <Button layoutX="115.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Annuler" onAction="#annuler"/>
+      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="260.0" layoutY="435.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="ajouter" />
+      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="339.0" layoutY="435.0" mnemonicParsing="false" text="supprimer" />
+      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="17.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Enregistrer" />
+      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="115.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Annuler" onAction="#annuler"/>
    </children>
 </AnchorPane>
