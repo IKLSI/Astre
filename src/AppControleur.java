@@ -1,27 +1,11 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
 import java.util.ResourceBundle;
-
-import javax.swing.Action;
-
-import javafx.beans.property.SimpleStringProperty;
-import java.sql.SQLException;
 
 public class AppControleur implements Initializable
 {
@@ -32,33 +16,30 @@ public class AppControleur implements Initializable
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {affichageDefaut();}
 
-	// Test exemple
-
-	@FXML
-	private void majCentre(ActionEvent event)
-	{
-		try { panelCentre.getChildren().clear(); }
-		catch (Exception e) { e.printStackTrace(); }
-	}
 
 	/* Méthodes changement du Panel centre*/
-
 	private void affichageDefaut(){ new Intervenants(this.panelCentre); }
 
 	@FXML
-	private void afficheParametres(ActionEvent event) { new Parametrage(this.panelCentre); }
-
+	private void afficheParametres(ActionEvent event) { this.chargerOnglet("interface/Parametres"); }
 	@FXML
 	public void affichePrevisionnel(ActionEvent event){ new Previsionnel(this.panelCentre); }
-	
 	@FXML
 	private void afficheIntervenants(ActionEvent event){ new Intervenants(this.panelCentre); }
-
 	@FXML
-	private void afficheEtats(ActionEvent event)
-	{
-		new Etats(panelCentre);
-	}
+	private void afficheEtats(ActionEvent event){ this.chargerOnglet("interface/Etats"); }
 
-	private void afficheRessources(ActionEvent event){ new Ressource(this.panelCentre); }
+	private void chargerOnglet(String nomOnglet)
+	{
+		try
+		{
+			panelCentre.getChildren().clear();
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource( nomOnglet + ".fxml"));
+			AnchorPane loadedPane = loader.load();
+
+			panelCentre.getChildren().setAll(loadedPane.getChildren());
+		}
+		catch (Exception e) { e.printStackTrace(); }
+	}
 }

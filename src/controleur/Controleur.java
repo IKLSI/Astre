@@ -1,3 +1,4 @@
+package controleur;
 import metier.*;
 
 import java.util.ArrayList;
@@ -7,10 +8,9 @@ import java.sql.*;
 public class Controleur
 {
 	// Attributs de Classe
-	public static DB dataBase;
+	private static DB dataBase;
 
-	/*--Methodes--*/
-	/*--DB--*/
+	/*-- Methodes DB --*/
 	// Méthode de connexion à la base de donnée
 	public static void ouvrirConnection() { Controleur.dataBase = new DB(); }
 	public static void couperConnection() { Controleur.dataBase.couperConnection(); }
@@ -32,10 +32,12 @@ public class Controleur
 	public static ArrayList<String>         getNomSemestre()                                     { return Controleur.dataBase.getNomSemestre();}
 	public static boolean                   intervenantExist(String nomInter,String prenomInter) { return Controleur.dataBase.intervenantExist(nomInter,prenomInter);}
 	public static HashMap<String, String>   getPreviModule(String codMod)                        { return Controleur.dataBase.getPreviModule(codMod);}
+	public static ArrayList<String>         getAnnee()                                           { return Controleur.dataBase.getAnnee();}
 
 	// Insertion
 	public static void insertIntervenant(Intervenant inter) { Controleur.dataBase.insertIntervenant(inter); }
 	public static void insertAffectation(Affectation affec) { Controleur.dataBase.insertAffectation(affec); }
+	public static void insertModRessources(Modules nouveauModules) { Controleur.dataBase.insertModRessources(nouveauModules); }
 
 	// Modification
 	public static void updateInter(Intervenant nouveauInter)						               { Controleur.dataBase.updateInter(nouveauInter); }
@@ -44,5 +46,6 @@ public class Controleur
 	public static void updateBool(boolean newVal, String codMod)                                   { Controleur.dataBase.updateBool(newVal, codMod); }
 
 	// Suppression
-	public static void supprInter(int codInter) { Controleur.dataBase.supprInter(codInter); }
+	public static void supprInter(int codInter)               { Controleur.dataBase.supprInter(codInter); }
+	public static void supprMod(Integer codMod, String annee) { Controleur.dataBase.supprMod(codMod, annee); }
 }

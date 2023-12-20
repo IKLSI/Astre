@@ -10,32 +10,24 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView.TableViewSelectionModel;
-import javafx.scene.control.TableView;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSetMetaData;
 import java.sql.ResultSet;
-
+import controleur.Controleur;
 import metier.Intervenant;
 
 public class Intervenants
 {
-	@FXML
-	private ObservableList<ObservableList<String>> data;
-	@FXML
-	private TableView<ObservableList<String>> tableView;
-	@FXML
-	private ScrollPane scrollPane;
+	@FXML private ObservableList<ObservableList<String>> data;
+	@FXML private TableView<ObservableList<String>> tableView;
+	@FXML private ScrollPane scrollPane;
 
 	private ArrayList<Integer>     idIntervenant            = new ArrayList<Integer>();
 	private ArrayList<Intervenant> intervenants             = new ArrayList<Intervenant>();
-	private ArrayList<Intervenant> intervenantsModification = new ArrayList<Intervenant>();
 	
 	public Intervenants(AnchorPane panelCentre)
 	{

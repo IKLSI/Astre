@@ -2,6 +2,8 @@ package metier;
 
 public class Affectation
 {
+	
+	// Attributs de Classe
 	private String codMod;
 	private int codInter;
 	private int codCatHeure;
@@ -13,6 +15,7 @@ public class Affectation
 	private int totalEqTd;
 	private int nbH;
 
+	// Constructeur
 	public Affectation(String codMod, int codInter, int codCatHeure, String commentaire, String nom, String type, int nbSem, int nbGrp, int totalEqTd, int nbH)
 	{
 		this.codMod = codMod;
@@ -27,6 +30,7 @@ public class Affectation
 		this.nbH = nbH;
 	}
 
+	// Getters et Setters
 	public String getNom() { return this.nom; }
 	public String getType() { return this.type; }
 	public int getNbSem() { return this.nbSem; }

@@ -1,15 +1,7 @@
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.collections.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.Node;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,129 +14,52 @@ import java.util.ResourceBundle;
 import java.util.HashMap;
 
 import metier.*;
+import controleur.Controleur;
 
 public class RessourceControleur implements Initializable
 {
 	
 	public static String intitule;
 
-	@FXML
-	public TextField semestre = new TextField();
-
-	@FXML
-	public TableView tableView = new TableView<>();
-
-	@FXML
-	public TextField nbEtd = new TextField();
-
-	@FXML
-	public TextField nbTP = new TextField();
-
-	@FXML
-	public TextField nbTD = new TextField();
-
-	@FXML
-	public TextField code = new TextField();
-
-	@FXML
-	public TextField libCourt = new TextField();
-
-	@FXML
-	public TextField libLong = new TextField();
-
-	@FXML
-	public TextField nbSemaineCM = new TextField();
-
-	@FXML
-	public TextField nbHSemaineCM = new TextField();
-
-	@FXML
-	public TextField nbSemaineTD = new TextField();
-
-	@FXML
-	public TextField nbHSemaineTD = new TextField();
-
-	@FXML
-	public TextField nbSemaineTP = new TextField();
-
-	@FXML
-	public TextField nbHSemaineTP = new TextField();
-
-	@FXML
-	public TextField nbHPnTD = new TextField();
-
-	@FXML
-	public TextField nbHPnTP = new TextField();
-
-	@FXML
-	public TextField nbHPnCM = new TextField();
-
-	@FXML
-	public TextField promoEqtdTP = new TextField();
-
-	@FXML
-	public TextField sommeNbsxNbH = new TextField();
-
-	@FXML
-	public TextField promoEqtdHP = new TextField();
-
-	@FXML
-	public TextField nbsxNbHTD = new TextField();
-
-	@FXML
-	public TextField nbsxNbHCM = new TextField();
-
-	@FXML
-	public TextField sommePn = new TextField();
-
-	@FXML
-	public TextField hPonctuelle = new TextField();
-
-	@FXML
-	public TextField codMod = new TextField();
-
-	@FXML
-	public TextField promoEqtdTD = new TextField();
-
-	@FXML
-	public TextField sommeTotPromoEqtd = new TextField();
-
-	@FXML
-	public TextField nbsxNbHTP = new TextField();
-
-	@FXML
-	public TextField promoEqtdCM = new TextField();
-
-	@FXML
-	public TextField totalEqtdPromoPnCM = new TextField();
-
-	@FXML
-	public TextField eqtdTD = new TextField();
-
-	@FXML
-	public TextField sommeTotalEqtdPromoPn = new TextField();
-
-	@FXML
-	public TextField totalEqtdPromoPnTD = new TextField();
-
-	@FXML
-	public TextField totalEqtdPromoPnTP = new TextField();
-
-	@FXML
-	public TextField eqtdCM = new TextField();
-
-	@FXML
-	public TextField eqtdTP = new TextField();
-
-	@FXML
-	public TextField sommeTotalEqtdPromoPnTP = new TextField();
-
-	@FXML
-	public TextField sommeTotAffectEqtd = new TextField();
-
-	@FXML
-	public TextField eqtdHP = new TextField();
-	
+	@FXML public TextField semestre = new TextField();
+	@FXML public TableView tableView = new TableView<>();
+	@FXML public TextField nbEtd = new TextField();
+	@FXML public TextField nbTP = new TextField();
+	@FXML public TextField nbTD = new TextField();
+	@FXML public TextField code = new TextField();
+	@FXML public TextField libCourt = new TextField();
+	@FXML public TextField libLong = new TextField();
+	@FXML public TextField nbSemaineCM = new TextField();
+	@FXML public TextField nbHSemaineCM = new TextField();
+	@FXML public TextField nbSemaineTD = new TextField();
+	@FXML public TextField nbHSemaineTD = new TextField();
+	@FXML public TextField nbSemaineTP = new TextField();
+	@FXML public TextField nbHSemaineTP = new TextField();
+	@FXML public TextField nbHPnTD = new TextField();
+	@FXML public TextField nbHPnTP = new TextField();
+	@FXML public TextField nbHPnCM = new TextField();
+	@FXML public TextField promoEqtdTP = new TextField();
+	@FXML public TextField sommeNbsxNbH = new TextField();
+	@FXML public TextField promoEqtdHP = new TextField();
+	@FXML public TextField nbsxNbHTD = new TextField();
+	@FXML public TextField nbsxNbHCM = new TextField();
+	@FXML public TextField sommePn = new TextField();
+	@FXML public TextField hPonctuelle = new TextField();
+	@FXML public TextField codMod = new TextField();
+	@FXML public TextField promoEqtdTD = new TextField();
+	@FXML public TextField sommeTotPromoEqtd = new TextField();
+	@FXML public TextField nbsxNbHTP = new TextField();
+	@FXML public TextField promoEqtdCM = new TextField();
+	@FXML public TextField totalEqtdPromoPnCM = new TextField();
+	@FXML public TextField eqtdTD = new TextField();
+	@FXML public TextField sommeTotalEqtdPromoPn = new TextField();
+	@FXML public TextField totalEqtdPromoPnTD = new TextField();
+	@FXML public TextField totalEqtdPromoPnTP = new TextField();
+	@FXML public TextField eqtdCM = new TextField();
+	@FXML public TextField eqtdTP = new TextField();
+	@FXML public TextField sommeTotalEqtdPromoPnTP = new TextField();
+	@FXML public TextField sommeTotAffectEqtd = new TextField();
+	@FXML public TextField eqtdHP = new TextField();
 	public static String codes;
 
 	@Override
@@ -158,10 +73,7 @@ public class RessourceControleur implements Initializable
 	}
 
 	@FXML
-	public void annuler(ActionEvent event)
-	{
-		new Previsionnel(PrevisionnelController.panelCentre);
-	}
+	public void annuler(ActionEvent event) { new Previsionnel(PrevisionnelController.panelCentre); }
 
 	@FXML
 	public void chargerRessource(ActionEvent event)
@@ -287,67 +199,70 @@ public class RessourceControleur implements Initializable
 	}
 
 	@FXML
-	public void modifier(ActionEvent event) {
-		System.out.println(code.getText());
-		System.out.println(codMod.getText());
-			Modules module = new Modules(
-				code.getText(),
-				semestre.getText(),
-				Integer.valueOf(1),
-				libLong.getText(),
-				libCourt.getText(),
-				true,
-				Integer.valueOf(nbHPnCM.getText()),
-				Integer.valueOf(nbHPnTD.getText()),
-				Integer.valueOf(nbHPnTP.getText()),
-				Integer.valueOf(nbSemaineTD.getText()),
-				Integer.valueOf(nbSemaineTP.getText()),
-				Integer.valueOf(nbSemaineCM.getText()),
-				Integer.valueOf(nbHSemaineTD.getText()),
-				Integer.valueOf(nbHSemaineTP.getText()),
-				Integer.valueOf(nbHSemaineCM.getText()),
-				Integer.valueOf(hPonctuelle.getText()),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0)
-			);
-	
-			Controleur.updateMod(module, codMod.getText(), codes);
+	public void modifier(ActionEvent event)
+	{
+		Modules module = new Modules(
+			code.getText(),
+			semestre.getText(),
+			Integer.valueOf(1),
+			libLong.getText(),
+			libCourt.getText(),
+			true,
+			Integer.valueOf(nbHPnCM.getText()),
+			Integer.valueOf(nbHPnTD.getText()),
+			Integer.valueOf(nbHPnTP.getText()),
+			Integer.valueOf(nbSemaineTD.getText()),
+			Integer.valueOf(nbSemaineTP.getText()),
+			Integer.valueOf(nbSemaineCM.getText()),
+			Integer.valueOf(nbHSemaineTD.getText()),
+			Integer.valueOf(nbHSemaineTP.getText()),
+			Integer.valueOf(nbHSemaineCM.getText()),
+			Integer.valueOf(hPonctuelle.getText()),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0)
+		);
+
+		Controleur.updateMod(module, codMod.getText(), codes);
 	}
 
 	@FXML
 	public void ajouter(ActionEvent event)
 	{
-		/*
-		try {
-			Modules module = new Modules(
-				codMod.getText(),
-				semestre.getText(),
-				Integer.parseInt(libLong.getText()),
-				Integer.parseInt(libCourt.getText()),
-				true,
-				Integer.parseInt(nbHPnCM.getText()),
-				Integer.parseInt(nbHPnTD.getText()),
-				Integer.parseInt(nbHPnTP.getText()),
+		Modules module = new Modules(
+			code.getText(),
+			semestre.getText(),
+			Integer.valueOf(1),
+			libLong.getText(),
+			libCourt.getText(),
+			true,
+			Integer.valueOf(nbHPnCM.getText()),
+			Integer.valueOf(nbHPnTD.getText()),
+			Integer.valueOf(nbHPnTP.getText()),
+			Integer.valueOf(nbSemaineTD.getText()),
+			Integer.valueOf(nbSemaineTP.getText()),
+			Integer.valueOf(nbSemaineCM.getText()),
+			Integer.valueOf(nbHSemaineTD.getText()),
+			Integer.valueOf(nbHSemaineTP.getText()),
+			Integer.valueOf(nbHSemaineCM.getText()),
+			Integer.valueOf(hPonctuelle.getText()),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0)
+		);
 
-				Integer.parseInt(nbSemaineTD.getText()),
-				Integer.parseInt(nbSemaineTP.getText()),
-				Integer.parseInt(nbSemaineCM.getText()),
-				Integer.parseInt(nbHSemaineTD.getText()),
-				Integer.parseInt(nbHSemaineTP.getText()),
-				Integer.parseInt(nbHSemaineCM.getText()),
-				Integer.parseInt(hPonctuelle.getText())
-			);
-	
-			Controleur.insertMod(module);
-		} catch (SQLException | NumberFormatException e) {
-			e.printStackTrace();
-		}*/
+		Controleur.insertModRessources(module);
 	}
 }

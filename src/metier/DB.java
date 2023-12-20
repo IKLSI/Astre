@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
-import java.util.Map;
 
 public class DB
 {
@@ -14,7 +13,7 @@ public class DB
 	// Attribut requête Select
 	private PreparedStatement psSelectIntervenants;
 	private PreparedStatement psSelectIntervenant_final;
-	private PreparedStatement psSelectIntervenant_complet;
+	//private PreparedStatement psSelectIntervenant_complet;
 	private PreparedStatement psSelect1Intervenant_final;
 	private PreparedStatement psSelectCodInter;
 	private PreparedStatement psSelectCategorieIntervenant;
@@ -22,7 +21,7 @@ public class DB
 	private PreparedStatement psSelectListeModule;
 	private PreparedStatement psSelectListeSemestre;
 	private PreparedStatement psSelectTypeModules;
-	private PreparedStatement psSelectModuleParIntervenant;
+	//private PreparedStatement psSelectModuleParIntervenant;
 	private PreparedStatement psSelectModulePar1Intervenant;
 	private PreparedStatement psSelectPreviModuleRessource;
 	private PreparedStatement psSelectAffectModuleRessource;
@@ -42,6 +41,7 @@ public class DB
 
 	// Attribut requête Delete
 	private PreparedStatement psDeleteInter;
+	private PreparedStatement psDeleteMod;
 
 	// Attribut requête Update
 	private PreparedStatement psUpdateInter;
@@ -66,7 +66,7 @@ public class DB
 			// Préparation des Requêtes
 			this.psSelectIntervenants          = DB.connec.prepareStatement("SELECT * FROM Intervenant");
 			this.psSelectIntervenant_final     = DB.connec.prepareStatement("SELECT * FROM intervenant_final");
-			this.psSelectIntervenant_complet   = DB.connec.prepareStatement("SELECT * FROM intervenant_complet");
+			//this.psSelectIntervenant_complet   = DB.connec.prepareStatement("SELECT * FROM intervenant_complet");
 			this.psSelect1Intervenant_final    = DB.connec.prepareStatement("SELECT * FROM intervenant_final WHERE codInter = ?");
 			this.psSelectCategorieIntervenant  = DB.connec.prepareStatement("SELECT * FROM CategorieIntervenant");
 			this.psSelectCodInter              = DB.connec.prepareStatement("SELECT codInter FROM Intervenant WHERE nom = ?");
@@ -74,7 +74,7 @@ public class DB
 			this.psSelectListeSemestre         = DB.connec.prepareStatement("SELECT nbGrpTD, nbGrpTP, nbEtd, nbSemaines FROM Semestre WHERE codSem = ?");
 			this.psSelectListeModule           = DB.connec.prepareStatement("SELECT * FROM liste_module WHERE codSem = ?");
 			this.psSelectTypeModules           = DB.connec.prepareStatement("SELECT * FROM TypeModule");
-			this.psSelectModuleParIntervenant  = DB.connec.prepareStatement("SELECT * FROM affectation_final");
+			//this.psSelectModuleParIntervenant  = DB.connec.prepareStatement("SELECT * FROM affectation_final");
 			this.psSelectModulePar1Intervenant = DB.connec.prepareStatement("SELECT * FROM affectation_final WHERE codInter = ?");
 			this.psSelectModule                = DB.connec.prepareStatement("SELECT codmod,codsem,liblong,libcourt FROM module WHERE codMod = ?");
 			this.psSelectPreviModuleRessource  = DB.connec.prepareStatement("SELECT * FROM module_final WHERE codMod = ?");
@@ -102,6 +102,7 @@ public class DB
 			
 			// Preparation des Deletes
 			this.psDeleteInter = DB.connec.prepareStatement("DELETE FROM Intervenant WHERE codInter = ?");
+			this.psDeleteMod   = DB.connec.prepareStatement("DELETE FROM Module WHERE codMod = ? AND annee = ?");
 		}
 		catch (SQLException e) { System.out.println("Problème de connexion à la base de donnée"); }
 	}
@@ -109,10 +110,7 @@ public class DB
 	// Stoppe la connexion à la base de donnée
 	public void couperConnection()
 	{
-		try
-		{
-			DB.connec.close();
-		}
+		try { DB.connec.close(); }
 		catch (Exception e)	{ e.printStackTrace(); }
 	}
 
@@ -127,7 +125,6 @@ public class DB
 			ResultSet rs = this.psSelectIntervenants.executeQuery();
 			while(rs.next())
 			{
-				int codInter    = rs.getInt("codInter");
 				String nom      = rs.getString("nom");
 				String prenom   = rs.getString("prenom");
 				int codCatInter = rs.getInt("codCatInter");
@@ -177,9 +174,11 @@ public class DB
 	{
 		ResultSet resultSet = null;
 
-		try {
+		try
+		{
 			this.psSelect1Intervenant_final.setInt(1,codInter);
-			 resultSet = this.psSelect1Intervenant_final.executeQuery(); }
+			resultSet = this.psSelect1Intervenant_final.executeQuery();
+		}
 		catch (Exception e) { e.printStackTrace(); }
 
 		return resultSet;
@@ -189,9 +188,11 @@ public class DB
 	{
 		ResultSet resultSet = null;
 
-		try { 
+		try
+		{ 
 			this.psSelectModulePar1Intervenant.setInt(1, codInter);
-			resultSet = this.psSelectModulePar1Intervenant.executeQuery(); }
+			resultSet = this.psSelectModulePar1Intervenant.executeQuery();
+		}
 		catch (Exception e) { e.printStackTrace(); }
 
 		return resultSet;
@@ -326,12 +327,13 @@ public class DB
 
 			List<String> keysToRemove = new ArrayList<>();
 			for (String col : lstVal.keySet())
+			{
 				if (lstVal.get(col) == null) 
 					keysToRemove.add(col);
+			}
 
 			for (String key : keysToRemove) 
 				lstVal.remove(key);
-
 		} catch (Exception e) { e.printStackTrace(); }
 		return lstVal;
 	}
@@ -406,11 +408,11 @@ public class DB
 	public ArrayList<String> getAnnee(){
 		ArrayList<String> lstAnnee = new ArrayList<String>();
 
-		try {
+		try
+		{
 			ResultSet rs = psSelectAnnee.executeQuery();
-			while (rs.next()) {
+			while (rs.next())
 				lstAnnee.add(rs.getString("annee"));
-			}
 		} catch (SQLException e) {e.printStackTrace();}
 		return lstAnnee;
 	}
@@ -427,7 +429,6 @@ public class DB
 			this.psInstertIntervenant.setInt(5,inter.getMaxHeure());
 
 			this.psInstertIntervenant.executeUpdate();
-			this.psInstertIntervenant.close(); //jsp ?
 		}
 		catch (SQLException e) { e.printStackTrace(); }
 	}
@@ -445,28 +446,28 @@ public class DB
 		catch (SQLException e) { e.printStackTrace(); }
 	}
 
-	public void insertModRessources(String codMod, String codSem, Integer codTypMod, String libLong, String libCourt, boolean valid, Integer nbHPnCM, Integer nbHPnTD, Integer nbHPnTP, Integer nbSemaineTD, Integer nbSemaineTP, Integer nbSemaineCM, Integer nbHParSemaineTD, Integer nbHParSemaineTP, Integer nbHParSemaineCM, Integer hPonctuelle)
+	public void insertModRessources(Modules nouveauModules)
 	{
 		try
 		{
-			this.psInsertModRessources.setString(1,codMod);
-			this.psInsertModRessources.setString(2,codSem);
-			this.psInsertModRessources.setInt(3,codTypMod);
-			this.psInsertModRessources.setString(4,libLong);
-			this.psInsertModRessources.setString(5,libCourt);
-			this.psInsertModRessources.setBoolean(6,valid);
-			this.psInsertModRessources.setInt(7,nbHPnCM);
-			this.psInsertModRessources.setInt(8,nbHPnTD);
-			this.psInsertModRessources.setInt(9,nbHPnTP);
-			this.psInsertModRessources.setInt(10,nbSemaineTD);
-			this.psInsertModRessources.setInt(11,nbSemaineTP);
-			this.psInsertModRessources.setInt(12,nbSemaineCM);
-			this.psInsertModRessources.setInt(13,nbHParSemaineTD);
-			this.psInsertModRessources.setInt(14,nbHParSemaineTP);
-			this.psInsertModRessources.setInt(15,nbHParSemaineCM);
-			this.psInsertModRessources.setInt(16,hPonctuelle);
+			this.psInsertModRessources.setString(1,nouveauModules.getCodMod());
+			this.psInsertModRessources.setString(2,nouveauModules.getCodSem());
+			this.psInsertModRessources.setInt(3,nouveauModules.getCodTypMod());
+			this.psInsertModRessources.setString(4,nouveauModules.getLibLong());
+			this.psInsertModRessources.setString(5,nouveauModules.getLibCourt());
+			this.psInsertModRessources.setBoolean(6,nouveauModules.getValid());
+			this.psInsertModRessources.setInt(7,nouveauModules.getNbHPnCM());
+			this.psInsertModRessources.setInt(8,nouveauModules.getNbHPnTD());
+			this.psInsertModRessources.setInt(9,nouveauModules.getNbHPnTP());
+			this.psInsertModRessources.setInt(10,nouveauModules.getNbSemaineTD());
+			this.psInsertModRessources.setInt(11,nouveauModules.getNbSemaineTP());
+			this.psInsertModRessources.setInt(12,nouveauModules.getNbSemaineCM());
+			this.psInsertModRessources.setInt(13,nouveauModules.getNbHParSemaineTD());
+			this.psInsertModRessources.setInt(14,nouveauModules.getNbHParSemaineTP());
+			this.psInsertModRessources.setInt(15,nouveauModules.getNbHParSemaineCM());
+			this.psInsertModRessources.setInt(16,nouveauModules.getHPonctuelle());
 			this.psInsertModRessources.executeUpdate();
-		}catch (SQLException e) { e.printStackTrace(); }
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public void insertModSAE(String codMod, String codTypMod, Integer codSem, String libLong, String libCourt, boolean valid, Integer nbHPnSaeParSemestre, Integer nbHPnTutParSemestre, Integer nbHSaeParSemestre, Integer nbHTutParSemestre)
@@ -484,7 +485,7 @@ public class DB
 			this.psInsertModSAE.setInt(9,nbHSaeParSemestre);
 			this.psInsertModSAE.setInt(10,nbHTutParSemestre);
 			this.psInsertModSAE.executeUpdate();
-		}catch (SQLException e) { e.printStackTrace(); }
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public void insertModStage(String codMod, String codSem, Integer codTypMod, String libLong, String libCourt, boolean valid, Integer nbHREH, Integer nbHTut, Integer nbHPnREH, Integer nbHPnTut)
@@ -502,29 +503,29 @@ public class DB
 			this.psInsertModStage.setInt(9,nbHPnREH);
 			this.psInsertModStage.setInt(10,nbHPnTut);
 			this.psInsertModStage.executeUpdate();
-		}catch (SQLException e) { e.printStackTrace(); }
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public void insertModPPP(String codMod, String codSem, Integer codTypMod, String libLong, String libCourt, boolean valid, Integer nbHPnCM, Integer nbHPnTD, Integer nbHPnTP, Integer nbHParSemaineTD, Integer nbHParSemaineTP, Integer nbHParSemaineCM, Integer hPonctuelle, Integer nbHPnHTut)
 	{
 		try
 		{
-			this.psUpdateModPPP.setString(1,codMod);
-			this.psUpdateModPPP.setString(2,codSem);
-			this.psUpdateModPPP.setInt(3,codTypMod);
-			this.psUpdateModPPP.setString(4,libLong);
-			this.psUpdateModPPP.setString(5,libCourt);
-			this.psUpdateModPPP.setBoolean(6,valid);
-			this.psUpdateModPPP.setInt(7,nbHPnCM);
-			this.psUpdateModPPP.setInt(8,nbHPnTD);
-			this.psUpdateModPPP.setInt(9,nbHPnTP);
-			this.psUpdateModPPP.setInt(10,nbHParSemaineTD);
-			this.psUpdateModPPP.setInt(11,nbHParSemaineTP);
-			this.psUpdateModPPP.setInt(12,nbHParSemaineCM);	
-			this.psUpdateModPPP.setInt(13,hPonctuelle);
-			this.psUpdateModPPP.setInt(14,nbHPnHTut);
-			this.psUpdateModPPP.executeUpdate();
-		}catch (SQLException e) { e.printStackTrace(); }
+			this.psInsertModPPP.setString(1,codMod);
+			this.psInsertModPPP.setString(2,codSem);
+			this.psInsertModPPP.setInt(3,codTypMod);
+			this.psInsertModPPP.setString(4,libLong);
+			this.psInsertModPPP.setString(5,libCourt);
+			this.psInsertModPPP.setBoolean(6,valid);
+			this.psInsertModPPP.setInt(7,nbHPnCM);
+			this.psInsertModPPP.setInt(8,nbHPnTD);
+			this.psInsertModPPP.setInt(9,nbHPnTP);
+			this.psInsertModPPP.setInt(10,nbHParSemaineTD);
+			this.psInsertModPPP.setInt(11,nbHParSemaineTP);
+			this.psInsertModPPP.setInt(12,nbHParSemaineCM);	
+			this.psInsertModPPP.setInt(13,hPonctuelle);
+			this.psInsertModPPP.setInt(14,nbHPnHTut);
+			this.psInsertModPPP.executeUpdate();
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	// Méthode de mise à jour
@@ -638,12 +639,23 @@ public class DB
 	}
 
 	// Méthode de suppression
-	public void supprInter(int codInter)
+	public void supprInter(Integer codInter)
 	{
 		try
 		{
 			this.psDeleteInter.setInt(1,codInter);
 			this.psDeleteInter.executeUpdate();
+		}
+		catch (SQLException e) { e.printStackTrace(); }
+	}
+
+	public void supprMod(Integer codMod, String annee)
+	{
+		try
+		{
+			this.psDeleteMod.setInt(1,codMod);
+			this.psDeleteMod.setString(2,annee);
+			this.psDeleteMod.executeUpdate();
 		}
 		catch (SQLException e) { e.printStackTrace(); }
 	}

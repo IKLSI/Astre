@@ -26,29 +26,18 @@ public class CategorieIntervenant
 	// Getter
 
 	public int getCodCatInter() { return this.codCatInter; }
-
 	public String getNomCat() { return this.nomCat; }
-
 	public int getService() { return this.service; }
-
 	public int getMaxHeure() { return this.maxHeure; }
-
 	public int getRatioTPCatInterNum() { return this.ratioTPCatInterNum; }
-
 	public int getRatioTPCatInterDen() { return this.ratioTPCatInterDen; }
 
 	// Setter
 
 	public void setCodCatInter(int codCatInter) { this.codCatInter = codCatInter; }
-
 	public void setNomCat(String nomCat) { this.nomCat = nomCat; }
-
 	public void setService(int service) { this.service = service; }
-
 	public void setMaxHeure(int maxHeure) { this.maxHeure = maxHeure; }
-
 	public void setRatioTPCatInterNum(int ratioTPCatInterNum) { this.ratioTPCatInterNum = ratioTPCatInterNum; }
-
 	public void setRatioTPCatInterDen(int ratioTPCatInterDen) { this.ratioTPCatInterDen = ratioTPCatInterDen; }
 }
-

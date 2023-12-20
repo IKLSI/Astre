@@ -7,17 +7,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ProgressBar;
 
-public class Chargement implements Initializable{
-
-	@FXML
-	private ProgressBar bar;
+public class Chargement implements Initializable
+{
+	@FXML private ProgressBar bar;
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	public void initialize(URL location, ResourceBundle resources)
+	{
 
 	}
 
-	public void charger(){
+	public void charger()
+	{
 		this.bar.setProgress(100);
 	}
 }

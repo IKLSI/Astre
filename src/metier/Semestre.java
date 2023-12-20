@@ -24,24 +24,16 @@ public class Semestre
 	// Getter
 
 	public String getcodSem() { return codSem; }
-
 	public int getNbGrpTD() { return nbGrpTD; }
-
 	public int getNbGrpTP() { return nbGrpTP; }
-
 	public int getNbEtd() { return nbEtd; }
-
 	public int getNbSemaines() { return nbSemaines; }
 
 	// Setter
 
 	public void setcodSem(String codSem) { this.codSem = codSem; }
-
 	public void setNbGrpTD(int nbGrpTD) { this.nbGrpTD = nbGrpTD; }
-
 	public void setNbGrpTP(int nbGrpTP) { this.nbGrpTP = nbGrpTP; }
-
 	public void setNbEtd(int nbEtd) { this.nbEtd = nbEtd; }
-
 	public void setNbSemaines(int nbSemaines) { this.nbSemaines = nbSemaines; }
 }

@@ -1,4 +1,3 @@
-./src/ihm/Annees.java
 ./src/PrevisionnelController.java
 ./src/RessourceControleur.java
 ./src/Ressource.java
@@ -8,16 +7,11 @@
 ./src/SaeControleur.java
 ./src/Ppp.java
 ./src/PppControleur.java
-./src/Controleur.java
 ./src/AppControleur.java
-./src/Etats.java
-./src/EtatsControleur.java
-./src/Exportation.java
 ./src/App.java
 ./src/Intervenants.java
 ./src/Previsionnel.java
-./src/Parametrage.java
-./src/ParametrageControleur.java
+
 ./src/metier/CategorieHeure.java
 ./src/metier/CategorieIntervenant.java
 ./src/metier/DB.java
@@ -26,4 +20,11 @@
 ./src/metier/TypeModule.java
 ./src/metier/Affectation.java
 ./src/metier/Modules.java
+
 ./src/ihm/Chargement.java
+./src/ihm/Annees.java
+./src/ihm/Parametres.java
+./src/ihm/Etats.java
+./src/ihm/Exportation.java
+
+./src/controleur/Controleur.java

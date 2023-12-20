@@ -65,7 +65,7 @@ DROP VIEW IF EXISTS liste_module 		CASCADE;
 -- creation de la table CategorieIntervenant
 
 CREATE TABLE Annee (
-	annee YEAR PRIMARY KEY
+	annee INTEGER PRIMARY KEY
 );
 
 CREATE TABLE CategorieIntervenant (
@@ -87,7 +87,7 @@ CREATE TABLE Intervenant (
 	codCatInter INTEGER REFERENCES CategorieIntervenant(codCatInter),
 	hServ       INTEGER,
 	maxHeure    INTEGER,
-	annee YEAR REFERENCES Annee(annee),
+	annee INTEGER REFERENCES Annee(annee),
 	PRIMARY KEY(codInter,annee)
 );
 
@@ -175,7 +175,7 @@ CREATE TABLE Semestre (
 	nbGrpTP    INTEGER,
 	nbEtd      INTEGER,
 	nbSemaines INTEGER,
-	annee YEAR REFERENCES Annee(annee),
+	annee INTEGER REFERENCES Annee(annee),
 	PRIMARY KEY(codSem,annee)
 );
 
@@ -184,7 +184,7 @@ CREATE TABLE TypeModule (
 	nomTypMod VARCHAR(20)
 );
 
-CREATE OR REPLACE FUNCTION verifTypMod(VARCHAR,VARCHAR)
+CREATE OR REPLACE FUNCTION verifTypMod(INTEGER,VARCHAR)
 	RETURNS BOOLEAN AS
 $$
 DECLARE
@@ -199,12 +199,17 @@ LANGUAGE plpgsql;
 -- creation de la table Module
 
 CREATE TABLE Module (
-	codMod    VARCHAR(5) PRIMARY KEY,
+	codMod    SERIAL,
+	nomMod    VARCHAR(5),
 	codTypMod INTEGER REFERENCES TypeModule(codTypMod),
-	codSem    VARCHAR(2) REFERENCES Semestre(codSem),
+	codSem    VARCHAR(2),
+	annee     INTEGER,
+
+	FOREIGN KEY(codSem,annee) REFERENCES Semestre(codSem,annee),
+	PRIMARY KEY(codMod,annee),
 	
-	libLong   VARCHAR(50),
-	libCourt  VARCHAR(20),
+	libLong   VARCHAR(60),
+	libCourt  VARCHAR(30),
 
 	valid BOOLEAN,
 
@@ -291,9 +296,14 @@ LANGUAGE plpgsql;
 
 CREATE TABLE Affectation (
 	codAffec SERIAL PRIMARY KEY,
-	codMod VARCHAR(5) REFERENCES Module(codMod),
-	codInter INTEGER REFERENCES Intervenant(codInter),
+	codMod INTEGER,
+	codInter INTEGER,
 	codCatHeure INTEGER REFERENCES CategorieHeure(codCatHeure),
+	annee INTEGER,
+
+	FOREIGN KEY (codMod,annee) REFERENCES Module(codMod,annee),
+	FOREIGN KEY (codInter,annee) REFERENCES Intervenant(codInter,annee),
+
 	commentaire TEXT,
 
 	/*Spécifique a ressource*/
@@ -357,7 +367,7 @@ FOR EACH ROW
 EXECUTE FUNCTION delAffectationCatHFonc();
 
 CREATE OR REPLACE VIEW affectation_final AS 
-SELECT  m.codMod,i.codInter,i.nom,c.nomCatHeure,
+SELECT  m.annee,m.codMod,m.nomMod,i.codInter,i.nom,c.nomCatHeure,
 		a.nbSem,a.nbGrp, a.commentaire, c.codCatHeure,
 		a.nbH,
 		ROUND(
@@ -376,16 +386,16 @@ FROM Affectation a JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
 				   JOIN Intervenant i    ON i.codInter    = a.codInter;
 
 CREATE OR REPLACE VIEW inter AS
-SELECT  i.nom,s.codSem,
+SELECT  i.annee,i.nom,s.codSem,
 	    ROUND(SUM(CASE WHEN a.nomCatHeure = 'TP' THEN (c.ratioTPCatInterNum::NUMERIC/c.ratioTPCatInterDen::NUMERIC) ELSE 1 END * a."tot eqtd"),1) AS "tot sem"
 FROM affectation_final a JOIN Module            m ON a.codMod      = m.codMod
 						 JOIN Semestre          s ON m.codSem      = s.codSem
 						 JOIN Intervenant i ON i.codInter = a.codInter
 						 JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter
-GROUP BY i.nom,s.codSem;
+GROUP BY i.annee,i.nom,s.codSem;
 
 CREATE OR REPLACE VIEW intervenant_final AS
-SELECT  i.codInter,c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
+SELECT  i.annee,i.codInter,c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
 		COALESCE(MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END),0) AS S1,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END),0) AS S3,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END),0) AS S5,
@@ -399,15 +409,15 @@ FROM Intervenant i JOIN affectation_final a ON i.codInter    = a.codInter
 				   JOIN Module            m ON a.codMod      = m.codMod
 				   JOIN inter             s ON m.codSem      = s.codSem
 				   JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter
-GROUP BY i.codInter,c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen
+GROUP BY i.annee,i.codInter,c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen
 UNION 
-SELECT i.codInter,c.nomCat, i.nom, i.prenom, i.hServ,i.maxHeure,(c.ratioTPCatInterNum || '/' || c.ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
+SELECT i.annee,i.codInter,c.nomCat, i.nom, i.prenom, i.hServ,i.maxHeure,(c.ratioTPCatInterNum || '/' || c.ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
 	   0 AS S1,0 AS S3,0 AS S5,0 AS sTotImpair,0 AS S2,0 AS S4,0 AS S6,0 AS sTotPair,0 AS Total 
 	   FROM Intervenant i JOIN  CategorieIntervenant c ON i.codCatInter = c.codCatInter 
 	   WHERE i.codInter NOT IN (SELECT codInter FROM Affectation);
 
 -- creation de la fonction calculNbAffect
-CREATE OR REPLACE FUNCTION calculNbAffect(VARCHAR,VARCHAR)
+CREATE OR REPLACE FUNCTION calculNbAffect(INTEGER,VARCHAR)
 RETURNS INTEGER AS $$
 DECLARE
 	totH INTEGER;
@@ -420,7 +430,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE VIEW module_final AS
-SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.nbGrpTP,
+SELECT m.annee,t.nomTypMod, s.codSem,m.nomMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.nbGrpTP,
 	
 	   -- POUR LES RESSOURCES.
 	   -- Heure PN 
@@ -505,7 +515,7 @@ SELECT t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.n
 	   	-- Répartition 2 EFFECTUER ??
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'CM') END AS nbHAffecteCM,
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'TD') END AS nbHAffecteTD,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.cosdMod,'TP') END AS nbHAffecteTP,
+	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'TP') END AS nbHAffecteTP,
 	   CASE WHEN t.nomTypMod = 'PPP' THEN calculNbAffect(m.codMod,'HP') END AS nbHAffecteHP,
 	   
 	   m.valid
@@ -514,9 +524,9 @@ FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
 
 
 CREATE OR REPLACE VIEW liste_module AS 
-SELECT codSem, codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS hAP, valid
+SELECT annee,codSem, nomMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS hAP, valid
 FROM module_final
-ORDER BY codMod;
+ORDER BY nomMod;
 
 CREATE OR REPLACE FUNCTION getCatInter(VARCHAR)
 RETURNS INTEGER AS $$
@@ -538,7 +548,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE VIEW intervenant_complet AS
-SELECT (f.nom || ' ' || f.prenom)::VARCHAR AS nom, f.nomCat, 
+SELECT (f.nom || ' ' || f.prenom)::VARCHAR AS nom, f.nomCat, i.annee,
 		S1 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS1,
 		S1 AS ReelS1,
 		S3 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS3,

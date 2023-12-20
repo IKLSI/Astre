@@ -1,6 +1,7 @@
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.sql.*;  
+import controleur.Controleur;
 
 public class GenererHTML
 {
@@ -8,8 +9,8 @@ public class GenererHTML
 	{
 		try
 		{
-            ResultSet resultSetInter = Controleur.getIntervenant_final(codInter);
-            ResultSet resultSetAffect = Controleur.getModuleParIntervenant(codInter);
+			ResultSet resultSetInter = Controleur.getIntervenant_final(codInter);
+			ResultSet resultSetAffect = Controleur.getModuleParIntervenant(codInter);
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".html") );
 			pw.println ("<!DOCTYPE html>\n" + //
 						"<html lang=\"fr\">\n" + //
@@ -35,7 +36,8 @@ public class GenererHTML
 
 			while(resultSetInter.next()) {
 				pw.println ("\t\t\t\t<tr>\n");
-				for(int cpt = 1; cpt <= resultSetInter.getMetaData().getColumnCount(); cpt++) {
+				for(int cpt = 1; cpt <= resultSetInter.getMetaData().getColumnCount(); cpt++)
+				{
 					pw.println ("\t\t\t\t\t<td>\n" + //
 								"\t\t\t\t\t"+resultSetInter.getString(cpt)+"\n" +
 								"\t\t\t\t\t</td>\n");
@@ -90,8 +92,8 @@ public class GenererHTML
 	{
 		try
 		{
-            ResultSet resultSetModule = Controleur.getModule(codMod);
-            ResultSet resultSetAffect = Controleur.getAffectation(codMod);
+			ResultSet resultSetModule = Controleur.getModule(codMod);
+			ResultSet resultSetAffect = Controleur.getAffectation(codMod);
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".html") );
 			pw.println ("<!DOCTYPE html>\n" + //
 						"<html lang=\"fr\">\n" + //
@@ -115,7 +117,8 @@ public class GenererHTML
 						"\t\t\t</thead>\n" + //
 						"\t\t\t<tbody>\n");
 
-			while(resultSetModule.next()) {
+			while(resultSetModule.next())
+			{
 				pw.println ("\t\t\t\t<tr>\n");
 				for(int cpt = 1; cpt <= resultSetModule.getMetaData().getColumnCount(); cpt++) {
 					pw.println ("\t\t\t\t\t<td>\n" + //
@@ -162,19 +165,22 @@ public class GenererHTML
 		catch (Exception e){ e.printStackTrace(); }
 	}
 
-	public static void genererCSV(String nom) {
+	public static void genererCSV(String nom)
+	{
 		try
 		{
-            ResultSet rs = Controleur.getIntervenant_final();
+			ResultSet rs = Controleur.getIntervenant_final();
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".csv") );
-			for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++) {
+			for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++)
+			{
 				if(cpt != 1)
 					pw.print(",");
 				pw.print(rs.getMetaData().getColumnName(cpt));
 			}
 			while(rs.next())
 			{
-				for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++) {
+				for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++)
+				{
 					if(cpt != 1)
 						pw.print(",");
 					pw.print(rs.getString(cpt));

@@ -6,11 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.collections.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.*;
@@ -18,107 +14,43 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import metier.*;
+import controleur.Controleur;
 
 public class PrevisionnelController implements Initializable
 {
-	@FXML
-	public static AnchorPane panelCentre;
-
-	@FXML
-	private MenuButton menuButton;
-
-	@FXML
-	private TextField nbGrpTDS1 = new TextField();
-
-	@FXML
-	private TextField nbGrpTPS1 = new TextField();
-
-	@FXML
-	private TextField nbEtdS1 = new TextField();
-
-	@FXML
-	private TextField nbSemainesS1 = new TextField();
-
-	@FXML
-	private TextField nbGrpTDS2 = new TextField();
-
-	@FXML
-	private TextField nbGrpTPS2 = new TextField();
-
-	@FXML
-	private TextField nbEtdS2 = new TextField();
-
-	@FXML
-	private TextField nbSemainesS2 = new TextField();
-
-	@FXML
-	private TextField nbGrpTPS3 = new TextField();
-
-	@FXML
-	private TextField nbGrpTDS3 = new TextField();
-
-	@FXML
-	private TextField nbEtdS3 = new TextField();
-
-	@FXML
-	private TextField nbSemainesS3 = new TextField();
-
-	@FXML
-	private TextField nbGrpTPS4 = new TextField();
-
-	@FXML
-	private TextField nbGrpTDS4 = new TextField();
-
-	@FXML
-	private TextField nbEtdS4 = new TextField();
-
-	@FXML
-	private TextField nbSemainesS4 = new TextField();
-
-	@FXML
-	private TextField nbGrpTPS5 = new TextField();
-
-	@FXML
-	private TextField nbGrpTDS5 = new TextField();
-
-	@FXML
-	private TextField nbEtdS5 = new TextField();
-
-	@FXML
-	private TextField nbSemainesS5 = new TextField();
-
-	@FXML
-	private TextField nbGrpTPS6 = new TextField();
-
-	@FXML
-	private TextField nbGrpTDS6 = new TextField();
-
-	@FXML
-	private TextField nbEtdS6 = new TextField();
-
-	@FXML
-	private TextField nbSemainesS6 = new TextField();
-
-	@FXML
+	@FXML public static AnchorPane panelCentre;
+	@FXML private MenuButton menuButton;
+	@FXML private TextField nbGrpTDS1 = new TextField();
+	@FXML private TextField nbGrpTPS1 = new TextField();
+	@FXML private TextField nbEtdS1 = new TextField();
+	@FXML private TextField nbSemainesS1 = new TextField();
+	@FXML private TextField nbGrpTDS2 = new TextField();
+	@FXML private TextField nbGrpTPS2 = new TextField();
+	@FXML private TextField nbEtdS2 = new TextField();
+	@FXML private TextField nbSemainesS2 = new TextField();
+	@FXML private TextField nbGrpTPS3 = new TextField();
+	@FXML private TextField nbGrpTDS3 = new TextField();
+	@FXML private TextField nbEtdS3 = new TextField();
+	@FXML private TextField nbSemainesS3 = new TextField();
+	@FXML private TextField nbGrpTPS4 = new TextField();
+	@FXML private TextField nbGrpTDS4 = new TextField();
+	@FXML private TextField nbEtdS4 = new TextField();
+	@FXML private TextField nbSemainesS4 = new TextField();
+	@FXML private TextField nbGrpTPS5 = new TextField();
+	@FXML private TextField nbGrpTDS5 = new TextField();
+	@FXML private TextField nbEtdS5 = new TextField();
+	@FXML private TextField nbSemainesS5 = new TextField();
+	@FXML private TextField nbGrpTPS6 = new TextField();
+	@FXML private TextField nbGrpTDS6 = new TextField();
+	@FXML private TextField nbEtdS6 = new TextField();
+	@FXML private TextField nbSemainesS6 = new TextField();
 	private String intitule = "S1";
-
-	@FXML
-	private TableView tableView;
-
-	@FXML
-	private TableView tableViewS2 = new TableView();
-
-	@FXML
-	private TableView tableViewS3 = new TableView();
-
-	@FXML
-	private TableView tableViewS4 = new TableView();
-
-	@FXML
-	private TableView tableViewS5 = new TableView();
-
-	@FXML
-	private TableView tableViewS6 = new TableView();
+	@FXML private TableView tableView;
+	@FXML private TableView tableViewS2 = new TableView();
+	@FXML private TableView tableViewS3 = new TableView();
+	@FXML private TableView tableViewS4 = new TableView();
+	@FXML private TableView tableViewS5 = new TableView();
+	@FXML private TableView tableViewS6 = new TableView();
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { chargementBtn(); }
@@ -342,7 +274,32 @@ public class PrevisionnelController implements Initializable
 	@FXML
 	private void modifier( )
 	{
-		Modules module = (Modules) tableView.getSelectionModel().getSelectedItem();
+		Modules module = null;
+		if (this.intitule.equals("S1"))
+		{
+			module = (Modules) tableView.getSelectionModel().getSelectedItem();
+		}
+		else if (this.intitule.equals("S2"))
+		{
+			module = (Modules) tableViewS2.getSelectionModel().getSelectedItem();
+		}
+		else if (this.intitule.equals("S3"))
+		{
+			module = (Modules) tableViewS3.getSelectionModel().getSelectedItem();
+		}
+		else if (this.intitule.equals("S4"))
+		{
+			module = (Modules) tableViewS4.getSelectionModel().getSelectedItem();
+		}
+		else if (this.intitule.equals("S5"))
+		{
+			module = (Modules) tableViewS5.getSelectionModel().getSelectedItem();
+		}
+		else if (this.intitule.equals("S6")) 
+		{
+			module = (Modules) tableViewS6.getSelectionModel().getSelectedItem();
+		}
+
 		RessourceControleur.intitule = this.intitule;
 		RessourceControleur.codes = module.getCodMod();
 		new Ressource(PrevisionnelController.panelCentre);
@@ -352,7 +309,6 @@ public class PrevisionnelController implements Initializable
 	private void afficheRessource()
 	{
 		RessourceControleur.intitule = this.intitule;
-		RessourceControleur.codes = "R1.01";
 		new Ressource(PrevisionnelController.panelCentre);
 	}
 
@@ -360,7 +316,6 @@ public class PrevisionnelController implements Initializable
 	private void afficheSAE()
 	{
 		SaeControleur.intitule = this.intitule;
-		SaeControleur.codes = "S1.1";
 		new Sae(PrevisionnelController.panelCentre);
 	}
 

@@ -1,4 +1,4 @@
-import javafx.beans.property.SimpleStringProperty;
+package ihm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -6,18 +6,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.util.ResourceBundle;
-import java.util.ResourceBundle.Control;
 import java.util.ArrayList;
+import controleur.Controleur;
 
 import metier.*;
-public class ParametrageControleur implements Initializable
+public class Parametres implements Initializable
 {
 	@FXML
 	private TableView tableView = new TableView<>();
@@ -51,10 +49,8 @@ public class ParametrageControleur implements Initializable
 			}
 
 			for (CategorieIntervenant c : tab)
-			{
 				data.add(new CategorieIntervenant(c.getCodCatInter(), c.getNomCat(), c.getService(), c.getMaxHeure(), c.getRatioTPCatInterNum(), c.getRatioTPCatInterDen()));
-			}
-
+			
 			TableColumn<ObservableList<String>, String> codCatInter = new TableColumn<>("Code");
 			codCatInter.setCellValueFactory(new PropertyValueFactory<>("codCatInter"));
 
@@ -89,10 +85,8 @@ public class ParametrageControleur implements Initializable
 		ArrayList<CategorieHeure> tab = Controleur.getCategorieHeure();
 
 		for (CategorieHeure c : tab)
-		{
 			data.add(new CategorieHeure(c.getCodCatHeure(), c.getNomCatHeure(), c.getCoeffNum(), c.getCoeffDen()));
-		}
-
+		
 		TableColumn<ObservableList<String>, String> codCatHeure = new TableColumn<>("Code");
 		codCatHeure.setCellValueFactory(new PropertyValueFactory<>("codCatHeure"));
 

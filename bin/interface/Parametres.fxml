@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ParametrageControleur">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.Parametres">
    <children>
       <TableView fx:id="tableView" layoutX="90.0" layoutY="100.0" prefHeight="200.0" prefWidth="433.0" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#categorieHeure" prefHeight="54.0" prefWidth="205.0" styleClass="categorie" stylesheets="@../lib/style/Parametre.css" text="Catégories Heures">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#categorieHeure" prefHeight="54.0" prefWidth="205.0" styleClass="categorie" stylesheets="@../../lib/style/Parametre.css" text="Catégories Heures">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>
@@ -23,7 +23,7 @@
                   <Insets />
                </opaqueInsets>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#categorieIntervenants" prefHeight="54.0" prefWidth="202.0" styleClass="categorie" stylesheets="@../lib/style/Parametre.css" text="Catégories Intervenants">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#categorieIntervenants" prefHeight="54.0" prefWidth="202.0" styleClass="categorie" stylesheets="@../../lib/style/Parametre.css" text="Catégories Intervenants">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>

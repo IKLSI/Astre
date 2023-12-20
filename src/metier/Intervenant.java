@@ -3,7 +3,6 @@ package metier;
 public class Intervenant
 {
 	// Attributs d'instance
-
 	private int codInter;
 	private String nom;
 	private String prenom;
@@ -12,7 +11,6 @@ public class Intervenant
 	private int maxHeure;
 
 	// Constructeur
-
 	public Intervenant( int codInter, String nom, String prenom, int hServ, int maxHeure)
 	{
 		this.codInter = codInter;
@@ -33,28 +31,17 @@ public class Intervenant
 	}
 
 	// Méthode getteur setteur
-
 	public int getcodInter() { return this.codInter; }
-
 	public void setcodInter(int codInter) { this.codInter = codInter; }
-
 	public String getNom() { return this.nom; }
-
-	public void setNom(String nom) { this.nom = nom; }
-
 	public String getPrenom() { return this.prenom; }
-
-	public void setPrenon(String prenom) { this.prenom = prenom; }
-
 	public int getCodCatInter() { return this.codCatInter; }
-
-	public void setCodCatInter(int codCatInter) { this.codCatInter = codCatInter; }
-
 	public int gethServ() { return this.hServ; }
-
-	public void sethServ(int hServ) { this.hServ = hServ; }
-
 	public int getMaxHeure() { return this.maxHeure; }
 
+	public void setNom(String nom) { this.nom = nom; }
+	public void setPrenon(String prenom) { this.prenom = prenom; }
+	public void setCodCatInter(int codCatInter) { this.codCatInter = codCatInter; }
+	public void sethServ(int hServ) { this.hServ = hServ; }
 	public void setMaxHeure(int maxHeure) { this.maxHeure = maxHeure; }
 }
