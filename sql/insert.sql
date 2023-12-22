@@ -76,7 +76,7 @@ VALUES('Boukachour', 'Hadhoum'  , 1, 192, 364, 2023),
       ('Duvallet'  , 'Claude'   , 5, 384, 576, 2023);
 
 -- Insertion de données dans la table Module ressource
-INSERT INTO Module (nomMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, annee)
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, annee)
 VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'                                 , 'Init Dev'                   , false, 6, 65, 28, 14, 14, 6, 4, 2, 1, 9, 2023),
        ('R1.02', 'S1' , 1, 'Développement interfaces Web'                                , 'Dev Web'                    , false, 6, 65, 28, 14, 14, 6, 4, 2, 1, 9, 2023),
        ('R1.03', 'S1' , 1, 'Introduction Architecture'                                   , 'Archi'                      , false, 6, 65, 28, 14, 14, 6, 4, 2, 1, 9, 2023),
@@ -151,68 +151,69 @@ VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'                       
 
 
 -- Insertion de données dans la table Module SAÉ
-INSERT INTO Module (nomMod, codTypMod, codSem, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre, annee)
+INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre, annee)
 VALUES ('S1.1', 2, 'S1' , 'Implémentation d''un besoin client'    , 'SAE-01'   , false,  6,  0,  6,  0, 2023),
        ('S2.2', 2, 'S2' , 'Développement d''une application'      , 'SAE-02'   , false,  8,  0,  8,  8, 2023),
        ('S3.1', 2, 'S3' , 'Développement d''une application'      , 'Dev appli', false, 40, 38, 40, 38, 2023);
 
 
 -- Insertion de données dans la table Module stage
-INSERT INTO Module (nomMod, codSem, codTypMod, libLong, libCourt, valid, nbHREH, nbHTut, nbHPnREH, nbHPnTut, annee)
-VALUES ('S4.ST', 'S4', 3 , 'Stage'                                 , 'Stage'    ,false ,10,2, NULL, NULL, 2023),
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHREH, nbHTut, nbHPnREH, nbHPnTut, annee)
+VALUES ('S4.ST', 'S4', 3 , 'Stage'                                 , 'Stage'    ,false ,52,0,   52,    0, 2023),
        ('R6.1' , 'S6', 3 , 'Stage'                                 , 'Stage'    ,false ,10,2, NULL, NULL, 2023);
 
 -- Insertion de données dans la table Module PPP
-INSERT INTO Module (nomMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHPnHTut, annee)
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHPnHTut, annee)
 VALUES ('P3.01', 'S3', 4 , 'Portfolio'                 , 'Portfolio' ,false , 1, 1, 1, 2, 4, 0, 1, 4, 2023),
        ('P1.02', 'S4', 4 , 'Portfolio'                 , 'Portfolio', false , 1, 1, 1, 2, 4, 0, 1, 4, 2023);
 
 
--- Insertion de données dans la table Affectation SAE / STAGE
+-- Insertion de données dans la table Affectation SAE / STAGE / PPP
 INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbH, annee)
-VALUES(71,7,6,              NULL,    4, 2023), 
-      (71,1,6,              NULL,    4, 2023), 
-      (71,8,6,              NULL,    4, 2023), 
-      (72,8,6, 'Absent 1semaine',   12, 2023), 
+VALUES('R6.06',7,6,              NULL,    4, 2023), 
+      ('R6.06',1,6,              NULL,    4, 2023), 
+      ('R6.06',8,6,              NULL,    4, 2023), 
+      ('S1.1' ,8, 6, 'Absent 1semaine',   12, 2023), 
       --]Ajout random]
-      (73,1,6,              NULL,   10, 2023), 
-      (73,1,7,              NULL,    8, 2023),
-      (73,6,6,              NULL,    5, 2023),
-      (73,6,7,              NULL,    7, 2023),
-      (73,1,6,              NULL,   10, 2023),
-      (73,1,7,              NULL,    8, 2023),
-      (73,1,6,              NULL,   10, 2023),
-      (73,1,7,              NULL,    8, 2023),
-      (73,1,6,              NULL,    5, 2023),
-      (73,1,7,              NULL,    7, 2023),
-      (74,6,7,             NULL,    3, 2023);
+      ('S2.2' ,1,6,              NULL,   10, 2023), 
+      ('S2.2' ,1,7,              NULL,    8, 2023),
+      ('S2.2' ,6,6,              NULL,    5, 2023),
+      ('S2.2' ,6,7,              NULL,    7, 2023),
+      ('S2.2' ,1,6,              NULL,   10, 2023),
+      ('S2.2' ,1,7,              NULL,    8, 2023),
+      ('S2.2' ,1,6,              NULL,   10, 2023),
+      ('S2.2' ,1,7,              NULL,    8, 2023),
+      ('S2.2' ,1,6,              NULL,    5, 2023),
+      ('S2.2' ,1,7,              NULL,    7, 2023),
+      ('S3.1' ,6,7,              NULL,    3, 2023),
+      ('P1.02',1,2,            'TEST',    5, 2023);
 
 
 -- Insertion de données dans la table Affectation Ressource
 INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbSem, nbGrp, annee)
-VALUES(1,7,1,'3 CM d''1h30.',  6, 1, 2023),  
-      (1,7,2,           NULL, 14, 2, 2023),  
-      (1,7,3,           NULL, 14, 2, 2023),  
-      (1,7,7,          'TP0',  1, 6, 2023), 
-      (1,7,7,    'DS PAPIER',  1, 5, 2023),  
-      (1,7,7,   'DS MACHINE',  1, 5, 2023),  
-      (1,8,2,           NULL, 14, 2, 2023), 
-      (1,8,7,           'TP0', 1, 6, 2023),
-      (1,8,7,     'DS PAPIER', 1, 3, 2023),
-      (1,2,3,           NULL, 14, 2, 2023),
-      (1,2,7,   'DS MACHINE',  1, 3, 2023), 
-      (1,3,3,           NULL, 14, 2, 2023),
-      (1,3,7,   'DS MACHINE',  1, 3, 2023), 
-      (1,1,7,    'DS PAPIER', 1,  5, 2023),
+VALUES('R1.01',7,1,'3 CM d''1h30.',  6, 1, 2023),  
+      ('R1.01',7,2,           NULL, 14, 2, 2023),  
+      ('R1.01',7,3,           NULL, 14, 2, 2023),  
+      ('R1.01',7,7,          'TP0',  1, 6, 2023), 
+      ('R1.01',7,7,    'DS PAPIER',  1, 5, 2023),  
+      ('R1.01',7,7,   'DS MACHINE',  1, 5, 2023),  
+      ('R1.01',8,2,           NULL, 14, 2, 2023), 
+      ('R1.01',8,7,           'TP0', 1, 6, 2023),
+      ('R1.01',8,7,     'DS PAPIER', 1, 3, 2023),
+      ('R1.01',2,3,           NULL, 14, 2, 2023),
+      ('R1.01',2,7,   'DS MACHINE',  1, 3, 2023), 
+      ('R1.01',3,3,           NULL, 14, 2, 2023),
+      ('R1.01',3,7,   'DS MACHINE',  1, 3, 2023), 
+      ('R1.01',1,7,    'DS PAPIER', 1,  5, 2023),
       --Ajout random
-      (13,3,2,           NULL, 13, 2, 2023),
-      (13,7,2,           NULL, 13, 2, 2023), --R2.02
-      (39,2,1,    'NbSem tmp',  6, 1, 2023), --R4.04
-      (39,2,2,    'NbSem tmp', 13, 2, 2023),
-      (39,2,3,    'NbSem tmp', 13, 2, 2023),
-      (53,9,2,           NULL, 15, 2, 2023), --R5.03
-      (69,1,1,'3 CM d''1h30.',  6, 1, 2023),  
-      (69,1,2,           NULL, 14, 2, 2023),  
-      (69,1,3,           NULL, 14, 2, 2023),  
-      (69,1,7,   'DS MACHINE',  1, 5, 2023),  
-      (69,1,7,   'DS MACHINE',  1, 5, 2023);  --R6.05
+      ('R2.02',3,2,           NULL, 13, 2, 2023),
+      ('R2.02',7,2,           NULL, 13, 2, 2023), --R2.02
+      ('R3.14',2,1,    'NbSem tmp',  6, 1, 2023), --R4.04
+      ('R3.14',2,2,    'NbSem tmp', 13, 2, 2023),
+      ('R3.14',2,3,    'NbSem tmp', 13, 2, 2023),
+      ('R5.02',9,2,           NULL, 15, 2, 2023), --R5.03
+      ('R6.04',1,1,'3 CM d''1h30.',  6, 1, 2023),  
+      ('R6.04',1,2,           NULL, 14, 2, 2023),  
+      ('R6.04',1,3,           NULL, 14, 2, 2023),  
+      ('R6.04',1,7,   'DS MACHINE',  1, 5, 2023),  
+      ('R6.04',1,7,   'DS MACHINE',  1, 5, 2023);  --R6.05

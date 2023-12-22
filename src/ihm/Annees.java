@@ -1,13 +1,11 @@
 package ihm;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 
+import java.net.URL;
+import java.util.*;
+import javafx.fxml.*;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.event.ActionEvent;
 
 import controleur.Controleur;
 public class Annees implements Initializable
@@ -24,7 +22,7 @@ public class Annees implements Initializable
 	@FXML
 	private void dupliquerAnnee(ActionEvent event)
 	{
-		System.out.println("dupliquer");
+		Controleur.clonage(2023,2022); // A changé
 	}
 
 	@FXML

@@ -5,18 +5,19 @@ public class Affectation
 	
 	// Attributs de Classe
 	private String codMod;
-	private int codInter;
-	private int codCatHeure;
+	private Integer codInter;
+	private Integer codCatHeure;
 	private String commentaire;
 	private String nom;
 	private String type;
-	private int nbSem;
-	private int nbGrp;
-	private int totalEqTd;
-	private int nbH;
+	private Integer nbSem;
+	private Integer nbGrp;
+	private Integer totalEqTd;
+	private Integer nbH;
+	private Integer annee;
 
 	// Constructeur
-	public Affectation(String codMod, int codInter, int codCatHeure, String commentaire, String nom, String type, int nbSem, int nbGrp, int totalEqTd, int nbH)
+	public Affectation(String codMod, Integer codInter, Integer codCatHeure, String commentaire, String nom, String type, Integer nbSem, Integer nbGrp, Integer totalEqTd, Integer nbH, Integer annee)
 	{
 		this.codMod = codMod;
 		this.codInter = codInter;
@@ -28,29 +29,32 @@ public class Affectation
 		this.nbGrp = nbGrp;
 		this.totalEqTd = totalEqTd;
 		this.nbH = nbH;
+		this.annee = annee;
 	}
 
-	// Getters et Setters
-	public String getNom() { return this.nom; }
-	public String getType() { return this.type; }
-	public int getNbSem() { return this.nbSem; }
-	public int getNbGrp() { return this.nbGrp; }
-	public int getTotalEqTd() { return this.totalEqTd; }
-	public String getCodMod() { return this.codMod; }
-	public int getCodInter() { return this.codInter; }
-	public int getCodCatHeure() { return this.codCatHeure; }
-	public String getCommentaire() { return this.commentaire; }
-	public int getNbH() { return this.nbH; }
+	//Methode Get
+	public String getNom()          { return this.nom; }
+	public String getType()         { return this.type; }
+	public Integer getNbSem()       { return this.nbSem; }
+	public Integer getNbGrp()       { return this.nbGrp; }
+	public Integer getTotalEqTd()   { return this.totalEqTd; }
+	public String getCodMod()       { return this.codMod; }
+	public Integer getCodInter()    { return this.codInter; }
+	public Integer getCodCatHeure() { return this.codCatHeure; }
+	public String getCommentaire()  { return this.commentaire; }
+	public Integer getNbH()         { return this.nbH; }
+	public Integer getAnnee()        { return this.annee; }
 
+	//Methode Set
 	public void setNom(String nom) { this.nom = nom; }
 	public void setType(String type) { this.type = type; }
-	public void setNbSem(int nbSem) { this.nbSem = nbSem; }
-	public void setNbGrp(int nbGrp) { this.nbGrp = nbGrp; }
-	public void setTotalEqTd(int totalEqTd) { this.totalEqTd = totalEqTd; }
+	public void setNbSem(Integer nbSem) { this.nbSem = nbSem; }
+	public void setNbGrp(Integer nbGrp) { this.nbGrp = nbGrp; }
+	public void setTotalEqTd(Integer totalEqTd) { this.totalEqTd = totalEqTd; }
 	public void setCodMod(String codMod) { this.codMod = codMod; }
-	public void setCodInter(int codInter) { this.codInter = codInter; }
-	public void setCodCatHeure(int codCatHeure) { this.codCatHeure = codCatHeure; }
+	public void setCodInter(Integer codInter) { this.codInter = codInter; }
+	public void setCodCatHeure(Integer codCatHeure) { this.codCatHeure = codCatHeure; }
 	public void setCommentaire(String commentaire) { this.commentaire = commentaire; }
-	public void setNbH(int nbH) { this.nbH = nbH; }
-
+	public void setNbH(Integer nbH) { this.nbH = nbH; }
+	public void setAnnee(Integer annee) { this.annee = annee;}
 }

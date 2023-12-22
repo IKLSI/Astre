@@ -9,7 +9,7 @@
 ./src/PppControleur.java
 ./src/AppControleur.java
 ./src/App.java
-./src/Intervenants.java
+
 ./src/Previsionnel.java
 
 ./src/metier/CategorieHeure.java
@@ -26,5 +26,6 @@
 ./src/ihm/Parametres.java
 ./src/ihm/Etats.java
 ./src/ihm/Exportation.java
+./src/ihm/Intervenants.java
 
 ./src/controleur/Controleur.java

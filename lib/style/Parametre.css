@@ -4,6 +4,7 @@
 
 .categorie{
 	-fx-background-color : rgba(150, 81, 180, 0.0);
+	-fx-background-radius : 15px;
 }
 .categorie:focused{
 	-fx-background-color : #7F23A7;
@@ -17,4 +18,54 @@
 
 .btn:hover{
 	-fx-background-color: #D09AE8;
+}
+
+.tableau{
+	-fx-background-color: rgba(150, 81, 180, 0.0);
+	-fx-text-fill: #333333;
+	-fx-font-weight: bold;
+	-fx-border-color: rgba(150, 81, 180, 0.0);
+}
+
+.tableau .table-row-cell {
+	-fx-padding: 15px;
+	-fx-background-radius: 20px;
+	-fx-background-color:#dadada;
+	-fx-background-insets: 5px;
+}
+.tableau .table-row-cell:hover {
+	-fx-background-color:#D09AE8;
+}
+.tableau .table-row-cell:selected {
+	-fx-background-color:#7F23A7;
+	-fx-text-fill: #ffffff;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+.tableau .table-row-cell:empty {
+    -fx-background-color: rgba(150, 81, 180, 0.0);
+}
+
+.tableau .table-cell {
+	-fx-border-width: 0;
+}
+.tableau .table-column {
+	-fx-alignment: CENTER;
+}
+
+.tableau .scroll-bar:vertical {
+	-fx-background-color: rgba(150, 81, 180, 0.0);
+	-fx-background-insets: 0;
+}
+.tableau .scroll-bar:vertical .thumb {
+	-fx-background-color: #7F23A7;
+	-fx-background-radius: 10px;
+}
+
+.tableau .scroll-bar:horizontal {
+	-fx-background-color: rgba(150, 81, 180, 0.0);
+	-fx-background-insets: 0;
+}
+.tableau .scroll-bar:horizontal .thumb {
+	-fx-background-color: #7F23A7;
+	-fx-background-radius: 10px;
 }

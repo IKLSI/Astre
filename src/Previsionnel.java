@@ -1,11 +1,10 @@
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.*;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
 
 public class Previsionnel
 {
-	@FXML private MenuButton menuButton;
+	//@FXML private MenuButton menuButton;
 
 	public Previsionnel(AnchorPane panelCentre)
 	{

@@ -1,6 +1,5 @@
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.sql.*;  
+import java.io.*;
+import java.sql.*;
 import controleur.Controleur;
 
 public class GenererHTML

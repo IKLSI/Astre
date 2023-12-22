@@ -93,12 +93,12 @@
             <Label alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="209.0" layoutY="97.0" prefHeight="18.0" prefWidth="102.0" text="Total affecté (eqtd)" wrapText="true" />
          </children></AnchorPane>
       <Label alignment="CENTER" layoutX="18.0" layoutY="106.0" prefHeight="18.0" prefWidth="238.0" text="PN local (nb h tot/etd)" />
-      <CheckBox layoutX="16.0" layoutY="238.0" mnemonicParsing="false" text="Validation" />
+      <CheckBox layoutX="16.0" layoutY="238.0" mnemonicParsing="false" text="Validation" fx:id="valid" />
       <TableView layoutX="259.0" layoutY="276.0" prefHeight="152.0" prefWidth="558.0" fx:id="tableView" />
       <Label alignment="CENTER" layoutX="472.0" layoutY="106.0" prefHeight="18.0" prefWidth="344.0" text="Répartition" />
       <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="260.0" layoutY="435.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="ajouter" onAction="#ajouter" />
       <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="339.0" layoutY="435.0" mnemonicParsing="false" text="supprimer" />
-      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="17.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Enregistrer" onAction="#modifier" />
+      <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="17.0" layoutY="472.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Enregistrer" onAction="#enregistrer" />
       <Button styleClass="btn" stylesheets="@../lib/style/module.css" layoutX="115.0" layoutY="472.0" mnemonicParsing="false" onAction="#annuler" prefHeight="26.0" prefWidth="90.0" text="Annuler" />
    </children>
 </AnchorPane>

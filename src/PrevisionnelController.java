@@ -1,17 +1,13 @@
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.event.*;
+import javafx.fxml.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.*;
 import javafx.collections.*;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import metier.*;
 import controleur.Controleur;
@@ -190,8 +186,31 @@ public class PrevisionnelController implements Initializable
 		TableColumn<Modules, Boolean> validCol = new TableColumn<>("Valid");
 		validCol.setCellValueFactory(new PropertyValueFactory<>("valid"));
 
-		validCol.setCellFactory(CheckBoxTableCell.forTableColumn(validCol));
-		validCol.setEditable(true);
+		validCol.setCellFactory(column -> {
+			CheckBoxTableCell<Modules, Boolean> cell = new CheckBoxTableCell<Modules, Boolean>() {
+				@Override
+				public void updateItem(Boolean item, boolean empty) {
+					super.updateItem(item, empty);
+					if (!empty) {
+						CheckBox checkBox = new CheckBox();
+						Modules module = (Modules) getTableRow().getItem();
+						if (module != null) {
+							checkBox.setSelected(module.getValid());
+							checkBox.setOnAction(event -> {
+								System.out.println(module.getCodMod());
+								Controleur.updateBool(checkBox.isSelected(), module.getCodMod());
+							});
+							setGraphic(checkBox);
+						} else {
+							setGraphic(null);
+						}
+					} else {
+						setGraphic(null);
+					}
+				}
+			};
+			return cell;
+		});
 
 		if (this.intitule.equals("S1"))
 		{
@@ -243,7 +262,6 @@ public class PrevisionnelController implements Initializable
 	@FXML
 	private void modification(ActionEvent event)
 	{
-		System.out.println("Modification");
 		TextField textField   = (TextField) event.getSource();
 		String    textFieldId = textField.getId();
 		textFieldId = textFieldId.substring(0, textFieldId.length() - 2);
@@ -257,17 +275,7 @@ public class PrevisionnelController implements Initializable
 		Modules module = (Modules) tableView.getSelectionModel().getSelectedItem();
 		System.out.println(module.getCodMod());
 
-		Connection conn = null;
-		try
-		{
-			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("DELETE FROM Module WHERE codMod = '" + module.getCodMod() + "';");
-		}
-		catch (SQLException e) { e.printStackTrace(); }
-		catch (ClassNotFoundException e) { e.printStackTrace(); }
-
+		Controleur.supprMod(module.getCodMod(),module.getAnnee());
 		remplirTableau();
 	}
 
@@ -300,9 +308,39 @@ public class PrevisionnelController implements Initializable
 			module = (Modules) tableViewS6.getSelectionModel().getSelectedItem();
 		}
 
-		StageControleur.intitule = this.intitule;
-		StageControleur.codes = module.getCodMod();
-		new Stages(PrevisionnelController.panelCentre);
+		try {
+			Class.forName("org.postgresql.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
+			Statement stmt = conn.createStatement();
+			stmt.executeQuery("Select nomTypMod From TypeModule t Join Module m on t.codTypMod = m.codTypMod Where codMod = '" + module.getCodMod() + "';");
+			ResultSet rs = stmt.getResultSet();
+			while (rs.next())
+			{
+				switch (rs.getString(1))
+				{
+					case "Ressources" :
+						RessourceControleur.intitule = this.intitule;
+						RessourceControleur.codes = module.getCodMod();
+						new Ressource(PrevisionnelController.panelCentre);
+						break;
+					case "SAE" :
+						SaeControleur.intitule = this.intitule;
+						SaeControleur.codes = module.getCodMod();
+						new Sae(PrevisionnelController.panelCentre);
+						break;
+					case "Stage" :
+						StageControleur.intitule = this.intitule;
+						StageControleur.codes = module.getCodMod();
+						new Stages(PrevisionnelController.panelCentre);
+						break;
+					case "PPP" :
+						PppControleur.intitule = this.intitule;
+						PppControleur.codes = module.getCodMod();
+						new Ppp(PrevisionnelController.panelCentre);
+						break;
+				}
+			}
+		} catch (Exception e) { e.printStackTrace(); }
 	}
 
 	@FXML

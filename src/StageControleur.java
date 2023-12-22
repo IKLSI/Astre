@@ -1,17 +1,13 @@
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.*;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.*;
 
 import metier.*;
 import controleur.Controleur;
@@ -20,56 +16,23 @@ public class StageControleur implements Initializable
 {
 	public static String intitule;
 
-	@FXML
-	public TextField semestre = new TextField();
-
-	@FXML
-	public TableView tableView = new TableView<>();
-
-	@FXML
-	public TextField nbEtd = new TextField();
-
-	@FXML
-	public TextField nbTP = new TextField();
-
-	@FXML
-	public TextField nbTD = new TextField();
-
-	@FXML
-	public TextField code = new TextField();
-
-	@FXML
-	public TextField libCourt = new TextField();
-
-	@FXML
-	public TextField libLong = new TextField();
-
-	@FXML
-	public TextField nbHPnREH = new TextField();
-
-	@FXML
-	public TextField nbHPnTut = new TextField();
-
-	@FXML
-	public TextField sommeHPnStage = new TextField();
-
-	@FXML
-	public TextField nbHREH = new TextField();
-
-	@FXML
-	public TextField nbHTut = new TextField();
-
-	@FXML
-	public TextField sommeTotPromoEqtd = new TextField();
-
-	@FXML
-	public TextField nbHAffecteREH = new TextField();
-
-	@FXML
-	public TextField nbHAffecteHT = new TextField();
-
-	@FXML
-	public TextField sommeTotAffectEqtd = new TextField();
+	@FXML public TextField semestre = new TextField();
+	@FXML public TableView tableView = new TableView<>();
+	@FXML public TextField nbEtd = new TextField();
+	@FXML public TextField nbTP = new TextField();
+	@FXML public TextField nbTD = new TextField();
+	@FXML public TextField code = new TextField();
+	@FXML public TextField libCourt = new TextField();
+	@FXML public TextField libLong = new TextField();
+	@FXML public TextField nbHPnREH = new TextField();
+	@FXML public TextField nbHPnTut = new TextField();
+	@FXML public TextField sommeHPnStage = new TextField();
+	@FXML public TextField nbHREH = new TextField();
+	@FXML public TextField nbHTut = new TextField();
+	@FXML public TextField sommeTotPromoEqtd = new TextField();
+	@FXML public TextField nbHAffecteREH = new TextField();
+	@FXML public TextField nbHAffecteHT = new TextField();
+	@FXML public TextField sommeTotAffectEqtd = new TextField();
 
 	public static String codes;
 
@@ -123,7 +86,7 @@ public class StageControleur implements Initializable
 				String commentaire = resultSet.getString("commentaire");
 				int nbH = resultSet.getInt("nbH");
 				
-				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH));
+				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
 			}
 
 			for (Affectation affectation : lst)
@@ -139,7 +102,7 @@ public class StageControleur implements Initializable
 				String commentaire = affectation.getCommentaire();
 				int nbH = affectation.getNbH();
 
-				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH));
+				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
 			}
 
 			// Remplit la table avec les données de la liste

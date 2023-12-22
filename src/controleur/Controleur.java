@@ -1,14 +1,15 @@
 package controleur;
 import metier.*;
+import ihm.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.sql.*;
 
 public class Controleur
 {
 	// Attributs de Classe
 	private static DB dataBase;
+	public static boolean connecter = true;
 
 	/*-- Methodes DB --*/
 	// Méthode de connexion à la base de donnée
@@ -35,9 +36,10 @@ public class Controleur
 	public static ArrayList<String>         getAnnee()                                           { return Controleur.dataBase.getAnnee();}
 
 	// Insertion
-	public static void insertIntervenant(Intervenant inter) { Controleur.dataBase.insertIntervenant(inter); }
-	public static void insertAffectation(Affectation affec) { Controleur.dataBase.insertAffectation(affec); }
-	public static void insertModRessources(Modules nouveauModules) { Controleur.dataBase.insertModRessources(nouveauModules); }
+	public static void insertIntervenant(Intervenant inter)          { Controleur.dataBase.insertIntervenant(inter); }
+	public static void insertAffectationRessource(Affectation affec) { Controleur.dataBase.insertAffectationRessource(affec); }
+	public static void insertAffectationAutre(Affectation affec)     { Controleur.dataBase.insertAffectationAutre(affec); }
+	public static void insertModRessources(Modules nouveauModules)   { Controleur.dataBase.insertModRessources(nouveauModules); }
 
 	// Modification
 	public static void updateInter(Intervenant nouveauInter)						               { Controleur.dataBase.updateInter(nouveauInter); }
@@ -46,6 +48,13 @@ public class Controleur
 	public static void updateBool(boolean newVal, String codMod)                                   { Controleur.dataBase.updateBool(newVal, codMod); }
 
 	// Suppression
-	public static void supprInter(int codInter)               { Controleur.dataBase.supprInter(codInter); }
-	public static void supprMod(Integer codMod, String annee) { Controleur.dataBase.supprMod(codMod, annee); }
+	public static void supprInter(Integer codInter, Integer annee) { Controleur.dataBase.supprInter(codInter, annee); }
+	public static void supprMod(String codMod, Integer annee)      { Controleur.dataBase.supprMod(codMod, annee); }
+
+	public static void clonage(int annee_source,int annee_destination) { Controleur.dataBase.clonage(annee_source, annee_destination); }
+
+	/*----------------------*/
+	/*----Méthode IHM-------*/
+	/*----------------------*/
+	public static void chargement(double pourcentage) { Chargement.charger(pourcentage); }
 }

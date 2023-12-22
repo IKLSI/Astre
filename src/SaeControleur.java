@@ -1,27 +1,14 @@
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.event.*;
+import javafx.fxml.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.collections.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.Node;
+
 
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.*;
+import javafx.collections.*;
 
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import metier.*;
 import metier.Affectation;
 import controleur.*;
 
@@ -29,57 +16,23 @@ public class SaeControleur implements Initializable
 {
 	public static String intitule;
 
-	@FXML
-	public TextField semestre = new TextField();
-
-	@FXML
-	public TableView tableView = new TableView<>();
-
-	@FXML
-	public TextField nbEtd = new TextField();
-
-	@FXML
-	public TextField nbTP = new TextField();
-
-	@FXML
-	public TextField nbTD = new TextField();
-
-	@FXML
-	public TextField code = new TextField();
-
-	@FXML
-	public TextField libCourt = new TextField();
-
-	@FXML
-	public TextField libLong = new TextField();
-
-	@FXML
-	public TextField nbHSaePN = new TextField();
-
-	@FXML
-	public TextField nbHTutPN = new TextField();
-
-	@FXML
-	public TextField sommePN = new TextField();
-
-	@FXML
-	public TextField nbHSaeProm = new TextField();
-
-	@FXML
-	public TextField nbHTutProm = new TextField();
-
-	@FXML
-	public TextField sommeProm = new TextField();
-
-	@FXML
-	public TextField nbHSaeAff = new TextField();
-
-	@FXML
-	public TextField nbHTutAff = new TextField();
-
-	@FXML
-	public TextField sommeAff = new TextField();
-
+	@FXML public TextField semestre   = new TextField();
+	@FXML public TableView tableView  = new TableView<>();
+	@FXML public TextField nbEtd      = new TextField();
+	@FXML public TextField nbTP       = new TextField();
+	@FXML public TextField nbTD       = new TextField();
+	@FXML public TextField code       = new TextField();
+	@FXML public TextField libCourt   = new TextField();
+	@FXML public TextField libLong    = new TextField();
+	@FXML public TextField nbHSaePN   = new TextField();
+	@FXML public TextField nbHTutPN   = new TextField();
+	@FXML public TextField sommePN    = new TextField();
+	@FXML public TextField nbHSaeProm = new TextField();
+	@FXML public TextField nbHTutProm = new TextField();
+	@FXML public TextField sommeProm  = new TextField();
+	@FXML public TextField nbHSaeAff  = new TextField();
+	@FXML public TextField nbHTutAff  = new TextField();
+	@FXML public TextField sommeAff   = new TextField();
 
 	public static String codes;
 
@@ -133,7 +86,7 @@ public class SaeControleur implements Initializable
 				String commentaire = resultSet.getString("commentaire");
 				int nbH = resultSet.getInt("nbH");
 				
-				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH));
+				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
 			}
 
 			for (Affectation affectation : lst)
@@ -149,11 +102,10 @@ public class SaeControleur implements Initializable
 				String commentaire = affectation.getCommentaire();
 				int nbH = affectation.getNbH();
 
-				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH));
+				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
 			}
 
 			// Remplit la table avec les données de la liste
-
 			TableColumn<Affectation, String> nomCol = new TableColumn<>("Intervenant");
 			nomCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
 

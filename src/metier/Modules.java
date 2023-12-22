@@ -28,6 +28,7 @@ public class Modules
 	private Integer nbHTut;
 	private Integer nbHPnHTut;
 	private Integer codTypMod;
+	private Integer annee;
 
 	public Modules (String codMod, String libLong, String hAP, boolean valid)
 	{
@@ -52,8 +53,9 @@ public class Modules
 					Integer nbHPnTD, Integer nbHPnTP, Integer nbSemaineTD, Integer nbSemaineTP, Integer nbSemaineCM, Integer nbHParSemaineTD,
 					Integer nbHParSemaineTP, Integer nbHParSemaineCM, Integer hPonctuelle, Integer nbHPnSaeParSemestre, Integer nbHPnTutParSemestre,
 					Integer nbHSaeParSemestre, Integer nbHTutParSemestre, Integer nbHPnREH, Integer nbHPnTut, Integer nbHREH, Integer nbHTut,
-					Integer nbHPnHTut)
+					Integer nbHPnHTut, Integer annee)
 	{
+		this.annee = annee;
 		this.codTypMod = codTypMod;
 		this.codSem = codSem;
 		this.codMod = codMod;
@@ -107,6 +109,7 @@ public class Modules
 	public void setNbHTut(Integer nbHTut) {  this.nbHTut = nbHTut; }
 	public void setNbHPnHTut(Integer nbHPnHTut) { this.nbHPnHTut = nbHPnHTut; }
 	public void setCodTypMod(Integer codTypMod) { this.codTypMod = codTypMod; }
+	public void setAnnee(Integer annee) { this.annee = annee; }
 
 	public String getCodSem() { return this.codSem; }
 	public String getCodMod() { return this.codMod; }
@@ -134,4 +137,5 @@ public class Modules
 	public Integer getNbHTut() { return this.nbHTut; }
 	public Integer getNbHPnHTut() { return this.nbHPnHTut; }
 	public Integer getCodTypMod() { return this.codTypMod; }
+	public Integer getAnnee() { return this.annee;}
 }
