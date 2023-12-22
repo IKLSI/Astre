@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="fond" stylesheets="@../../lib/style/Chargement.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.Chargement">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1200.0" styleClass="fond" stylesheets="@../../lib/style/Chargement.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.Chargement">
    <children>
-      <ProgressBar fx:id="bar" layoutX="104.0" layoutY="273.0" prefHeight="26.0" prefWidth="392.0" progress="0.53" styleClass="barre" stylesheets="@../../lib/style/Chargement.css" />
-      <Label layoutX="120.0" layoutY="173.0" prefHeight="90.0" prefWidth="358.0" text="CHARGEMENT">
+      <ProgressBar fx:id="bar" layoutX="214.0" layoutY="551.0" prefHeight="51.0" prefWidth="756.0" progress="0.79" styleClass="barre" stylesheets="@../../lib/style/Chargement.css" />
+      <Label layoutX="373.0" layoutY="397.0" prefHeight="142.0" prefWidth="447.0" text="CHARGEMENT">
          <font>
-            <Font name="Arial Bold" size="49.0" />
+            <Font name="Arial Bold" size="60.0" />
          </font>
       </Label>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="308.0" fitWidth="421.0" layoutX="378.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../lib/img/LogoIUT.png" />
          </image>

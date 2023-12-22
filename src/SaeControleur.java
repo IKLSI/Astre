@@ -10,6 +10,7 @@ import java.util.*;
 import javafx.collections.*;
 
 import metier.Affectation;
+import metier.Modules;
 import controleur.*;
 
 public class SaeControleur implements Initializable
@@ -33,8 +34,11 @@ public class SaeControleur implements Initializable
 	@FXML public TextField nbHSaeAff  = new TextField();
 	@FXML public TextField nbHTutAff  = new TextField();
 	@FXML public TextField sommeAff   = new TextField();
+	@FXML public TextField codMod     = new TextField();
+	@FXML public CheckBox  valid      = new CheckBox();
 
 	public static String codes;
+	private HashMap<String, String> map;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
@@ -86,7 +90,7 @@ public class SaeControleur implements Initializable
 				String commentaire = resultSet.getString("commentaire");
 				int nbH = resultSet.getInt("nbH");
 				
-				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
+				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
 			}
 
 			for (Affectation affectation : lst)
@@ -102,7 +106,7 @@ public class SaeControleur implements Initializable
 				String commentaire = affectation.getCommentaire();
 				int nbH = affectation.getNbH();
 
-				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
+				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
 			}
 
 			// Remplit la table avec les données de la liste
@@ -124,7 +128,19 @@ public class SaeControleur implements Initializable
 			tableView.getColumns().addAll(nomCol, typeCol, nbHCol, totalEqTdCol, comCol);
 			tableView.setItems(listeAffectation);
 
-			HashMap<String, String> map = Controleur.getPreviModule(codes);
+			// tableView.setEditable(true);
+			// nomCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			// nomCol.setOnEditCommit(e -> {
+			// 	modifier(new ActionEvent());
+			// 	e.getTableView().getItems().get(e.getTablePosition().getRow()).setNom(e.getNewValue());
+			// });
+
+			// typeCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			// typeCol.setOnEditCommit(e -> {
+			// 	e.getTableView().getItems().get(e.getTablePosition().getRow()).setType(e.getNewValue());
+			// });
+
+			this.map = Controleur.getPreviModule(codes);
 
 			HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
 			{{
@@ -151,6 +167,55 @@ public class SaeControleur implements Initializable
 			}
 		}
 		catch (SQLException e) { e.printStackTrace(); }
+	}
+
+	@FXML
+	public void valid(ActionEvent event)
+	{
+		Controleur.updateBool(("f").equals(this.map.get("valid")), code.getText());
+	}
+	
+	@FXML
+	public void enregistrer (ActionEvent event)
+	{
+		System.out.println("Enregistrer");
+		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
+	
+		Modules module = new Modules(
+			code.getText(),
+			semestre.getText(),
+			Integer.valueOf(2),
+			libLong.getText(),
+			libCourt.getText(),
+			valid.isSelected(),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(nbHSaePN.getText()),
+			Integer.valueOf(nbHTutPN.getText()),
+			Integer.valueOf(nbHSaeProm.getText()),
+			Integer.valueOf(nbHTutProm.getText()),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Controleur.anneeActuelle
+		);
+
+		if (map == null)
+		{
+			Controleur.insertModSAE(module);
+		}
+		else
+			Controleur.updateMod(module, codMod.getText(), codes);
 	}
 	
 }

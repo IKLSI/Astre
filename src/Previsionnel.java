@@ -12,7 +12,7 @@ public class Previsionnel
 		{
 			panelCentre.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Previsionnel.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Previsionnel.fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());

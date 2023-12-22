@@ -17,7 +17,7 @@ public class Stages
 		{
 			panelCentre.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Stage.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Stage.fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());

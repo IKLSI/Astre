@@ -10,6 +10,7 @@ public class Controleur
 	// Attributs de Classe
 	private static DB dataBase;
 	public static boolean connecter = true;
+	public static Integer anneeActuelle = 0;
 
 	/*-- Methodes DB --*/
 	// Méthode de connexion à la base de donnée
@@ -19,7 +20,6 @@ public class Controleur
 	// Méthode requête à la base de donnée
 	public static ArrayList<Intervenant> 	getIntervenants()						             { return Controleur.dataBase.getIntervenants(); }
 	public static ResultSet 				getIntervenant_final() 					             { return Controleur.dataBase.getIntervenant_final(); }
-	public static ResultSet 				getIntervenant_final(int codInter) 	              	 { return Controleur.dataBase.getIntervenant_final(codInter); }
 	public static ResultSet 				getCategorieInter()						             { return Controleur.dataBase.getCategorieInter(); }
 	public static ArrayList<CategorieHeure> getCategorieHeure()						             { return Controleur.dataBase.getCategorieHeure(); }
 	public static ArrayList<Integer> 		getCodInter(String nomInter)			             { return Controleur.dataBase.getCodInter(nomInter); }
@@ -34,12 +34,16 @@ public class Controleur
 	public static boolean                   intervenantExist(String nomInter,String prenomInter) { return Controleur.dataBase.intervenantExist(nomInter,prenomInter);}
 	public static HashMap<String, String>   getPreviModule(String codMod)                        { return Controleur.dataBase.getPreviModule(codMod);}
 	public static ArrayList<String>         getAnnee()                                           { return Controleur.dataBase.getAnnee();}
+	public static Integer                   getCodCatHeure(String nomCatHeure)                   { return Controleur.dataBase.getCodCatHeure(nomCatHeure);}
 
 	// Insertion
 	public static void insertIntervenant(Intervenant inter)          { Controleur.dataBase.insertIntervenant(inter); }
 	public static void insertAffectationRessource(Affectation affec) { Controleur.dataBase.insertAffectationRessource(affec); }
 	public static void insertAffectationAutre(Affectation affec)     { Controleur.dataBase.insertAffectationAutre(affec); }
 	public static void insertModRessources(Modules nouveauModules)   { Controleur.dataBase.insertModRessources(nouveauModules); }
+	public static void insertModSAE(Modules nouveauModules)          { Controleur.dataBase.insertModSAE(nouveauModules); }
+	public static void insertModStage(Modules nouveauModules)        { Controleur.dataBase.insertModStage(nouveauModules); }
+	public static void insertModPPP(Modules nouveauModules)          { Controleur.dataBase.insertModPPP(nouveauModules); }
 
 	// Modification
 	public static void updateInter(Intervenant nouveauInter)						               { Controleur.dataBase.updateInter(nouveauInter); }
@@ -51,7 +55,11 @@ public class Controleur
 	public static void supprInter(Integer codInter, Integer annee) { Controleur.dataBase.supprInter(codInter, annee); }
 	public static void supprMod(String codMod, Integer annee)      { Controleur.dataBase.supprMod(codMod, annee); }
 
+	// AUTRE
 	public static void clonage(int annee_source,int annee_destination) { Controleur.dataBase.clonage(annee_source, annee_destination); }
+
+	//Setteur
+	public static void setAnneeActuelle() { anneeActuelle = Controleur.dataBase.anneeActuelle(); }
 
 	/*----------------------*/
 	/*----Méthode IHM-------*/

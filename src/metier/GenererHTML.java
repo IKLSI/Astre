@@ -1,3 +1,4 @@
+package metier;
 import java.io.*;
 import java.sql.*;
 import controleur.Controleur;
@@ -8,7 +9,7 @@ public class GenererHTML
 	{
 		try
 		{
-			ResultSet resultSetInter = Controleur.getIntervenant_final(codInter);
+			ResultSet resultSetInter = null; //Controleur.getIntervenant_final(codInter);
 			ResultSet resultSetAffect = Controleur.getModuleParIntervenant(codInter);
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".html") );
 			pw.println ("<!DOCTYPE html>\n" + //

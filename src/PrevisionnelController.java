@@ -247,6 +247,8 @@ public class PrevisionnelController implements Initializable
 			tableViewS6.setEditable(true);
 			tableViewS6.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS6.setItems(listeModules);
+			tableViewS6.getStyleClass().add("tableau");
+			//tableViewS6.getStylesheets().add(getClass().getResource("/lib/style/Previsionnel.css").toExternalForm());
 		}
 	}
 
@@ -308,7 +310,8 @@ public class PrevisionnelController implements Initializable
 			module = (Modules) tableViewS6.getSelectionModel().getSelectedItem();
 		}
 
-		try {
+		try // Changer
+		{
 			Class.forName("org.postgresql.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
 			Statement stmt = conn.createStatement();

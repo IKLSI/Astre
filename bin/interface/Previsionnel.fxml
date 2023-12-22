@@ -10,15 +10,16 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="panelCentre" prefHeight="442.0" prefWidth="636.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrevisionnelController">
-   <BorderPane prefHeight="415.0" prefWidth="636.0">
+<AnchorPane fx:id="panelCentre" prefHeight="750.0" prefWidth="1016.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrevisionnelController">
+   <BorderPane prefHeight="639.0" prefWidth="1015.0">
       <center>
-         <TabPane fx:id="tab" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" stylesheets="@../lib/style/Previsionnel.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+         <TabPane fx:id="tab" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="947.0" styleClass="conteneur" stylesheets="@../../lib/style/Previsionnel.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
          <tabs>
             <Tab onSelectionChanged="#semestreChange" text="S1">
                <content>
-               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="468.0" prefWidth="947.0" styleClass="conteneur" stylesheets="@../../lib/style/Previsionnel.css">
                         <children>
                            <Label layoutX="32.0" layoutY="27.0" text="nb gp TD :" />
                            <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
@@ -29,13 +30,13 @@
                            <TextField fx:id="nbEtdS1" layoutX="357.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <TextField fx:id="nbSemainesS1" layoutX="513.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView fx:id="tableView" layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" styleClass="tableau" stylesheets="@../lib/style/Previsionnel.css" />
+                           <TableView fx:id="tableView" layoutX="25.0" layoutY="93.0" prefHeight="410.0" prefWidth="900.0" styleClass="tableau" stylesheets="@../../lib/style/Previsionnel.css" />
                         </children></AnchorPane>
                </content>
             </Tab>
                <Tab onSelectionChanged="#semestreChange" text="S2">
                   <content>
-                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0">
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="600.0" >
                         <children>
                            <Label layoutX="32.0" layoutY="27.0" text="nb gp TD :" />
                            <Label layoutX="169.0" layoutY="28.0" text="nb gp TP :" />
@@ -46,7 +47,7 @@
                            <TextField fx:id="nbEtdS2" layoutX="357.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <TextField fx:id="nbSemainesS2" layoutX="513.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView fx:id="tableViewS2" layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView fx:id="tableViewS2" layoutX="25.0" layoutY="93.0" prefHeight="410.0" prefWidth="900.0" />
                         </children>
                      </AnchorPane>
                   </content>
@@ -64,7 +65,7 @@
                            <TextField fx:id="nbEtdS3" layoutX="357.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <TextField fx:id="nbSemainesS3" layoutX="513.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView fx:id="tableViewS3" layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView fx:id="tableViewS3" layoutX="25.0" layoutY="93.0" prefHeight="410.0" prefWidth="900.0" />
                         </children>
                      </AnchorPane>
                   </content>
@@ -82,7 +83,7 @@
                            <TextField fx:id="nbEtdS4" layoutX="357.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <TextField fx:id="nbSemainesS4" layoutX="513.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView fx:id="tableViewS4" layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView fx:id="tableViewS4" layoutX="25.0" layoutY="93.0" prefHeight="410.0" prefWidth="900.0" />
                         </children>
                      </AnchorPane>
                   </content>
@@ -100,7 +101,7 @@
                            <TextField fx:id="nbEtdS5" layoutX="357.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <TextField fx:id="nbSemainesS5" layoutX="513.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView fx:id="tableViewS5" layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView fx:id="tableViewS5" layoutX="25.0" layoutY="93.0" prefHeight="410.0" prefWidth="900.0" />
                         </children>
                      </AnchorPane>
                   </content>
@@ -118,7 +119,7 @@
                            <TextField fx:id="nbEtdS6" layoutX="357.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <TextField fx:id="nbSemainesS6" layoutX="513.0" layoutY="24.0" onAction="#modification" prefHeight="26.0" prefWidth="49.0" />
                            <Label layoutX="33.0" layoutY="65.0" text="Liste des Modules" />
-                           <TableView fx:id="tableViewS6" layoutX="33.0" layoutY="93.0" prefHeight="200.0" prefWidth="530.0" />
+                           <TableView fx:id="tableViewS6" layoutX="25.0" layoutY="93.0" prefHeight="410.0" prefWidth="900.0" />
                         </children>
                      </AnchorPane>
                   </content>
@@ -127,17 +128,31 @@
          </TabPane>
       </center>
       <top>
-         <Label text="Prévisionnel" BorderPane.alignment="TOP_LEFT">
+         <Label text="Prévisionnel" BorderPane.alignment="TOP_CENTER">
             <BorderPane.margin>
                <Insets left="10.0" top="10.0" />
             </BorderPane.margin>
+            <font>
+               <Font name="Arial Bold" size="23.0" />
+            </font>
          </Label>
       </top>
    </BorderPane>
-   <Button id="modifier" layoutX="268.0" layoutY="415.0" mnemonicParsing="false" onAction="#modifier" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="modifier" />
-   <Button id="supprimer" layoutX="393.0" layoutY="415.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="40.0" prefWidth="100.0" styleClass="btn" stylesheets="@../lib/style/Previsionnel.css" text="supprimer" />
-   <MenuButton fx:id="menuButton" layoutX="143.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" stylesheets="@../lib/style/Previsionnel.css" text="Création">
+   <Button id="modifier" layoutX="433.0" layoutY="656.0" mnemonicParsing="false" onAction="#modifier" prefHeight="60.0" prefWidth="160.0" styleClass="btn" stylesheets="@../../lib/style/Previsionnel.css" text="Modifier">
+      <font>
+         <Font name="Arial Bold" size="20.0" />
+      </font>
+   </Button>
+   <Button id="supprimer" layoutX="703.0" layoutY="655.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="60.0" prefWidth="160.0" styleClass="btn" stylesheets="@../../lib/style/Previsionnel.css" text="Supprimer">
+      <font>
+         <Font name="Arial Bold" size="18.0" />
+      </font>
+   </Button>
+   <MenuButton fx:id="menuButton" layoutX="162.0" layoutY="656.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="160.0" stylesheets="@../../lib/style/Previsionnel.css" text="   Création">
      <items>
      </items>
+      <font>
+         <Font name="Arial Bold" size="18.0" />
+      </font>
    </MenuButton>
 </AnchorPane>

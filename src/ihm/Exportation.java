@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 
 import controleur.Controleur;
+import metier.GenererHTML;
 
 public class Exportation implements Initializable
 {
@@ -128,7 +129,7 @@ public class Exportation implements Initializable
 		if(exportValid)
 		{
 			this.lblErreur.setText("Exportation");
-			//GenererHTML.genererCSV("test");
+			GenererHTML.GenererIntervenant("Previsualisation",1);
 			exportValid = true;
 		}
 		else

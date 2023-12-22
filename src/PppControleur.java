@@ -41,6 +41,8 @@ public class PppControleur implements Initializable
 	@FXML public TextField nbHAffecteTD       = new TextField();
 	@FXML public TextField nbHAffecteTP       = new TextField();
 	@FXML public TextField nbHAffecteHP       = new TextField();
+	@FXML public TextField codMod             = new TextField();
+	@FXML public CheckBox valid               = new CheckBox();
 
 	public static String codes;
 	private HashMap<String, String> map;
@@ -95,7 +97,7 @@ public class PppControleur implements Initializable
 				String commentaire = resultSet.getString("commentaire");
 				int nbH = resultSet.getInt("nbH");
 				
-				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
+				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
 			}
 
 			for (Affectation affectation : lst)
@@ -111,7 +113,7 @@ public class PppControleur implements Initializable
 				String commentaire = affectation.getCommentaire();
 				int nbH = affectation.getNbH();
 
-				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
+				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
 			}
 
 			// Remplit la table avec les données de la liste
@@ -140,6 +142,7 @@ public class PppControleur implements Initializable
 			HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
 			{{
 				put("nbetd", nbEtd);
+				System.out.println(nbEtd.getText());
 				put("nbtp", nbTP);
 				put("nbtd", nbTD);
 				put("libcourt", libCourt);
@@ -157,7 +160,7 @@ public class PppControleur implements Initializable
 				put("nbhaffecteht", nbHAffecteHT);
 				put("nbhpnTut", nbHPnTut);
 				put("nbhtut", nbHTut);
-				put("sommeheurepnppp", sommeHeurePnPPP);
+				put("sommetotpromoeqtd", sommeTotPromoEqtd);
 				put("nbhaffectecm", nbHAffecteCM);
 				put("nbhaffectetd", nbHAffecteTD);
 				put("nbhaffectetp", nbHAffecteTP);
@@ -166,10 +169,64 @@ public class PppControleur implements Initializable
 
 			for (String key : this.map.keySet())
 			{
+				System.out.println(this.map.get(key));
 				if(lstButton.containsKey(key))
 					lstButton.get(key).setText(this.map.get(key));
 			}
 		}
 		catch (SQLException e) { e.printStackTrace(); }
+	}
+
+	@FXML
+	public void valid(ActionEvent event)
+	{
+		Controleur.updateBool(("f").equals(this.map.get("valid")), code.getText());
+	}
+
+	@FXML
+	public void enregistrer (ActionEvent event)
+	{
+		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
+	
+		Modules module = new Modules
+		(
+			code.getText(),
+			semestre.getText(),
+			Integer.valueOf(3),
+			libLong.getText(),
+			libCourt.getText(),
+			valid.isSelected(),
+			Integer.valueOf(nbHPnCM.getText()),
+			Integer.valueOf(nbHPnTD.getText()),
+			Integer.valueOf(nbHPnTP.getText()),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(nbHParSemaineTD.getText()),
+			Integer.valueOf(nbHParSemaineTP.getText()),
+			Integer.valueOf(nbHParSemaineCM.getText()),
+			Integer.valueOf(hPonctuelle.getText()),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(nbHPnTut.getText()),
+			Integer.valueOf(0),
+			Integer.valueOf(nbHTut.getText()),
+			Integer.valueOf(0),
+			Controleur.anneeActuelle
+		);
+		
+		if (map == null)
+		{
+			Controleur.insertModRessources(module);
+		}
+		else
+		{
+			Controleur.updateMod(module, codMod.getText(), codes);
+		}
+
+		new Previsionnel(PrevisionnelController.panelCentre);
 	}
 }

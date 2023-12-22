@@ -14,7 +14,7 @@ public class Ressource
 		{
 			panelCentre.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Ressource.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Ressource.fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());

@@ -56,10 +56,12 @@ public class RessourceControleur implements Initializable
 	@FXML public TextField sommeTotAffectEqtd      = new TextField();
 	@FXML public TextField eqtdHP                  = new TextField();
 	@FXML public TextField annee                   = new TextField();
+	@FXML public CheckBox valid                    = new CheckBox();
 	
 	public static String codes;
 	private HashMap<String, String> map;
 	private ArrayList<Integer> lstIntervenant = new ArrayList<Integer>();
+	private boolean etat = false;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
@@ -225,7 +227,7 @@ public class RessourceControleur implements Initializable
 			Integer.valueOf(1),
 			libLong.getText(),
 			libCourt.getText(),
-			true, //Changer
+			valid.isSelected(),
 			Integer.valueOf(nbHPnCM.getText()),
 			Integer.valueOf(nbHPnTD.getText()),
 			Integer.valueOf(nbHPnTP.getText()),
@@ -245,28 +247,60 @@ public class RessourceControleur implements Initializable
 			Integer.valueOf(0),
 			Integer.valueOf(0),
 			Integer.valueOf(0),
-			Integer.valueOf(annee.getText())
+			Controleur.anneeActuelle
 		);
 	}
 
 	@FXML
 	public void ajouter(ActionEvent event)
 	{
-		tableView.getItems().add(new Affectation(
-			"",
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			"",
-			"",
-			"",
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(annee.getText())
-		));
+		if (etat == false)
+		{
+			tableView.getItems().add(new Affectation(
+				"",
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				"",
+				"",
+				"",
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Controleur.anneeActuelle
+			));
+		}
+		else
+		{
+			int dernier = tableView.getItems().size() - 1;
+			Affectation affectation = (Affectation) tableView.getItems().get(dernier);
 
-		lstIntervenant.add(tableView.getSelectionModel().getSelectedIndex());
+			Controleur.insertAffectationRessource(new Affectation(
+				codes,
+				Controleur.getCodInter(affectation.getNom()).get(0),
+				Controleur.getCodCatHeure(affectation.getType()),
+				affectation.getCommentaire(),
+				affectation.getNom(),
+				affectation.getType(),
+				affectation.getNbSem(),
+				affectation.getNbGrp(),
+				affectation.getTotalEqTd(),
+				affectation.getNbH(),
+				Controleur.anneeActuelle
+			));
+		}
+
+		etat = !etat;
+	}
+
+	@FXML
+	public void supprimer(ActionEvent event)
+	{
+		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+		Affectation affectation = (Affectation) tableView.getItems().get(selectedIndex);
+
+		// Controleur.deleteAffectation(affectation.getCodMod(), affectation.getCodInter(), affectation.getCodCatHeure());
+		tableView.getItems().remove(selectedIndex);
 	}
 
 	@FXML
@@ -274,38 +308,44 @@ public class RessourceControleur implements Initializable
 	{
 		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
 	
-		if (map.size() == 0)
+		Modules module = new Modules(
+			code.getText(),
+			semestre.getText(),
+			Integer.valueOf(1),
+			libLong.getText(),
+			libCourt.getText(),
+			valid.isSelected(), 
+			Integer.valueOf(nbHPnCM.getText()),
+			Integer.valueOf(nbHPnTD.getText()),
+			Integer.valueOf(nbHPnTP.getText()),
+			Integer.valueOf(nbSemaineTD.getText()),
+			Integer.valueOf(nbSemaineTP.getText()),
+			Integer.valueOf(nbSemaineCM.getText()),
+			Integer.valueOf(nbHSemaineTD.getText()),
+			Integer.valueOf(nbHSemaineTP.getText()),
+			Integer.valueOf(nbHSemaineCM.getText()),
+			Integer.valueOf(hPonctuelle.getText()),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Controleur.anneeActuelle
+		);
+		
+		if (map == null)
 		{
-			Modules module = new Modules(
-				code.getText(),
-				semestre.getText(),
-				Integer.valueOf(1),
-				libLong.getText(),
-				libCourt.getText(),
-				true, //Changer
-				Integer.valueOf(nbHPnCM.getText()),
-				Integer.valueOf(nbHPnTD.getText()),
-				Integer.valueOf(nbHPnTP.getText()),
-				Integer.valueOf(nbSemaineTD.getText()),
-				Integer.valueOf(nbSemaineTP.getText()),
-				Integer.valueOf(nbSemaineCM.getText()),
-				Integer.valueOf(nbHSemaineTD.getText()),
-				Integer.valueOf(nbHSemaineTP.getText()),
-				Integer.valueOf(nbHSemaineCM.getText()),
-				Integer.valueOf(hPonctuelle.getText()),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(0),
-				Integer.valueOf(annee.getText())
-			);
+			Controleur.insertModRessources(module);
 		}
 		else
-			System.out.println("Modification");
+		{
+			Controleur.updateMod(module, codMod.getText(), codes);
+		}
+
+		new Previsionnel(PrevisionnelController.panelCentre);
 	}
 }

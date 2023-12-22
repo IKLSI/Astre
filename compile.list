@@ -20,6 +20,7 @@
 ./src/metier/TypeModule.java
 ./src/metier/Affectation.java
 ./src/metier/Modules.java
+./src/metier/GenererHTML.java
 
 ./src/ihm/Chargement.java
 ./src/ihm/Annees.java

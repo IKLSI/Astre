@@ -10,12 +10,11 @@ public class Sae
 
 	public Sae(AnchorPane panelCentre)
 	{
-		//this.panelCentre = panelCentre;
 		try
 		{
 			panelCentre.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("SAE.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/SAE.fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());

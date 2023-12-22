@@ -22,12 +22,12 @@ public class App extends Application
 		try
 		{
 			// Frame Accueil
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Accueil.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Accueil.fxml"));
 			AnchorPane panelAppli = loader.load();
 
 			this.frameAppli = frameAppli;
 			this.frameAppli.setTitle("ASTRE");
-			Scene scene = new Scene(panelAppli, 800, 500);
+			Scene scene = new Scene(panelAppli, 1200, 750);
 
 			this.frameAppli.setResizable(false);
 
@@ -46,7 +46,7 @@ public class App extends Application
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Chargement.fxml"));
 			AnchorPane panelAppli = loader.load();
 
-			Scene scene = new Scene(panelAppli, 800, 500);
+			Scene scene = new Scene(panelAppli, 1200, 750);
 			this.frameAppli.setScene(scene);
 			this.frameAppli.setTitle("ASTRE");
 			this.frameAppli.show();
@@ -55,6 +55,7 @@ public class App extends Application
 			Platform.runLater(() -> {
 				Controleur.ouvrirConnection();
 				//Controleur.chargement(1.0);
+				Controleur.setAnneeActuelle();
 				try {
 					Thread.sleep(1000);
 				} catch (Exception e) {}
@@ -63,7 +64,7 @@ public class App extends Application
 					//Ouvre le menu
 					Platform.runLater(() -> {
 						try {
-							FXMLLoader load = new FXMLLoader(getClass().getResource("Affichage.fxml"));
+							FXMLLoader load = new FXMLLoader(getClass().getResource("interface/Menu.fxml"));
 							AnchorPane panelApplis = load.load();
 							scene.setRoot(panelApplis);
 						} catch (Exception e) {

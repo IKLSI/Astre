@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1016.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SaeControleur">
+   <children>
+      <Label layoutX="104.0" layoutY="112.0" text="type module" />
+      <Label layoutX="193.0" layoutY="112.0" text="semestre" />
+      <Label layoutX="258.0" layoutY="112.0" text="code" />
+      <Label layoutX="308.0" layoutY="112.0" text="libellé long" />
+      <Label layoutX="449.0" layoutY="112.0" text="libellé court" />
+      <TextField fx:id="codMod" disable="true" layoutX="104.0" layoutY="131.0" prefHeight="4.0" prefWidth="82.0" text="SAE" />
+      <TextField fx:id="semestre" disable="true" layoutX="192.0" layoutY="131.0" prefHeight="26.0" prefWidth="58.0" />
+      <TextField fx:id="code" layoutX="255.0" layoutY="131.0" prefHeight="26.0" prefWidth="48.0" />
+      <TextField fx:id="libLong" layoutX="308.0" layoutY="131.0" prefHeight="26.0" prefWidth="134.0" />
+      <TextField fx:id="libCourt" layoutX="449.0" layoutY="131.0" prefHeight="26.0" prefWidth="134.0" />
+      <Label layoutX="107.0" layoutY="162.0" text="nb etd" />
+      <TextField fx:id="nbEtd" disable="true" layoutX="107.0" layoutY="179.0" prefHeight="26.0" prefWidth="35.0" />
+      <Label layoutX="228.0" layoutY="162.0" text="nb gp TP" />
+      <TextField fx:id="nbTP" disable="true" layoutX="227.0" layoutY="179.0" prefHeight="26.0" prefWidth="35.0" />
+      <Label layoutX="171.0" layoutY="162.0" text="nb gp TD" />
+      <TextField fx:id="nbTD" disable="true" layoutX="171.0" layoutY="179.0" prefHeight="26.0" prefWidth="35.0" />
+      <AnchorPane layoutX="106.0" layoutY="228.0" prefHeight="102.0" prefWidth="238.0" styleClass="pane" stylesheets="@../../lib/style/module.css">
+         <children>
+            <Label alignment="CENTER" layoutX="116.0" layoutY="20.0" prefHeight="18.0" prefWidth="35.0" text="h Tut" />
+            <TextField fx:id="nbHTutPN" layoutX="116.0" layoutY="37.0" prefHeight="26.0" prefWidth="35.0" />
+            <Label alignment="CENTER" layoutX="75.0" layoutY="20.0" prefHeight="18.0" prefWidth="35.0" text="h Sae" />
+            <TextField fx:id="nbHSaePN" layoutX="75.0" layoutY="37.0" prefHeight="26.0" prefWidth="35.0" />
+            <Label alignment="CENTER" layoutX="179.0" layoutY="19.0" prefHeight="18.0" prefWidth="35.0" text="∑" />
+            <TextField fx:id="sommePN" disable="true" layoutX="179.0" layoutY="37.0" prefHeight="26.0" prefWidth="35.0" />
+            <Label layoutX="3.0" layoutY="33.0" prefHeight="35.0" prefWidth="67.0" text="Total (eqtd) promo" wrapText="true" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="349.0" layoutY="228.0" prefHeight="131.0" prefWidth="558.0" styleClass="pane" stylesheets="@../../lib/style/module.css">
+         <children>
+            <Label alignment="CENTER" layoutX="180.0" layoutY="20.0" prefHeight="18.0" prefWidth="35.0" text="h Tut" />
+            <TextField fx:id="nbHTutProm" layoutX="180.0" layoutY="37.0" prefHeight="26.0" prefWidth="35.0" />
+            <Label alignment="CENTER" layoutX="139.0" layoutY="20.0" prefHeight="18.0" prefWidth="35.0" text="h Sae" />
+            <TextField fx:id="nbHSaeProm" layoutX="139.0" layoutY="37.0" prefHeight="26.0" prefWidth="35.0" />
+            <Label alignment="CENTER" layoutX="487.0" layoutY="18.0" prefHeight="18.0" prefWidth="35.0" text="∑" />
+            <TextField fx:id="sommeProm" disable="true" layoutX="487.0" layoutY="37.0" prefHeight="26.0" prefWidth="35.0" />
+            <Label layoutX="32.0" layoutY="37.0" prefHeight="26.0" prefWidth="106.0" text="Total (eqtd) promo" wrapText="true" />
+            <TextField fx:id="nbHSaeAff" disable="true" layoutX="487.0" layoutY="69.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField fx:id="nbHTutAff" disable="true" layoutX="180.0" layoutY="69.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField fx:id="sommeAff" disable="true" layoutX="139.0" layoutY="69.0" prefHeight="26.0" prefWidth="35.0" />
+            <Label layoutX="32.0" layoutY="69.0" prefHeight="26.0" prefWidth="106.0" text="Total affecté (eqtd)" wrapText="true" />
+         </children></AnchorPane>
+      <Label alignment="CENTER" layoutX="108.0" layoutY="210.0" prefHeight="18.0" prefWidth="238.0" text="PN loacal (nb h tot/etd)" />
+      <CheckBox layoutX="106.0" layoutY="342.0" mnemonicParsing="false" text="Validation" />
+      <TableView fx:id="tableView" layoutX="349.0" layoutY="380.0" prefHeight="152.0" prefWidth="558.0" styleClass="tableau" stylesheets="@../../lib/style/Previsionnel.css" />
+      <Label alignment="CENTER" layoutX="348.0" layoutY="210.0" prefHeight="18.0" prefWidth="558.0" text="Répartition" />
+      <Button layoutX="350.0" layoutY="539.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="ajouter" />
+      <Button layoutX="429.0" layoutY="539.0" mnemonicParsing="false" styleClass="btn" stylesheets="@../../lib/style/module.css" text="supprimer" />
+      <Button layoutX="107.0" layoutY="576.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Enregistrer" />
+      <Button layoutX="205.0" layoutY="576.0" mnemonicParsing="false" onAction="#annuler" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Annuler" />
+   </children>
+</AnchorPane>

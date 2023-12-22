@@ -14,6 +14,10 @@ DROP TABLE IF EXISTS Affectation 			CASCADE ;
 DROP TABLE IF EXISTS CategorieIntervenant 	CASCADE ;
 DROP TABLE IF EXISTS CategorieHeure 		CASCADE ;
 DROP TABLE IF EXISTS TypeModule 	        CASCADE ;
+DROP TABLE IF EXISTS cloneAffectation CASCADE;
+DROP TABLE IF EXISTS cloneModule CASCADE;
+DROP TABLE IF EXISTS cloneIntervenant CASCADE;
+DROP TABLE IF EXISTS cloneSemestre CASCADE;
 
 
 -- Fonction
@@ -295,11 +299,12 @@ LANGUAGE plpgsql;
 -- creation de la table Affectation 
 
 CREATE TABLE Affectation (
-	codAffec SERIAL PRIMARY KEY,
+	codAffec SERIAL,
 	codMod VARCHAR(5),
 	codInter INTEGER,
 	codCatHeure INTEGER REFERENCES CategorieHeure(codCatHeure),
 	annee INTEGER,
+	PRIMARY KEY(codAffec,annee),
 
 	FOREIGN KEY (codMod,annee) REFERENCES Module(codMod,annee),
 	FOREIGN KEY (codInter,annee) REFERENCES Intervenant(codInter,annee),
@@ -367,7 +372,7 @@ FOR EACH ROW
 EXECUTE FUNCTION delAffectationCatHFonc();
 
 CREATE OR REPLACE VIEW affectation_final AS 
-SELECT  m.annee,m.codMod,i.codInter,i.nom,c.nomCatHeure,
+SELECT DISTINCT m.annee,m.codMod,i.codInter,i.nom,c.nomCatHeure,
 		a.nbSem,a.nbGrp, a.commentaire, c.codCatHeure,
 		a.nbH,
 		ROUND(
@@ -383,10 +388,11 @@ SELECT  m.annee,m.codMod,i.codInter,i.nom,c.nomCatHeure,
 		END *(c.coeffNum::NUMERIC/c.coeffDen::NUMERIC),1) AS "tot eqtd"
 FROM Affectation a JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
 				   JOIN Module      m    ON a.codMod      = m.codMod
-				   JOIN Intervenant i    ON i.codInter    = a.codInter;
+				   JOIN Intervenant i    ON i.codInter    = a.codInter
+GROUP BY a.annee;
 
 CREATE OR REPLACE VIEW inter AS
-SELECT  i.annee,i.nom,s.codSem,
+SELECT DISTINCT i.annee,i.nom,s.codSem,
 	    ROUND(SUM(CASE WHEN a.nomCatHeure = 'TP' THEN (c.ratioTPCatInterNum::NUMERIC/c.ratioTPCatInterDen::NUMERIC) ELSE 1 END * a."tot eqtd"),1) AS "tot sem"
 FROM affectation_final a JOIN Module            m ON a.codMod      = m.codMod
 						 JOIN Semestre          s ON m.codSem      = s.codSem
@@ -395,7 +401,7 @@ FROM affectation_final a JOIN Module            m ON a.codMod      = m.codMod
 GROUP BY i.annee,i.nom,s.codSem;
 
 CREATE OR REPLACE VIEW intervenant_final AS
-SELECT  i.annee,i.codInter,c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
+SELECT DISTINCT i.annee,i.codInter,c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
 		COALESCE(MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END),0) AS S1,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END),0) AS S3,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END),0) AS S5,
@@ -430,7 +436,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE VIEW module_final AS
-SELECT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.nbGrpTP,
+SELECT DISTINCT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.nbGrpTP,
 	
 	   -- POUR LES RESSOURCES.
 	   -- Heure PN 
@@ -520,11 +526,12 @@ SELECT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbG
 	   
 	   m.valid
 FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
-			  JOIN Semestre   s ON s.codSem    = m.codSem;
+			  JOIN Semestre   s ON s.codSem    = m.codSem
+GROUP BY m.annee;;
 
 
 CREATE OR REPLACE VIEW liste_module AS 
-SELECT annee,codSem,codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS hAP, valid
+SELECT DISTINCT annee,codSem,codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS hAP, valid
 FROM module_final
 ORDER BY codMod;
 
@@ -548,7 +555,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE VIEW intervenant_complet AS
-SELECT (f.nom || ' ' || f.prenom)::VARCHAR AS nom, f.nomCat, i.annee,
+SELECT DISTINCT (f.nom || ' ' || f.prenom)::VARCHAR AS nom, f.nomCat, i.annee,
 		S1 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS1,
 		S1 AS ReelS1,
 		S3 * (c.ratioTPCatInterDen::NUMERIC/c.ratioTPCatInterNum::NUMERIC) AS TheoS3,

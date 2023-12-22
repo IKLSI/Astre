@@ -10,6 +10,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.sql.*;
 
 import controleur.Controleur;
@@ -21,6 +23,7 @@ public class Intervenants
 	@FXML private ObservableList<ObservableList<String>> data;
 	@FXML private TableView<ObservableList<String>> tableView;
 	@FXML private ScrollPane scrollPane;
+	private Label lblErreur;
 
 // créer une hashset pour stocker les id des intervenants à supprimer et une année -
 	private HashMap<Integer, Integer> idIntervenant = new HashMap<Integer, Integer>();
@@ -219,7 +222,9 @@ public class Intervenants
 		Label lblNomCat = new Label("Nom catégorie :");
 		Label lblHserv = new Label("Heures de service :");
 		Label lblMaxheure = new Label("Max heures :");
-		Label lblAnnee = new Label("Année :");
+		Label lblAnnee  = new Label("Année :");
+		this.lblErreur = new Label("");
+		this.lblErreur.setStyle("-fx-text-fill: red;");
 
 		//boutons
 		Button bouton = new Button("Ajouter");
@@ -236,11 +241,16 @@ public class Intervenants
 		bouton.setOnMouseEntered(e -> bouton.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
 		bouton.setOnMouseExited(e -> bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
 		bouton.setOnAction((ActionEvent event2) -> {
-			Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getText()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()), Integer.parseInt(annee.getText()));
-			this.intervenants.add(intervenant);
-			panelCentre.getChildren().clear();
-			Controleur.insertIntervenant(intervenant);
-			new Intervenants(panelCentre);
+			if(regString(nom.getText()) && regString(prenom.getText()) && regInt(Integer.parseInt(nomCat.getText()),"<",6) && 
+			   regInt(Integer.parseInt(hserv.getText()),">",5) && regInt(Integer.parseInt(maxheure.getText()),"<",250) && regInt(Integer.parseInt(annee.getText()),">",2022))
+			{
+				Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getText()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()), Integer.parseInt(annee.getText()));
+				this.intervenants.add(intervenant);
+				Controleur.insertIntervenant(intervenant);
+
+				panelCentre.getChildren().clear();
+				new Intervenants(panelCentre);
+			}
 		});
 
 		//Bouton Annuler
@@ -313,6 +323,10 @@ public class Intervenants
 		AnchorPane.setLeftAnchor(lblAnnee, 20.0);
 		panelCentre.getChildren ().add(lblAnnee);
 
+		AnchorPane.setTopAnchor (this.lblErreur, 180.0);
+		AnchorPane.setLeftAnchor(this.lblErreur, 420.0);
+		panelCentre.getChildren ().add(this.lblErreur);
+
 		//Boutons
 		AnchorPane.setTopAnchor (bouton, 340.0);
 		AnchorPane.setLeftAnchor(bouton, 20.0);
@@ -322,6 +336,33 @@ public class Intervenants
 		AnchorPane.setLeftAnchor(buttonA, 80.0);
 		panelCentre.getChildren ().add(buttonA);
 
+	}
+
+	private boolean regString(String messageTester)
+	{
+		String regex = "^[a-zA-Z]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(messageTester);
+		if(matcher.matches())
+		{
+			this.lblErreur.setText("");
+			return true;
+		}
+		this.lblErreur.setText(messageTester + "n'est pas valide");
+		return false;
+	}
+	private boolean regInt(int nbTester, String contrainte,int borne)
+	{
+		if(contrainte.equals(">")){
+			this.lblErreur.setText("");
+			if(nbTester > borne) return true;
+		}
+		if(contrainte.equals("<")){
+			this.lblErreur.setText("");
+			if(nbTester < borne) return true;
+		}
+		this.lblErreur.setText("Erreur " + nbTester + " doit être" + contrainte + " " + borne);
+		return false;
 	}
 	
 	@FXML

@@ -4,6 +4,7 @@
 
 .btn{
 	-fx-background-color : rgba(150, 81, 180, 0.0);
+	-fx-background-radius : 15px ;
 }
 .btn:focused{
 	-fx-background-color : #7F23A7;
@@ -19,27 +20,27 @@
 
 .panel{
 	-fx-background-color : #D9D9D9;
-	-fx-background-radius : 15px ;
+	-fx-background-radius : 30px ;
 	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
 }
 
 .btnExport{
 	-fx-background-color : rgba(150, 81, 180, 0.0);
 	-fx-background-image: url("../img/Exportation.png");
-    -fx-background-size: cover; /* ajuste la taille de l'image pour couvrir la zone */
-    -fx-background-position: center; /* positionne l'image au centre */
+    -fx-background-size: cover;
+    -fx-background-position: center; 
 }
 .btnExport:hover{
 	-fx-background-color : rgba(150, 81, 180, 0.0);
 	-fx-background-image: url("../img/ExportHover.png");
-    -fx-background-size: cover; /* ajuste la taille de l'image pour couvrir la zone */
-    -fx-background-position: center; /* positionne l'image au centre */
+    -fx-background-size: cover;
+    -fx-background-position: center;
 }
 
 .btnAnnee{
 	-fx-background-color:#7F23A7;
 	-fx-text-fill:white;
-	-fx-background-radius : 15px;
+	-fx-background-radius : 30px;
 }
 
 .btnAnnee:hover{

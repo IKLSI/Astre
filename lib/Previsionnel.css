@@ -5,20 +5,18 @@
 .btn {
 	-fx-background-color : #7F23A7;
 	-fx-text-fill : white;
-	-fx-background-radius : 15px;
 }
 
 .menu-button {
-	-fx-background-color:#7F23A7;
-	-fx-background-radius : 15px;
+    -fx-background-color:#7F23A7;
 }
 
 .menu-button .label {
-	-fx-text-fill : white;
+    -fx-text-fill : white;
 }
 
 .btn:hover {
-	-fx-background-color: #D09AE8;
+    -fx-background-color: #D09AE8;
 }
 
 .tab-pane .tab {
@@ -26,7 +24,7 @@
 }
 
 .tab .tab-label {
-	-fx-alignment: CENTER;
+    -fx-alignment: CENTER;
    -fx-text-fill: white;
 }
 
@@ -46,7 +44,6 @@
 }
 
 .tableau .table-row-cell {
-	-fx-padding: 5px;
 	-fx-background-radius: 7px;
 	-fx-background-color:#dadada;
 	-fx-background-insets: 3px;
@@ -57,9 +54,6 @@
 .tableau .table-row-cell:selected {
 	-fx-background-color:#7F23A7;
 	-fx-text-fill: #ffffff;
-}
-.tableau .table-row-cell:empty {
-    -fx-background-color: rgba(150, 81, 180, 0.0);
 }
 
 .tableau .table-cell {
@@ -86,13 +80,4 @@
 .tableau .scroll-bar:horizontal .thumb {
 	-fx-background-color: #7F23A7;
 	-fx-background-radius: 10px;
-}
-
-.tab-pane {
-    -fx-tab-min-height: 20px; /* Changer la hauteur maximale des onglets */
-	-fx-tab-min-width: 30px; /* Largeur minimale des onglets */
-}
-
-.conteneur{
-	-fx-background-color: rgba(150, 81, 180, 0.0);
 }

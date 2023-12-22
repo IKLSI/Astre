@@ -15,7 +15,7 @@ public class Ppp
 		{
 			panelCentre.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("PPP.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/PPP.fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());

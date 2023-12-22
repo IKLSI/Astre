@@ -43,7 +43,7 @@ public class Affectation
 	public Integer getCodCatHeure() { return this.codCatHeure; }
 	public String getCommentaire()  { return this.commentaire; }
 	public Integer getNbH()         { return this.nbH; }
-	public Integer getAnnee()        { return this.annee; }
+	public Integer getAnnee()       { return this.annee; }
 
 	//Methode Set
 	public void setNom(String nom) { this.nom = nom; }
