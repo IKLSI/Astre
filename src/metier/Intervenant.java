@@ -3,6 +3,7 @@ package metier;
 public class Intervenant
 {
 	// Attributs d'instance
+
 	private Integer codInter;
 	private String nom;
 	private String prenom;
@@ -12,6 +13,7 @@ public class Intervenant
 	private Integer annee;
 
 	// Constructeur
+
 	public Intervenant( Integer codInter, String nom, String prenom, Integer hServ, Integer maxHeure , Integer annee)
 	{
 		this.codInter = codInter;
@@ -34,6 +36,7 @@ public class Intervenant
 	}
 
 	// Méthode getteur setteur
+
 	public Integer getcodInter()             { return this.codInter; }
 	public void    setcodInter(int codInter) { this.codInter = codInter; }
 	public String  getNom()                  { return this.nom; }

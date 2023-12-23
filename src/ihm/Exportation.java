@@ -14,6 +14,7 @@ import metier.GenererHTML;
 public class Exportation implements Initializable
 {
 	//Attributs d'instance
+
 	@FXML private AnchorPane panelSaisie;
 	@FXML private RadioButton btnCSV;
 	@FXML private Label lblErreur;
@@ -36,6 +37,7 @@ public class Exportation implements Initializable
 	public void initialisationInter()
 	{
 		//Déchargement du Panel Droit
+
 		try
 		{
 			this.btnCSV.setDisable(false);	//permet d'exporter en csv
@@ -44,6 +46,7 @@ public class Exportation implements Initializable
 		catch (Exception e) { e.printStackTrace(); }
 
 		//Création
+
 		this.nomInter = new TextField();
 		nomInter.setPrefWidth(200);
 		nomInter.setPrefHeight(28);
@@ -55,6 +58,7 @@ public class Exportation implements Initializable
 		this.prenomInter.setPromptText("Entrez le prénom de l'intervenant");
 
 		//Positionnement
+
 		AnchorPane.setTopAnchor(nomInter, 30.0);
 		AnchorPane.setLeftAnchor(nomInter, 20.0);
 
@@ -65,17 +69,19 @@ public class Exportation implements Initializable
 		panelSaisie.getChildren().add(prenomInter);
 	}
 
-	/*Panel Droit pour exporter les Semestres ou les modules*/
+	// Panel Droit pour exporter les Semestres ou les modules
+
 	public void initialisationModSem(String type)
 	{
 		ArrayList<String> lstElement = new ArrayList<String>(); //Stock les années ou les modules
 
 		//Déchargement du Panel Droit
+
 		try
 		{
 			this.btnCSV.setDisable(true);	//permet d'exporter en csv
 			this.btnCSV.setSelected(false);
-			//retire les textfield
+			// Retire les textfield
 			this.panelSaisie.getChildren().remove(this.nomInter);
 			this.panelSaisie.getChildren().remove(this.prenomInter);
 		}
@@ -87,18 +93,21 @@ public class Exportation implements Initializable
 			lstElement = Controleur.getNomSemestre();	//chargement des années dans la liste
 
 		//Création
+
 		this.lst = new ComboBox<String>();
 		this.lst.getItems().addAll(FXCollections.observableArrayList(lstElement)); //place le contenu de la liste dans le cbBox
 		this.lst.setPrefWidth(200);
 		this.lst.setPrefHeight(28);
 
 		//Positionnement
+
 		AnchorPane.setTopAnchor(this.lst, 30.0);
 		AnchorPane.setLeftAnchor(this.lst, 20.0);
 		panelSaisie.getChildren().add(this.lst);
 	}
 
-	/*Test si ce qu'on a choisi est bien exportable*/
+	//Test si ce qu'on a choisi est bien exportable
+
 	@FXML
 	public void verification(ActionEvent event)
 	{
@@ -122,7 +131,8 @@ public class Exportation implements Initializable
 		}
 	}
 
-	/*--Exportation--*/
+	// Exportation
+
 	@FXML
 	public void exportation(ActionEvent event)
 	{
@@ -133,8 +143,6 @@ public class Exportation implements Initializable
 			exportValid = true;
 		}
 		else
-		{
 			this.lblErreur.setText("Impossible d'export pas valider");
-		}
 	}
 }

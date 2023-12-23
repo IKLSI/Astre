@@ -8,16 +8,20 @@ import java.sql.*;
 public class Controleur
 {
 	// Attributs de Classe
+
 	private static DB dataBase;
 	public static boolean connecter = true;
 	public static Integer anneeActuelle = 0;
 
 	/*-- Methodes DB --*/
+
 	// Méthode de connexion à la base de donnée
+
 	public static void ouvrirConnection() { Controleur.dataBase = new DB(); }
 	public static void couperConnection() { Controleur.dataBase.couperConnection(); }
 
 	// Méthode requête à la base de donnée
+
 	public static ArrayList<Intervenant> 	getIntervenants()						             { return Controleur.dataBase.getIntervenants(); }
 	public static ResultSet 				getIntervenant_final() 					             { return Controleur.dataBase.getIntervenant_final(); }
 	public static ResultSet 				getCategorieInter()						             { return Controleur.dataBase.getCategorieInter(); }
@@ -37,6 +41,7 @@ public class Controleur
 	public static Integer                   getCodCatHeure(String nomCatHeure)                   { return Controleur.dataBase.getCodCatHeure(nomCatHeure);}
 
 	// Insertion
+
 	public static void insertIntervenant(Intervenant inter)          { Controleur.dataBase.insertIntervenant(inter); }
 	public static void insertAffectationRessource(Affectation affec) { Controleur.dataBase.insertAffectationRessource(affec); }
 	public static void insertAffectationAutre(Affectation affec)     { Controleur.dataBase.insertAffectationAutre(affec); }
@@ -46,23 +51,27 @@ public class Controleur
 	public static void insertModPPP(Modules nouveauModules)          { Controleur.dataBase.insertModPPP(nouveauModules); }
 
 	// Modification
+
 	public static void updateInter(Intervenant nouveauInter)						               { Controleur.dataBase.updateInter(nouveauInter); }
 	public static void updateSem(String textFieldId, String intitule, int newVal)                  { Controleur.dataBase.updateSem(textFieldId, intitule, newVal); }
 	public static void updateMod(Modules nouveauModules, String nomTypMod, String codMod)          { Controleur.dataBase.updateMod(nouveauModules, nomTypMod, codMod); }
 	public static void updateBool(boolean newVal, String codMod)                                   { Controleur.dataBase.updateBool(newVal, codMod); }
 
 	// Suppression
+
 	public static void supprInter(Integer codInter, Integer annee) { Controleur.dataBase.supprInter(codInter, annee); }
 	public static void supprMod(String codMod, Integer annee)      { Controleur.dataBase.supprMod(codMod, annee); }
+	public static void supprAffectation(String codMod, Integer annee) { Controleur.dataBase.supprAffectation(codMod, annee); }
 
 	// AUTRE
+
 	public static void clonage(int annee_source,int annee_destination) { Controleur.dataBase.clonage(annee_source, annee_destination); }
 
 	//Setteur
+
 	public static void setAnneeActuelle() { anneeActuelle = Controleur.dataBase.anneeActuelle(); }
 
-	/*----------------------*/
-	/*----Méthode IHM-------*/
-	/*----------------------*/
+	// Méthode de chargement IHM
+
 	public static void chargement(double pourcentage) { Chargement.charger(pourcentage); }
 }

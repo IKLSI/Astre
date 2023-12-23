@@ -34,7 +34,8 @@ public class GenererHTML
 						"\t\t\t</thead>\n" + //
 						"\t\t\t<tbody>\n");
 
-			while(resultSetInter.next()) {
+			while(resultSetInter.next())
+			{
 				pw.println ("\t\t\t\t<tr>\n");
 				for(int cpt = 1; cpt <= resultSetInter.getMetaData().getColumnCount(); cpt++)
 				{
@@ -63,7 +64,8 @@ public class GenererHTML
 						"\t\t\t</thead>\n" + //
 						"\t\t\t<tbody>\n");
 
-			while(resultSetAffect.next()) {
+			while(resultSetAffect.next())
+			{
 				pw.println ("\t\t\t\t<tr>\n");
 				pw.println ("\t\t\t\t\t<td>\n" + //
 							"\t\t\t\t\t"+resultSetAffect.getString(1)+"\n" +

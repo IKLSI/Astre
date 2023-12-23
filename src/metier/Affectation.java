@@ -2,8 +2,8 @@ package metier;
 
 public class Affectation
 {
-	
 	// Attributs de Classe
+
 	private String codMod;
 	private Integer codInter;
 	private Integer codCatHeure;
@@ -17,7 +17,9 @@ public class Affectation
 	private Integer annee;
 
 	// Constructeur
-	public Affectation(String codMod, Integer codInter, Integer codCatHeure, String commentaire, String nom, String type, Integer nbSem, Integer nbGrp, Integer totalEqTd, Integer nbH, Integer annee)
+
+	public Affectation(String codMod, Integer codInter, Integer codCatHeure, String commentaire, String nom, String type,
+					   Integer nbSem, Integer nbGrp, Integer totalEqTd, Integer nbH, Integer annee)
 	{
 		this.codMod = codMod;
 		this.codInter = codInter;
@@ -32,7 +34,8 @@ public class Affectation
 		this.annee = annee;
 	}
 
-	//Methode Get
+	// Méthode Get
+
 	public String getNom()          { return this.nom; }
 	public String getType()         { return this.type; }
 	public Integer getNbSem()       { return this.nbSem; }
@@ -45,7 +48,8 @@ public class Affectation
 	public Integer getNbH()         { return this.nbH; }
 	public Integer getAnnee()       { return this.annee; }
 
-	//Methode Set
+	// Méthode Set
+
 	public void setNom(String nom) { this.nom = nom; }
 	public void setType(String type) { this.type = type; }
 	public void setNbSem(Integer nbSem) { this.nbSem = nbSem; }

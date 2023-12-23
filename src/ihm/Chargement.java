@@ -6,10 +6,9 @@ import javafx.scene.control.ProgressBar;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Chargement implements Initializable {
-
-	@FXML
-	private ProgressBar bar;
+public class Chargement implements Initializable
+{
+	@FXML private ProgressBar bar;
 	private static double valBar = 0.5;
 
 	@Override

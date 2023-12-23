@@ -25,9 +25,9 @@ public class Intervenants
 	@FXML private ScrollPane scrollPane;
 	private Label lblErreur;
 
-// créer une hashset pour stocker les id des intervenants à supprimer et une année -
 	private HashMap<Integer, Integer> idIntervenant = new HashMap<Integer, Integer>();
-	private ArrayList<Intervenant> intervenants             = new ArrayList<Intervenant>();
+	private ArrayList<Intervenant> intervenants     = new ArrayList<Intervenant>();
+
 	public Intervenants(AnchorPane panelCentre)
 	{
 		try	{ panelCentre.getChildren().clear(); }
@@ -44,9 +44,7 @@ public class Intervenants
 			ObservableList<String> columns = FXCollections.observableArrayList();
 
 			for (int i = 1; i <= columnCount; i++)
-			{
 				columns.add(metaData.getColumnName(i));
-			}
 
 			data.add(columns);
 
@@ -181,13 +179,13 @@ public class Intervenants
 	public void ajouter(ActionEvent event, AnchorPane panelCentre) throws Exception
 	{
 		//Déchargement du panel
+
 		panelCentre.getChildren().clear();
 
 		/*------------*/
 		/*--Creation--*/
 		/*------------*/
 
-		//textfields
 		TextField nom = new TextField();
 		nom.setPromptText("Entrez un nom");
 		nom.setPrefWidth(200);
@@ -212,11 +210,11 @@ public class Intervenants
 		annee.setPromptText("Entrez une année");
 		annee.setPrefWidth(200);
 
-		//titre
+		// Titre
 		Label lbl = new Label("Ajouter un intervenant :");
 		lbl.setStyle("-fx-font-weight: bold");
 
-		//label
+		// Label
 		Label lblNom = new Label("Nom :");
 		Label lblPrenom = new Label("Prénom :");
 		Label lblNomCat = new Label("Nom catégorie :");
@@ -226,7 +224,7 @@ public class Intervenants
 		this.lblErreur = new Label("");
 		this.lblErreur.setStyle("-fx-text-fill: red;");
 
-		//boutons
+		// Boutons
 		Button bouton = new Button("Ajouter");
 		bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;");
 
@@ -238,6 +236,7 @@ public class Intervenants
 		/*--------------*/
 
 		//Bouton Ajouter
+
 		bouton.setOnMouseEntered(e -> bouton.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
 		bouton.setOnMouseExited(e -> bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
 		bouton.setOnAction((ActionEvent event2) -> {
@@ -254,6 +253,7 @@ public class Intervenants
 		});
 
 		//Bouton Annuler
+
 		buttonA.setOnMouseEntered(e -> buttonA.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
 		buttonA.setOnMouseExited(e -> buttonA.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));	
 		buttonA.setOnAction((ActionEvent event2) -> {
@@ -268,7 +268,8 @@ public class Intervenants
 		/*--Positionnement--*/
 		/*------------------*/
 
-		//TextFields
+		// TextFields
+
 		AnchorPane.setTopAnchor (nom, 80.0);
 		AnchorPane.setLeftAnchor(nom, 140.0);
 		panelCentre.getChildren ().add(nom);
@@ -343,17 +344,21 @@ public class Intervenants
 		String regex = "^[a-zA-Z]+$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(messageTester);
+
 		if(matcher.matches())
 		{
 			this.lblErreur.setText("");
 			return true;
 		}
+
 		this.lblErreur.setText(messageTester + "n'est pas valide");
 		return false;
 	}
+
 	private boolean regInt(int nbTester, String contrainte,int borne)
 	{
-		if(contrainte.equals(">")){
+		if(contrainte.equals(">"))
+		{
 			this.lblErreur.setText("");
 			if(nbTester > borne) return true;
 		}
@@ -361,6 +366,7 @@ public class Intervenants
 			this.lblErreur.setText("");
 			if(nbTester < borne) return true;
 		}
+
 		this.lblErreur.setText("Erreur " + nbTester + " doit être" + contrainte + " " + borne);
 		return false;
 	}
@@ -385,9 +391,7 @@ public class Intervenants
 			{
 
 				for (Integer k : this.idIntervenant.keySet())
-				{
 					Controleur.supprInter(k, this.idIntervenant.get(k));
-				}
 				
 				for (Intervenant intervenant : this.intervenants)
 					Controleur.insertIntervenant(intervenant);

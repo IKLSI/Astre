@@ -13,8 +13,7 @@ import controleur.Controleur;
 import metier.*;
 public class Parametres implements Initializable
 {
-	@FXML
-	private TableView tableView = new TableView<>();
+	@FXML private TableView tableView = new TableView<>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) { categorieHeure(); }

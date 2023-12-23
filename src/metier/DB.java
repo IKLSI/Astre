@@ -8,9 +8,11 @@ import java.util.*;
 public class DB
 {
 	// Attribut de classe
+
 	private static Connection connec;
 
 	// Attribut requête Select
+
 	private PreparedStatement psSelectIntervenants;
 	private PreparedStatement psSelectSemestre;
 	private PreparedStatement psSelectIntervenant_final;
@@ -31,6 +33,7 @@ public class DB
 	private PreparedStatement psSelectCodCatHeure;
 
 	// Attribut requête Insert
+
 	private PreparedStatement psInstertIntervenant;
 	private PreparedStatement psInstertAffectationRessource;
 	private PreparedStatement psInstertAffectationAutre;
@@ -40,10 +43,13 @@ public class DB
 	private PreparedStatement psInsertModPPP;
 
 	// Attribut requête Delete
+
 	private PreparedStatement psDeleteInter;
 	private PreparedStatement psDeleteMod;
+	private PreparedStatement psDeleteAffectation;
 
 	// Attribut requête Update
+
 	private PreparedStatement psUpdateInter;
 	private PreparedStatement psUpdateBool;
 	private PreparedStatement psUpdateModRessources;
@@ -51,7 +57,8 @@ public class DB
 	private PreparedStatement psUpdateModStage;
 	private PreparedStatement psUpdateModPPP;
 
-	//Autre
+	// Autre
+
 	private PreparedStatement psClone;
 	private PreparedStatement psAnneeActuelle;
 
@@ -59,12 +66,13 @@ public class DB
 	/*--Constructeur--*/
 	/*----------------*/
 
-	// Ici on gère la connexion et on prépare les requêtes
+	// Gère la connexion à la base de donnée et prépare les requêtes
+
 	public DB()
 	{
 		try
 		{
-			// Ouverture de la connexion à la data base
+			// Ouverture de la connexion à la base de donnée
 			DB.connec = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
 
 			// Préparation des Requêtes
@@ -110,6 +118,7 @@ public class DB
 			// Preparation des Deletes
 			this.psDeleteInter = DB.connec.prepareStatement("DELETE FROM Intervenant WHERE codInter = ? AND annee = ?"); 
 			this.psDeleteMod   = DB.connec.prepareStatement("DELETE FROM Module WHERE codMod = ? AND annee = ?");
+			this.psDeleteAffectation = DB.connec.prepareStatement("DELETE FROM Affectation WHERE codMod = ? AND annee = ?");
 		}
 		catch (SQLException e) {Controleur.connecter = false;}
 	}
@@ -122,7 +131,9 @@ public class DB
 	}
 
 	// Méthode requête à la base de donnée
+
 	// Récupère tous les intervenants
+
 	public ArrayList<Intervenant> getIntervenants()
 	{
 		ArrayList<Intervenant> lstInterv = new ArrayList<Intervenant>();
@@ -154,7 +165,9 @@ public class DB
 		{
 			this.psSelectCodCatHeure.setString(1, nomCatHeure);
 			this.psSelectCodCatHeure.executeQuery();
-		} catch (Exception e) { e.printStackTrace(); }
+		}
+		catch (Exception e) { e.printStackTrace(); }
+
 		return rs;
 	}
 
@@ -164,11 +177,14 @@ public class DB
 		try
 		{
 			rs = this.psSelectSemestre.executeQuery();
-		} catch (Exception e) { e.printStackTrace(); }
+		}
+		catch (Exception e) { e.printStackTrace(); }
+
 		return rs;
 	}
 
 	// Récupère le nom d'un module les categories d'heure
+
 	public ArrayList<TypeModule> getNomCategorieModules()
 	{
 		ArrayList<TypeModule> lst = new ArrayList<TypeModule>();
@@ -189,6 +205,7 @@ public class DB
 	}
 
 	// Récupère les intervenants finaux
+
 	public ResultSet getIntervenant_final()
 	{
 		ResultSet resultSet = null;
@@ -218,6 +235,7 @@ public class DB
 	}
 
 	// Récupère toutes les categories d'intervenants
+
 	public ResultSet getCategorieInter()
 	{
 		ResultSet resultSet = null;
@@ -239,6 +257,7 @@ public class DB
 	}
 
 	// Récupère toutes les categories d'heure
+
 	public ArrayList<CategorieHeure> getCategorieHeure()
 	{
 		ArrayList<CategorieHeure> lst = new ArrayList<CategorieHeure>();
@@ -343,7 +362,7 @@ public class DB
 			{
 				for (String col : lstVal.keySet()) 
 					lstVal.put(col,rs.getString(col));
-			}while (rs.next());
+			} while (rs.next());
 
 			List<String> keysToRemove = new ArrayList<String>();
 			for (String col : lstVal.keySet())
@@ -353,7 +372,9 @@ public class DB
 			for (String key : keysToRemove) 
 				lstVal.remove(key);
 
-		} catch (SQLException e) { return null; }
+		}
+		catch (SQLException e) { return null; }
+
 		return lstVal;
 	}
 
@@ -365,7 +386,9 @@ public class DB
 			ResultSet rs = this.psSelectNomModule.executeQuery();
 			while (rs.next()) 
 				lstModule.add(rs.getString("codMod") + " " + rs.getString("libCourt"));
-		} catch (SQLException e) {e.printStackTrace();}
+		}
+		catch (SQLException e) {e.printStackTrace();}
+
 		return lstModule;
 	}
 
@@ -377,7 +400,9 @@ public class DB
 			ResultSet rs = this.psSelectNomSemestre.executeQuery();
 			while (rs.next()) 
 				lstSem.add(rs.getString("codSem"));
-		} catch (SQLException e) {e.printStackTrace();}
+		}
+		catch (SQLException e) {e.printStackTrace();}
+
 		return lstSem;
 	}
 
@@ -388,12 +413,16 @@ public class DB
 			this.psSelectNomInter.setString(1, nomInter);
 			this.psSelectNomInter.setString(2, prenomInter);
 			ResultSet rs = psSelectNomInter.executeQuery();
-			if(rs.next()) return true;
-		} catch (SQLException e) {e.printStackTrace();}
+			if(rs.next())
+				return true;
+		}
+		catch (SQLException e) {e.printStackTrace();}
+	
 		return false;
 	}
 
-	// Récupère les affectations d'un module.
+	// Récupère les affectations d'un module
+
 	public ResultSet getAffectation(String codMod)
 	{
 		ResultSet rs = null;
@@ -404,11 +433,13 @@ public class DB
 			rs = this.psSelectAffectModuleRessource.executeQuery();
 		}
 		catch (Exception e) { e.printStackTrace(); }
+
 		return rs;
 	}
 	
 
 	// Récupère le code d'un intervenant
+
 	public ArrayList<Integer> getCodInter(String nomInter)
 	{
 		ArrayList<Integer> lstCodInter = new ArrayList<Integer>();
@@ -426,7 +457,8 @@ public class DB
 		return lstCodInter;
 	}
 
-	public ArrayList<String> getAnnee(){
+	public ArrayList<String> getAnnee()
+	{
 		ArrayList<String> lstAnnee = new ArrayList<String>();
 
 		try
@@ -434,11 +466,14 @@ public class DB
 			ResultSet rs = psSelectAnnee.executeQuery();
 			while (rs.next())
 				lstAnnee.add(rs.getString("annee"));
-		} catch (SQLException e) {e.printStackTrace();}
+		}
+		catch (SQLException e) {e.printStackTrace();}
+
 		return lstAnnee;
 	}
 
 	// Méthode d'insertion
+
 	public void insertIntervenant(Intervenant inter)
 	{
 		try
@@ -507,7 +542,8 @@ public class DB
 			this.psInsertModRessources.setInt(16,nouveauModules.getHPonctuelle());
 			this.psInsertModRessources.setInt(17,nouveauModules.getAnnee());
 			this.psInsertModRessources.executeUpdate();
-		} catch (SQLException e) { e.printStackTrace(); }
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public void insertModSAE(Modules nouveauModules)
@@ -526,7 +562,8 @@ public class DB
 			this.psInsertModSAE.setInt(10,nouveauModules.getNbHTutParSemestre());
 			this.psInsertModSAE.setInt(11,nouveauModules.getAnnee());
 			this.psInsertModSAE.executeUpdate();
-		} catch (SQLException e) { e.printStackTrace(); }
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public void insertModStage(Modules nouveauModules)
@@ -545,7 +582,8 @@ public class DB
 			this.psInsertModStage.setInt(10,nouveauModules.getNbHPnTut());
 			this.psInsertModStage.setInt(11,nouveauModules.getAnnee());
 			this.psInsertModStage.executeUpdate();
-		} catch (SQLException e) { e.printStackTrace(); }
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public void insertModPPP(Modules nouveauModules)
@@ -569,10 +607,12 @@ public class DB
 			this.psInsertModPPP.setInt(15,nouveauModules.getNbHTut());
 			this.psInsertModPPP.setInt(16,nouveauModules.getAnnee());
 			this.psInsertModPPP.executeUpdate();
-		} catch (SQLException e) { e.printStackTrace(); }
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	// Méthode de mise à jour
+
 	public void updateInter(Intervenant nouveauInter)
 	{
 		try
@@ -584,7 +624,8 @@ public class DB
 			this.psUpdateInter.setInt(5, nouveauInter.getcodInter());
 			this.psUpdateInter.setInt(6, nouveauInter.getAnnee());
 			this.psUpdateInter.executeUpdate();
-		} catch (SQLException e) { e.printStackTrace(); }
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public void updateBool(boolean newVal, String codMod)
@@ -594,7 +635,8 @@ public class DB
 			this.psUpdateBool.setBoolean(1, newVal);
 			this.psUpdateBool.setString(2, codMod);
 			this.psUpdateBool.executeUpdate();
-		} catch (SQLException e) { e.printStackTrace(); }
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public void updateSem(String textFieldId, String intitule, int newVal)
@@ -605,7 +647,8 @@ public class DB
 			Statement statement = DB.connec.createStatement();
 			statement.executeUpdate(query);
 			statement.close();
-		} catch (SQLException e) { e.printStackTrace(); }
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public void updateMod(Modules nouveauModules, String nomTypMod, String codMod)
@@ -679,7 +722,7 @@ public class DB
 					this.psUpdateModPPP.setInt(14,nouveauModules.getNbHPnHTut());
 					this.psUpdateModPPP.setString(15,codMod);
 					this.psUpdateModPPP.setInt(16,nouveauModules.getAnnee());
-	             	this.psUpdateModPPP.executeUpdate();
+					this.psUpdateModPPP.executeUpdate();
 					break;
 			}
 		}
@@ -709,6 +752,17 @@ public class DB
 		catch (SQLException e) { e.printStackTrace(); }
 	}
 
+	public void supprAffectation(String codMod, Integer annee)
+	{
+		try
+		{
+			this.psDeleteAffectation.setString(1,codMod);
+			this.psDeleteAffectation.setInt(2,annee);
+			this.psDeleteAffectation.executeUpdate();
+		}
+		catch (SQLException e) { e.printStackTrace(); }
+	}
+
 	//Autre
 	public void clonage(int annee_source,int annee_destination)
 	{
@@ -723,16 +777,15 @@ public class DB
 
 	public Integer anneeActuelle()
 	{
-		Integer annee=0;
-
+		Integer anneActuelle = 0;
 		try
 		{
 			ResultSet rs = this.psAnneeActuelle.executeQuery();
-			while (rs.next())
-				annee = rs.getInt(1);
+			rs.next();
+			anneActuelle = rs.getInt("max");
 		}
 		catch (SQLException e) { e.printStackTrace(); }
-		
-		return annee;
+
+		return anneActuelle;
 	}
 }

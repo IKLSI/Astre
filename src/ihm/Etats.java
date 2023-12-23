@@ -27,6 +27,7 @@ public class Etats implements Initializable
 			AnchorPane loadedPane = loader.load();
 
 			panelEtats.getChildren().setAll(loadedPane.getChildren());
-		} catch (Exception e) { e.printStackTrace(); }
+		}
+		catch (Exception e) { e.printStackTrace(); }
 	}
 }

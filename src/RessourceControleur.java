@@ -80,7 +80,17 @@ public class RessourceControleur implements Initializable
 	public void chargerRessource(ActionEvent event)
 	{
 		code.setText(RessourceControleur.codes);
-		remplirTableau();
+		if (Controleur.getPreviModule(RessourceControleur.codes) != null)
+		{
+			remplirTableau();
+		}
+		else
+		{
+			ArrayList<Semestre> lst = Controleur.getSemestre(RessourceControleur.intitule);
+			nbEtd.setText(String.valueOf(lst.get(0).getNbEtd()));
+			nbTP.setText(String.valueOf(lst.get(0).getNbGrpTP()));
+			nbTD.setText(String.valueOf(lst.get(0).getNbGrpTD()));
+		}
 	}
 
 	@FXML
@@ -298,8 +308,7 @@ public class RessourceControleur implements Initializable
 	{
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		Affectation affectation = (Affectation) tableView.getItems().get(selectedIndex);
-
-		// Controleur.deleteAffectation(affectation.getCodMod(), affectation.getCodInter(), affectation.getCodCatHeure());
+		Controleur.supprAffectation(affectation.getCodMod(), Controleur.anneeActuelle);
 		tableView.getItems().remove(selectedIndex);
 	}
 
