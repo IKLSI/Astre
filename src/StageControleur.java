@@ -59,7 +59,16 @@ public class StageControleur implements Initializable
 	public void chargerRessource(ActionEvent event)
 	{
 		code.setText(StageControleur.codes);
-		remplirTableau();
+
+		if (Controleur.getPreviModule(StageControleur.codes) != null)
+			remplirTableau();
+		else
+		{
+			ArrayList<Semestre> lst = Controleur.getSemestre(StageControleur.intitule);
+			nbEtd.setText(String.valueOf(lst.get(0).getNbEtd()));
+			nbTP.setText(String.valueOf(lst.get(0).getNbGrpTP()));
+			nbTD.setText(String.valueOf(lst.get(0).getNbGrpTD()));
+		}
 	}
 
 	@FXML

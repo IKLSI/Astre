@@ -10,13 +10,12 @@ import ihm.*;
 public class AppControleur implements Initializable
 {
 
-	@FXML
-	private AnchorPane panelCentre;
+	@FXML private AnchorPane panelCentre;
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {affichageDefaut();}
+	public void initialize(URL location, ResourceBundle resources) { affichageDefaut(); }
 
-	/* Méthodes changement du Panel centre*/
+	// Méthode changement du Panel centre
 	private void affichageDefaut(){ new Previsionnel(this.panelCentre); }
 	
 	@FXML

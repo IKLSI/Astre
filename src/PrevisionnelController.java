@@ -160,7 +160,6 @@ public class PrevisionnelController implements Initializable
 		tableViewS6.getItems().clear();
 		ObservableList<Modules> listeModules = FXCollections.observableArrayList();
 
-		// Stocker une arraylist dans une observablelist
 		ArrayList<Modules> lst = Controleur.getListModule(this.intitule);
 		
 		for (Modules module : lst)
@@ -187,26 +186,29 @@ public class PrevisionnelController implements Initializable
 		validCol.setCellValueFactory(new PropertyValueFactory<>("valid"));
 
 		validCol.setCellFactory(column -> {
-			CheckBoxTableCell<Modules, Boolean> cell = new CheckBoxTableCell<Modules, Boolean>() {
+			CheckBoxTableCell<Modules, Boolean> cell = new CheckBoxTableCell<Modules, Boolean>()
+			{
 				@Override
-				public void updateItem(Boolean item, boolean empty) {
-					super.updateItem(item, empty);
-					if (!empty) {
+				public void updateItem(Boolean item, boolean etat)
+				{
+					super.updateItem(item, etat);
+					if (!etat)
+					{
 						CheckBox checkBox = new CheckBox();
 						Modules module = (Modules) getTableRow().getItem();
-						if (module != null) {
+						if (module != null)
+						{
 							checkBox.setSelected(module.getValid());
 							checkBox.setOnAction(event -> {
-								System.out.println(module.getCodMod());
 								Controleur.updateBool(checkBox.isSelected(), module.getCodMod());
 							});
 							setGraphic(checkBox);
-						} else {
-							setGraphic(null);
 						}
-					} else {
-						setGraphic(null);
+						else
+							setGraphic(null);
 					}
+					else
+						setGraphic(null);
 				}
 			};
 			return cell;
@@ -223,24 +225,28 @@ public class PrevisionnelController implements Initializable
 			tableViewS2.setEditable(true);
 			tableViewS2.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS2.setItems(listeModules);
+			tableViewS2.getStyleClass().add("tableau");
 		}
 		else if (this.intitule.equals("S3"))
 		{
 			tableViewS3.setEditable(true);
 			tableViewS3.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS3.setItems(listeModules);
+			tableViewS3.getStyleClass().add("tableau");
 		}
 		else if (this.intitule.equals("S4"))
 		{
 			tableViewS5.setEditable(true);
 			tableViewS4.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS4.setItems(listeModules);
+			tableViewS4.getStyleClass().add("tableau");
 		}
 		else if (this.intitule.equals("S5"))
 		{
 			tableViewS5.setEditable(true);
 			tableViewS5.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS5.setItems(listeModules);
+			tableViewS5.getStyleClass().add("tableau");
 		}
 		else if (this.intitule.equals("S6"))
 		{
@@ -248,7 +254,6 @@ public class PrevisionnelController implements Initializable
 			tableViewS6.getColumns().addAll(codModCol, libLongCol, hAPCol, validCol);
 			tableViewS6.setItems(listeModules);
 			tableViewS6.getStyleClass().add("tableau");
-			//tableViewS6.getStylesheets().add(getClass().getResource("/lib/style/Previsionnel.css").toExternalForm());
 		}
 	}
 
@@ -286,31 +291,20 @@ public class PrevisionnelController implements Initializable
 	{
 		Modules module = null;
 		if (this.intitule.equals("S1"))
-		{
 			module = (Modules) tableView.getSelectionModel().getSelectedItem();
-		}
 		else if (this.intitule.equals("S2"))
-		{
 			module = (Modules) tableViewS2.getSelectionModel().getSelectedItem();
-		}
 		else if (this.intitule.equals("S3"))
-		{
 			module = (Modules) tableViewS3.getSelectionModel().getSelectedItem();
-		}
 		else if (this.intitule.equals("S4"))
-		{
 			module = (Modules) tableViewS4.getSelectionModel().getSelectedItem();
-		}
 		else if (this.intitule.equals("S5"))
-		{
 			module = (Modules) tableViewS5.getSelectionModel().getSelectedItem();
-		}
 		else if (this.intitule.equals("S6")) 
-		{
 			module = (Modules) tableViewS6.getSelectionModel().getSelectedItem();
-		}
 
-		try // Changer
+		// TODO : A mettre dans DB
+		try
 		{
 			Class.forName("org.postgresql.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
@@ -343,13 +337,15 @@ public class PrevisionnelController implements Initializable
 						break;
 				}
 			}
-		} catch (Exception e) { e.printStackTrace(); }
+		}
+		catch (Exception e) { e.printStackTrace(); }
 	}
 
 	@FXML
 	private void afficheRessource()
 	{
 		RessourceControleur.intitule = this.intitule;
+		RessourceControleur.codes = "";
 		new Ressource(PrevisionnelController.panelCentre);
 	}
 
@@ -357,6 +353,7 @@ public class PrevisionnelController implements Initializable
 	private void afficheSAE()
 	{
 		SaeControleur.intitule = this.intitule;
+		SaeControleur.codes = "";
 		new Sae(PrevisionnelController.panelCentre);
 	}
 
@@ -364,6 +361,7 @@ public class PrevisionnelController implements Initializable
 	private void afficheStage()
 	{
 		StageControleur.intitule = this.intitule;
+		SaeControleur.codes = "";
 		new Stages(PrevisionnelController.panelCentre);
 	}
 
@@ -371,6 +369,7 @@ public class PrevisionnelController implements Initializable
 	private void affichePPP()
 	{
 		PppControleur.intitule = this.intitule;
+		PppControleur.codes = "";
 		new Ppp(PrevisionnelController.panelCentre);
 	}
 }

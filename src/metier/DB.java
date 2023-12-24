@@ -56,6 +56,7 @@ public class DB
 	private PreparedStatement psUpdateModSAE;
 	private PreparedStatement psUpdateModStage;
 	private PreparedStatement psUpdateModPPP;
+	private PreparedStatement psUpdateAffectation;
 
 	// Autre
 
@@ -114,11 +115,12 @@ public class DB
 			this.psUpdateModSAE 	   = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnSaeParSemestre = ?, nbHPnTutParSemestre = ?, nbHSaeParSemestre = ?, nbHTutParSemestre = ? WHERE codMod = ? AND annee = ?");
 			this.psUpdateModStage      = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnREH = ?, nbHPnTut = ?, nbHREH = ?, nbHTut = ? WHERE codMod = ? AND annee = ?");
 			this.psUpdateModPPP        = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?, nbHPnTut = ?, nbHTut = ?, nbHPnHTut = ? WHERE codMod = ? AND annee = ?");
+			this.psUpdateAffectation   = DB.connec.prepareStatement("UPDATE Affectation SET codCatHeure = ?, commentaire = ?, nbSem = ?, nbGrp = ?, nbH = ? WHERE codInter = ? AND annee = ? AND codMod = ? AND codCatHeure = ?");
 			
 			// Preparation des Deletes
 			this.psDeleteInter = DB.connec.prepareStatement("DELETE FROM Intervenant WHERE codInter = ? AND annee = ?"); 
 			this.psDeleteMod   = DB.connec.prepareStatement("DELETE FROM Module WHERE codMod = ? AND annee = ?");
-			this.psDeleteAffectation = DB.connec.prepareStatement("DELETE FROM Affectation WHERE codMod = ? AND annee = ?");
+			this.psDeleteAffectation = DB.connec.prepareStatement("DELETE FROM Affectation WHERE codMod = ? AND annee = ? AND codInter = ? AND codCatHeure = ?");
 		}
 		catch (SQLException e) {Controleur.connecter = false;}
 	}
@@ -483,6 +485,7 @@ public class DB
 			this.psInstertIntervenant.setInt(3,inter.getCodCatInter());
 			this.psInstertIntervenant.setInt(4,inter.gethServ());
 			this.psInstertIntervenant.setInt(5,inter.getMaxHeure());
+			this.psInstertIntervenant.setInt(6,inter.getAnnee());
 
 			this.psInstertIntervenant.executeUpdate();
 		}
@@ -729,6 +732,25 @@ public class DB
 		catch (SQLException e) { e.printStackTrace(); }
 	}
 
+	public void updateAffectation(Affectation affec)
+	{
+		try
+		{
+			this.psUpdateAffectation.setInt(1,affec.getCodCatHeure());
+			this.psUpdateAffectation.setString(2,affec.getCommentaire());
+			this.psUpdateAffectation.setInt(3,affec.getNbSem());
+			this.psUpdateAffectation.setInt(4,affec.getNbGrp());
+			this.psUpdateAffectation.setInt(5,affec.getNbH());
+			this.psUpdateAffectation.setInt(6,affec.getCodInter());
+			this.psUpdateAffectation.setInt(7,affec.getAnnee());
+			this.psUpdateAffectation.setString(8,affec.getCodMod());
+			this.psUpdateAffectation.setInt(9,affec.getCodCatHeure());
+
+			this.psUpdateAffectation.executeUpdate();
+		}
+		catch (SQLException e) { e.printStackTrace(); }
+	}
+
 	// Méthode de suppression
 	public void supprInter(Integer codInter, Integer annee)
 	{
@@ -752,12 +774,14 @@ public class DB
 		catch (SQLException e) { e.printStackTrace(); }
 	}
 
-	public void supprAffectation(String codMod, Integer annee)
+	public void supprAffectation(String codMod, Integer annee, Integer codInter, Integer codCatHeure)
 	{
 		try
 		{
 			this.psDeleteAffectation.setString(1,codMod);
 			this.psDeleteAffectation.setInt(2,annee);
+			this.psDeleteAffectation.setInt(3,codInter);
+			this.psDeleteAffectation.setInt(4,codCatHeure);
 			this.psDeleteAffectation.executeUpdate();
 		}
 		catch (SQLException e) { e.printStackTrace(); }

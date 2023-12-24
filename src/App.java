@@ -13,9 +13,11 @@ import controleur.Controleur;
 public class App extends Application
 {
 	// Attributs d'instances
+
 	private Stage frameAppli;
 
 	// Méthode permettant de lancer l'application
+
 	@Override
 	public void start(Stage frameAppli)
 	{
@@ -31,7 +33,7 @@ public class App extends Application
 
 			this.frameAppli.setResizable(false);
 
-			/*--Positionnement--*/
+			// Positionnement
 			this.frameAppli.setScene(scene);
 			this.frameAppli.show();
 		}
@@ -41,7 +43,8 @@ public class App extends Application
 	@FXML
 	private void chargement(ActionEvent event)
 	{
-		try {
+		try
+		{
 			this.frameAppli = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Chargement.fxml"));
 			AnchorPane panelAppli = loader.load();
@@ -51,41 +54,42 @@ public class App extends Application
 			this.frameAppli.setTitle("ASTRE");
 			this.frameAppli.show();
 
-			//thread qui fait le chargement de la DB et qui affiche un chargement
+			// Thread qui fait le chargement de la DB
 			Platform.runLater(() -> {
 				Controleur.ouvrirConnection();
-				//Controleur.chargement(1.0);
 				Controleur.setAnneeActuelle();
-				try {
+				try
+				{
 					Thread.sleep(1000);
-				} catch (Exception e) {}
+				}
+				catch (Exception e) {}
 
-				if(Controleur.connecter){
+				if(Controleur.connecter)
+				{
 					//Ouvre le menu
 					Platform.runLater(() -> {
-						try {
+						try
+						{
 							FXMLLoader load = new FXMLLoader(getClass().getResource("interface/Menu.fxml"));
 							AnchorPane panelApplis = load.load();
 							scene.setRoot(panelApplis);
-						} catch (Exception e) {
-							e.printStackTrace();
 						}
+						catch (Exception e) { e.printStackTrace(); }
 					});
 				}
-				else{
+				else
 					this.afficherErreur("Connexion échouée", "La connexion à la base de données a échoué.");
-				}
 			});
 
 			Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			currentStage.close();
 
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		catch (Exception e) { e.printStackTrace(); }
 	}
 
-	public void afficherErreur(String titre, String message) {
+	public void afficherErreur(String titre, String message)
+	{
 		this.frameAppli.close();
 
  		Alert alert = new Alert(AlertType.ERROR);

@@ -4,8 +4,6 @@ import javafx.scene.layout.AnchorPane;
 
 public class Previsionnel
 {
-	//@FXML private MenuButton menuButton;
-
 	public Previsionnel(AnchorPane panelCentre)
 	{
 		try

@@ -56,12 +56,13 @@ public class Controleur
 	public static void updateSem(String textFieldId, String intitule, int newVal)                  { Controleur.dataBase.updateSem(textFieldId, intitule, newVal); }
 	public static void updateMod(Modules nouveauModules, String nomTypMod, String codMod)          { Controleur.dataBase.updateMod(nouveauModules, nomTypMod, codMod); }
 	public static void updateBool(boolean newVal, String codMod)                                   { Controleur.dataBase.updateBool(newVal, codMod); }
+	public static void updateAffectation(Affectation affectation) 								   { Controleur.dataBase.updateAffectation(affectation); }
 
 	// Suppression
 
-	public static void supprInter(Integer codInter, Integer annee) { Controleur.dataBase.supprInter(codInter, annee); }
-	public static void supprMod(String codMod, Integer annee)      { Controleur.dataBase.supprMod(codMod, annee); }
-	public static void supprAffectation(String codMod, Integer annee) { Controleur.dataBase.supprAffectation(codMod, annee); }
+	public static void supprInter(Integer codInter, Integer annee)                                           { Controleur.dataBase.supprInter(codInter, annee); }
+	public static void supprMod(String codMod, Integer annee)                                                { Controleur.dataBase.supprMod(codMod, annee); }
+	public static void supprAffectation(String codMod, Integer annee, Integer codInter, Integer codCatHeure) { Controleur.dataBase.supprAffectation(codMod, annee, codInter, codCatHeure); }
 
 	// AUTRE
 

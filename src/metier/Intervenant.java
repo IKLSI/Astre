@@ -44,7 +44,7 @@ public class Intervenant
 	public Integer getCodCatInter()          { return this.codCatInter; }
 	public Integer gethServ()                { return this.hServ; }
 	public Integer getMaxHeure()             { return this.maxHeure; }
-	public Integer getAnnee()                { return this.maxHeure; }
+	public Integer getAnnee()                { return this.annee; }
 
 	public void setNom(String nom)                  { this.nom = nom; }
 	public void setPrenon(String prenom)            { this.prenom = prenom; }

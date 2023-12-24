@@ -389,7 +389,7 @@ SELECT DISTINCT m.annee,m.codMod,i.codInter,i.nom,c.nomCatHeure,
 FROM Affectation a JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
 				   JOIN Module      m    ON a.codMod      = m.codMod
 				   JOIN Intervenant i    ON i.codInter    = a.codInter
-GROUP BY a.annee;
+GROUP BY m.annee;
 
 CREATE OR REPLACE VIEW inter AS
 SELECT DISTINCT i.annee,i.nom,s.codSem,
@@ -617,5 +617,3 @@ BEGIN
 	DROP TABLE IF EXISTS cloneSemestre CASCADE;
 END;
 $$ LANGUAGE plpgsql;
-
-

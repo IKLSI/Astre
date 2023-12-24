@@ -244,11 +244,14 @@ public class Intervenants
 			   regInt(Integer.parseInt(hserv.getText()),">",5) && regInt(Integer.parseInt(maxheure.getText()),"<",250) && regInt(Integer.parseInt(annee.getText()),">",2022))
 			{
 				Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getText()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()), Integer.parseInt(annee.getText()));
-				this.intervenants.add(intervenant);
 				Controleur.insertIntervenant(intervenant);
 
 				panelCentre.getChildren().clear();
 				new Intervenants(panelCentre);
+			}
+			else
+			{
+				this.lblErreur.setText("Erreur dans la saisie");
 			}
 		});
 
@@ -376,7 +379,6 @@ public class Intervenants
 	{
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		this.idIntervenant.put(Integer.valueOf(tableView.getItems().get(selectedIndex).get(1)), Integer.valueOf(tableView.getItems().get(selectedIndex).get(0)));
-		System.out.println(this.idIntervenant);
 
 		if (selectedIndex >= 0)
 			tableView.getItems().remove(selectedIndex);
@@ -407,7 +409,6 @@ public class Intervenants
 		String newValue = event.getNewValue();
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		int index = event.getTablePosition().getColumn();
-		System.out.println(tableView.getItems().get(selectedIndex));
 		int code = Integer.parseInt(row.get(0));
 
 		row.set(index, newValue);

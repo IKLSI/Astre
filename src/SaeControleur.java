@@ -11,6 +11,7 @@ import javafx.collections.*;
 
 import metier.Affectation;
 import metier.Modules;
+import metier.Semestre;
 import controleur.*;
 
 public class SaeControleur implements Initializable
@@ -60,7 +61,16 @@ public class SaeControleur implements Initializable
 	public void chargerRessource(ActionEvent event)
 	{
 		code.setText(SaeControleur.codes);
-		remplirTableau();
+
+		if (Controleur.getPreviModule(SaeControleur.codes) != null)
+			remplirTableau();
+		else
+		{
+			ArrayList<Semestre> lst = Controleur.getSemestre(SaeControleur.intitule);
+			nbEtd.setText(String.valueOf(lst.get(0).getNbEtd()));
+			nbTP.setText(String.valueOf(lst.get(0).getNbGrpTP()));
+			nbTD.setText(String.valueOf(lst.get(0).getNbGrpTD()));
+		}
 	}
 
 	@FXML

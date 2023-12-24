@@ -61,7 +61,16 @@ public class PppControleur implements Initializable
 	public void chargerRessource(ActionEvent event)
 	{
 		code.setText(PppControleur.codes);
-		remplirTableau();
+
+		if (Controleur.getPreviModule(PppControleur.codes) != null)
+			remplirTableau();
+		else
+		{
+			ArrayList<Semestre> lst = Controleur.getSemestre(PppControleur.intitule);
+			nbEtd.setText(String.valueOf(lst.get(0).getNbEtd()));
+			nbTP.setText(String.valueOf(lst.get(0).getNbGrpTP()));
+			nbTD.setText(String.valueOf(lst.get(0).getNbGrpTD()));
+		}
 	}
 
 
