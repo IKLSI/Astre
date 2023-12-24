@@ -26,7 +26,6 @@ public class Intervenants
 	private Label lblErreur;
 
 	private HashMap<Integer, Integer> idIntervenant = new HashMap<Integer, Integer>();
-	private ArrayList<Intervenant> intervenants     = new ArrayList<Intervenant>();
 
 	public Intervenants(AnchorPane panelCentre)
 	{
@@ -240,18 +239,15 @@ public class Intervenants
 		bouton.setOnMouseEntered(e -> bouton.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
 		bouton.setOnMouseExited(e -> bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
 		bouton.setOnAction((ActionEvent event2) -> {
-			if(regString(nom.getText()) && regString(prenom.getText()) && regInt(Integer.parseInt(nomCat.getText()),"<",6) && 
-			   regInt(Integer.parseInt(hserv.getText()),">",5) && regInt(Integer.parseInt(maxheure.getText()),"<",250) && regInt(Integer.parseInt(annee.getText()),">",2022))
+			if(regString(nom.getText()) && regString(prenom.getText()) && regInt(nomCat.getText(),"<",6) && 
+			   regInt(hserv.getText(),">",5) && regInt(maxheure.getText(),"<",250) &&
+			   regInt(annee.getText(),">",2022))
 			{
 				Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getText()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()), Integer.parseInt(annee.getText()));
 				Controleur.insertIntervenant(intervenant);
 
 				panelCentre.getChildren().clear();
 				new Intervenants(panelCentre);
-			}
-			else
-			{
-				this.lblErreur.setText("Erreur dans la saisie");
 			}
 		});
 
@@ -263,6 +259,7 @@ public class Intervenants
 			try
 			{
 				new Intervenants(panelCentre);
+				this.idIntervenant.clear();
 			}
 			catch (Exception e)	{ e.printStackTrace(); }
 		});
@@ -358,20 +355,27 @@ public class Intervenants
 		return false;
 	}
 
-	private boolean regInt(int nbTester, String contrainte,int borne)
+	private boolean regInt(String nbTester, String contrainte,int borne)
 	{
-		if(contrainte.equals(">"))
+		if (nbTester.matches("\\d+"))
 		{
-			this.lblErreur.setText("");
-			if(nbTester > borne) return true;
-		}
-		if(contrainte.equals("<")){
-			this.lblErreur.setText("");
-			if(nbTester < borne) return true;
-		}
+			int numericValue = Integer.parseInt(nbTester);
 
-		this.lblErreur.setText("Erreur " + nbTester + " doit être" + contrainte + " " + borne);
-		return false;
+			switch (contrainte)
+			{
+				case "<":
+					return numericValue < borne;
+				case ">":
+					return numericValue > borne;
+				default:
+					return false;
+			}
+		}
+		else
+		{
+			this.lblErreur.setText(nbTester + " n'est pas valide");
+			return false;
+		}
 	}
 	
 	@FXML
@@ -391,12 +395,8 @@ public class Intervenants
 		{
 			try
 			{
-
 				for (Integer k : this.idIntervenant.keySet())
 					Controleur.supprInter(k, this.idIntervenant.get(k));
-				
-				for (Intervenant intervenant : this.intervenants)
-					Controleur.insertIntervenant(intervenant);
 			}
 			catch (Exception e)	{ e.printStackTrace(); }
 		}
