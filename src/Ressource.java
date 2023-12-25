@@ -1,10 +1,8 @@
 import javafx.fxml.*;
-import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
 
 public class Ressource
 {
-	@FXML private MenuButton menuButton;
 	@FXML private AnchorPane panelCentre;
 
 	public Ressource(AnchorPane panelCentre)

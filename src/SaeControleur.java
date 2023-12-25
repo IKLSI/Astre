@@ -1,7 +1,9 @@
 import javafx.event.*;
 import javafx.fxml.*;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.converter.*;
+import javafx.scene.control.cell.*;
+import javafx.event.ActionEvent;
 
 
 import java.net.URL;
@@ -40,6 +42,7 @@ public class SaeControleur implements Initializable
 
 	public static String codes;
 	private HashMap<String, String> map;
+	private boolean etat = false;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
@@ -119,36 +122,63 @@ public class SaeControleur implements Initializable
 				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
 			}
 
-			// Remplit la table avec les données de la liste
 			TableColumn<Affectation, String> nomCol = new TableColumn<>("Intervenant");
 			nomCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
 
 			TableColumn<Affectation, String> typeCol = new TableColumn<>("Type");
 			typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-			TableColumn<Affectation, Integer> nbHCol = new TableColumn<>("Nb h");
-			nbHCol.setCellValueFactory(new PropertyValueFactory<>("nbH"));
+			TableColumn<Affectation, Integer> nbSemCol = new TableColumn<>("Nb sem");
+			nbSemCol.setCellValueFactory(new PropertyValueFactory<>("nbSem"));
+
+			TableColumn<Affectation, Integer> nbGpCol = new TableColumn<>("Nb Gp / nb h");
+			nbGpCol.setCellValueFactory(new PropertyValueFactory<>("nbGrp"));
 
 			TableColumn<Affectation, Integer> totalEqTdCol = new TableColumn<>("Total eqtd");
 			totalEqTdCol.setCellValueFactory(new PropertyValueFactory<>("totalEqTd"));
 
-			TableColumn<Affectation, Integer> comCol = new TableColumn<>("commentaire");
-			comCol.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
+			TableColumn<Affectation, String> commentaire = new TableColumn<>("Commentaire");
+			commentaire.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
 
-			tableView.getColumns().addAll(nomCol, typeCol, nbHCol, totalEqTdCol, comCol);
+			tableView.getColumns().addAll(nomCol, typeCol, nbSemCol, nbGpCol, totalEqTdCol, commentaire);
 			tableView.setItems(listeAffectation);
 
-			// tableView.setEditable(true);
-			// nomCol.setCellFactory(TextFieldTableCell.forTableColumn());
-			// nomCol.setOnEditCommit(e -> {
-			// 	modifier(new ActionEvent());
-			// 	e.getTableView().getItems().get(e.getTablePosition().getRow()).setNom(e.getNewValue());
-			// });
+			tableView.setEditable(true);
+			nomCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			nomCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNom(e.getNewValue());
+				modifier(new ActionEvent());
+			});
 
-			// typeCol.setCellFactory(TextFieldTableCell.forTableColumn());
-			// typeCol.setOnEditCommit(e -> {
-			// 	e.getTableView().getItems().get(e.getTablePosition().getRow()).setType(e.getNewValue());
-			// });
+			typeCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			typeCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setType(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			nbSemCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			nbSemCol.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNbSem(e.getNewValue());
+			});
+
+			nbGpCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			nbGpCol.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNbGrp(e.getNewValue());
+			});
+
+			totalEqTdCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			totalEqTdCol.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setTotalEqTd(e.getNewValue());
+			});
+
+			commentaire.setCellFactory(TextFieldTableCell.forTableColumn());
+			commentaire.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setCommentaire(e.getNewValue());
+				modifier(new ActionEvent());
+			});
 
 			this.map = Controleur.getPreviModule(codes);
 
@@ -184,11 +214,73 @@ public class SaeControleur implements Initializable
 	{
 		Controleur.updateBool(("f").equals(this.map.get("valid")), code.getText());
 	}
+
+	@FXML
+	public void modifier(ActionEvent event)
+	{
+		Affectation affectation = (Affectation) tableView.getSelectionModel().getSelectedItem();
+		int codInter = affectation.getCodInter();
+
+		Controleur.updateAffectation(new Affectation(
+			affectation.getCodMod(),
+			codInter,
+			Controleur.getCodCatHeure(affectation.getType()),
+			affectation.getCommentaire(),
+			affectation.getNom(),
+			affectation.getType(),
+			affectation.getNbSem(),
+			affectation.getNbGrp(),
+			affectation.getTotalEqTd(),
+			affectation.getNbH(),
+			Controleur.anneeActuelle
+		));
+	}
+
+	@FXML
+	public void ajouter(ActionEvent event)
+	{
+		if (etat == false)
+		{
+			tableView.getItems().add(new Affectation(
+				"",
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				"",
+				"",
+				"",
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Controleur.anneeActuelle
+			));
+		}
+		else
+		{
+			int dernier = tableView.getItems().size() - 1;
+			Affectation affectation = (Affectation) tableView.getItems().get(dernier);
+
+			Controleur.insertAffectationRessource(new Affectation(
+				codes,
+				Controleur.getCodInter(affectation.getNom()).get(0),
+				Controleur.getCodCatHeure(affectation.getType()),
+				affectation.getCommentaire(),
+				affectation.getNom(),
+				affectation.getType(),
+				affectation.getNbSem(),
+				affectation.getNbGrp(),
+				affectation.getTotalEqTd(),
+				affectation.getNbH(),
+				Controleur.anneeActuelle
+			));
+		}
+
+		etat = !etat;
+	}
 	
 	@FXML
 	public void enregistrer (ActionEvent event)
 	{
-		System.out.println("Enregistrer");
 		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
 	
 		Modules module = new Modules(
@@ -226,6 +318,8 @@ public class SaeControleur implements Initializable
 		}
 		else
 			Controleur.updateMod(module, codMod.getText(), codes);
+
+		new Previsionnel(PrevisionnelController.panelCentre);
 	}
 	
 }

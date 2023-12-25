@@ -103,7 +103,7 @@ public class DB
 			this.psInstertIntervenant           = DB.connec.prepareStatement("INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure, annee)  VALUES(?,?,?,?,?,?)");
 			this.psInstertAffectationRessource  = DB.connec.prepareStatement("INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbSem, nbGrp, annee) VALUES(?,?,?,?,?,?,?)");
 			this.psInstertAffectationAutre      = DB.connec.prepareStatement("INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbH, annee) VALUES(?,?,?,?,?,?)");
-			this.psInsertModRessources          = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			this.psInsertModRessources          = DB.connec.prepareStatement("INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			this.psInsertModSAE                 = DB.connec.prepareStatement("INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 			this.psInsertModStage               = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHREH, nbHTut, nbHPnREH, nbHPnTut, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 			this.psInsertModPPP                 = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHPnHTut, nbHTut, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -554,8 +554,8 @@ public class DB
 		try
 		{
 			this.psInsertModSAE.setString(1,nouveauModules.getCodMod());
-			this.psInsertModSAE.setString(2,nouveauModules.getCodSem());
-			this.psInsertModSAE.setInt(3,nouveauModules.getCodTypMod());
+			this.psInsertModSAE.setInt(2,nouveauModules.getCodTypMod());
+			this.psInsertModSAE.setString(3,nouveauModules.getCodSem());
 			this.psInsertModSAE.setString(4,nouveauModules.getLibLong());
 			this.psInsertModSAE.setString(5,nouveauModules.getLibCourt());
 			this.psInsertModSAE.setBoolean(6,nouveauModules.getValid());

@@ -54,9 +54,9 @@
       <CheckBox layoutX="106.0" layoutY="342.0" mnemonicParsing="false" text="Validation" />
       <TableView fx:id="tableView" layoutX="349.0" layoutY="380.0" prefHeight="152.0" prefWidth="558.0" styleClass="tableau" stylesheets="@../../lib/style/Previsionnel.css" />
       <Label alignment="CENTER" layoutX="348.0" layoutY="210.0" prefHeight="18.0" prefWidth="558.0" text="Répartition" />
-      <Button layoutX="350.0" layoutY="539.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="ajouter" />
+      <Button layoutX="350.0" layoutY="539.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="ajouter" onAction="#ajouter" />
       <Button layoutX="429.0" layoutY="539.0" mnemonicParsing="false" styleClass="btn" stylesheets="@../../lib/style/module.css" text="supprimer" />
-      <Button layoutX="107.0" layoutY="576.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Enregistrer" />
+      <Button layoutX="107.0" layoutY="576.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Enregistrer" onAction="#enregistrer" />
       <Button layoutX="205.0" layoutY="576.0" mnemonicParsing="false" onAction="#annuler" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Annuler" />
    </children>
 </AnchorPane>

@@ -68,7 +68,7 @@ public class PrevisionnelController implements Initializable
 					case "PPP"        -> affichePPP();
 				}
 			});
-			nouveauItem.setStyle("-fx-text-fill : #000000");
+			nouveauItem.setStyle("-fx-text-fill : #000000;");
 			menuButton.getItems().add(nouveauItem);
 		}
 	}
