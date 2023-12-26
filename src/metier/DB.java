@@ -31,6 +31,7 @@ public class DB
 	private PreparedStatement psSelectNomInter;
 	private PreparedStatement psSelectAnnee;
 	private PreparedStatement psSelectCodCatHeure;
+	private PreparedStatement psSelectInformationsInter;
 
 	// Attribut requête Insert
 
@@ -97,6 +98,7 @@ public class DB
 			this.psClone                       = DB.connec.prepareStatement("SELECT clonage(?,?)");
 			this.psAnneeActuelle               = DB.connec.prepareStatement("SELECT MAX(annee) FROM annee");
 			this.psSelectCodCatHeure           = DB.connec.prepareStatement("SELECT codCatHeure FROM CategorieHeure WHERE nomCatHeure = ?");
+			this.psSelectInformationsInter     = DB.connec.prepareStatement("SELECT * FROM Intervenant WHERE codInter = ?");
 
 
 			// Préparation des Insertions
@@ -474,6 +476,19 @@ public class DB
 		return lstAnnee;
 	}
 
+	public ResultSet getInformationsInter(int codInter)
+	{
+		ResultSet rs = null;
+		try
+		{
+			this.psSelectInformationsInter.setInt(1, codInter);
+			rs = this.psSelectInformationsInter.executeQuery();
+		}
+		catch (Exception e) { e.printStackTrace(); }
+
+		return rs;
+	}
+
 	// Méthode d'insertion
 
 	public void insertIntervenant(Intervenant inter)
@@ -584,6 +599,7 @@ public class DB
 			this.psInsertModStage.setInt(9,nouveauModules.getNbHPnREH());
 			this.psInsertModStage.setInt(10,nouveauModules.getNbHPnTut());
 			this.psInsertModStage.setInt(11,nouveauModules.getAnnee());
+			System.out.println(this.psInsertModStage);
 			this.psInsertModStage.executeUpdate();
 		}
 		catch (SQLException e) { e.printStackTrace(); }
@@ -658,6 +674,7 @@ public class DB
 	{
 		try
 		{
+			System.out.println(nomTypMod);
 			switch(nomTypMod)
 			{
 				case "Ressources":

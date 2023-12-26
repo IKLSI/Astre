@@ -57,6 +57,7 @@ public class App extends Application
 			// Thread qui fait le chargement de la DB
 			Platform.runLater(() -> {
 				Controleur.ouvrirConnection();
+				// Controleur.chargement(1.0);
 				Controleur.setAnneeActuelle();
 				try
 				{

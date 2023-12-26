@@ -60,16 +60,16 @@
             <Label alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="38.0" layoutY="55.0" prefHeight="18.0" prefWidth="102.0" text="Total promo (eqtd)" wrapText="true" />
             <Label alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="38.0" layoutY="85.0" prefHeight="18.0" prefWidth="102.0" text="Total affecté (eqtd)" wrapText="true" />
             <Label alignment="CENTER" layoutX="256.0" layoutY="29.0" prefHeight="18.0" prefWidth="35.0" text="h Tut" />
-            <TextField layoutX="256.0" layoutY="49.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField layoutX="256.0" layoutY="49.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbHTut" />
             <TextField disable="true" layoutX="256.0" layoutY="79.0" prefHeight="26.0" prefWidth="35.0" />
          </children></AnchorPane>
       <Label alignment="CENTER" layoutX="113.0" layoutY="201.0" prefHeight="18.0" prefWidth="238.0" text="PN loacal (nb h tot/etd)" />
       <CheckBox layoutX="111.0" layoutY="333.0" mnemonicParsing="false" text="Validation" />
       <TableView fx:id="tableView" layoutX="354.0" layoutY="371.0" prefHeight="152.0" prefWidth="558.0" styleClass="tableau" stylesheets="@../../lib/style/Previsionnel.css" />
       <Label alignment="CENTER" layoutX="567.0" layoutY="201.0" prefHeight="18.0" prefWidth="344.0" text="Répartition" />
-      <Button layoutX="355.0" layoutY="530.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="ajouter" />
-      <Button layoutX="434.0" layoutY="530.0" mnemonicParsing="false" styleClass="btn" stylesheets="@../../lib/style/module.css" text="supprimer" />
-      <Button layoutX="112.0" layoutY="567.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Enregistrer" />
+      <Button layoutX="355.0" layoutY="530.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="ajouter" onAction="#ajouter" />
+      <Button layoutX="434.0" layoutY="530.0" mnemonicParsing="false" styleClass="btn" stylesheets="@../../lib/style/module.css" text="supprimer" onAction="#supprimer" />
+      <Button layoutX="112.0" layoutY="567.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Enregistrer" onAction="#enregistrer" />
       <Button layoutX="210.0" layoutY="567.0" mnemonicParsing="false" onAction="#annuler" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Annuler" />
    </children>
 </AnchorPane>

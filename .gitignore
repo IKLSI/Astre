@@ -1,6 +1,6 @@
 lib/javafx-sdk-21.0.1/
 .DS_Store
 bin/*.class
-bin/metier/
-bin/ihm/
-bin/controleur/
+bin/metier/*.class
+bin/ihm/*.class
+bin/controleur/*.class

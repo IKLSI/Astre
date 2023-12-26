@@ -1,13 +1,13 @@
-import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.*;
+import javafx.collections.*;
+import javafx.event.ActionEvent;
+import javafx.util.converter.*;
 
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
-
-import javafx.collections.*;
 
 import metier.*;
 import controleur.Controleur;
@@ -38,6 +38,7 @@ public class StageControleur implements Initializable
 
 	public static String codes;
 	private HashMap<String, String> map;
+	private boolean etat = false;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
@@ -117,27 +118,65 @@ public class StageControleur implements Initializable
 				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
 			}
 
-			// Remplit la table avec les données de la liste
-
 			TableColumn<Affectation, String> nomCol = new TableColumn<>("Intervenant");
 			nomCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
 
 			TableColumn<Affectation, String> typeCol = new TableColumn<>("Type");
 			typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-			TableColumn<Affectation, Integer> nbHCol = new TableColumn<>("Nb h");
-			nbHCol.setCellValueFactory(new PropertyValueFactory<>("nbH"));
+			TableColumn<Affectation, Integer> nbSemCol = new TableColumn<>("Nb sem");
+			nbSemCol.setCellValueFactory(new PropertyValueFactory<>("nbSem"));
+
+			TableColumn<Affectation, Integer> nbGpCol = new TableColumn<>("Nb Gp / nb h");
+			nbGpCol.setCellValueFactory(new PropertyValueFactory<>("nbGrp"));
 
 			TableColumn<Affectation, Integer> totalEqTdCol = new TableColumn<>("Total eqtd");
 			totalEqTdCol.setCellValueFactory(new PropertyValueFactory<>("totalEqTd"));
 
-			TableColumn<Affectation, Integer> comCol = new TableColumn<>("commentaire");
-			comCol.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
+			TableColumn<Affectation, String> commentaire = new TableColumn<>("Commentaire");
+			commentaire.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
 
-			tableView.getColumns().addAll(nomCol, typeCol, nbHCol, totalEqTdCol, comCol);
+			tableView.getColumns().addAll(nomCol, typeCol, nbSemCol, nbGpCol, totalEqTdCol, commentaire);
 			tableView.setItems(listeAffectation);
 
-			HashMap<String, String> map = Controleur.getPreviModule(codes);
+			tableView.setEditable(true);
+			nomCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			nomCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNom(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			typeCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			typeCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setType(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			nbSemCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			nbSemCol.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNbSem(e.getNewValue());
+			});
+
+			nbGpCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			nbGpCol.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNbGrp(e.getNewValue());
+			});
+
+			totalEqTdCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			totalEqTdCol.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setTotalEqTd(e.getNewValue());
+			});
+
+			commentaire.setCellFactory(TextFieldTableCell.forTableColumn());
+			commentaire.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setCommentaire(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			this.map = Controleur.getPreviModule(codes);
 
 			HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
 			{{
@@ -173,6 +212,78 @@ public class StageControleur implements Initializable
 	}
 
 	@FXML
+	public void modifier(ActionEvent event)
+	{
+		Affectation affectation = (Affectation) tableView.getSelectionModel().getSelectedItem();
+		int codInter = affectation.getCodInter();
+
+		Controleur.updateAffectation(new Affectation(
+			affectation.getCodMod(),
+			codInter,
+			Controleur.getCodCatHeure(affectation.getType()),
+			affectation.getCommentaire(),
+			affectation.getNom(),
+			affectation.getType(),
+			affectation.getNbSem(),
+			affectation.getNbGrp(),
+			affectation.getTotalEqTd(),
+			affectation.getNbH(),
+			Controleur.anneeActuelle
+		));
+	}
+
+	@FXML
+	public void ajouter(ActionEvent event)
+	{
+		if (etat == false)
+		{
+			tableView.getItems().add(new Affectation(
+				"",
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				"",
+				"",
+				"",
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Controleur.anneeActuelle
+			));
+		}
+		else
+		{
+			int dernier = tableView.getItems().size() - 1;
+			Affectation affectation = (Affectation) tableView.getItems().get(dernier);
+
+			Controleur.insertAffectationRessource(new Affectation(
+				codes,
+				Controleur.getCodInter(affectation.getNom()).get(0),
+				Controleur.getCodCatHeure(affectation.getType()),
+				affectation.getCommentaire(),
+				affectation.getNom(),
+				affectation.getType(),
+				affectation.getNbSem(),
+				affectation.getNbGrp(),
+				affectation.getTotalEqTd(),
+				affectation.getNbH(),
+				Controleur.anneeActuelle
+			));
+		}
+
+		etat = !etat;
+	}
+
+	@FXML
+	public void supprimer(ActionEvent event)
+	{
+		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+		Affectation affectation = (Affectation) tableView.getItems().get(selectedIndex);
+		Controleur.supprAffectation(affectation.getCodMod(), Controleur.anneeActuelle, Controleur.getCodInter(affectation.getNom()).get(0), affectation.getCodCatHeure());
+		tableView.getItems().remove(selectedIndex);
+	}
+
+	@FXML
 	public void enregistrer (ActionEvent event)
 	{
 		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
@@ -180,7 +291,7 @@ public class StageControleur implements Initializable
 		Modules module = new Modules(
 			code.getText(),
 			semestre.getText(),
-			Integer.valueOf(1),
+			Integer.valueOf(3),
 			libLong.getText(),
 			libCourt.getText(),
 			valid.isSelected(), 
@@ -208,11 +319,11 @@ public class StageControleur implements Initializable
 		
 		if (map == null)
 		{
-			Controleur.insertModRessources(module);
+			Controleur.insertModStage(module);
 		}
 		else
 		{
-			Controleur.updateMod(module, codMod.getText(), codes);
+			Controleur.updateMod(module, codMod.getText(), codes); // Problème codMod.getText() jamais trouvé
 		}
 
 		new Previsionnel(PrevisionnelController.panelCentre);

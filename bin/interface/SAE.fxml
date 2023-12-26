@@ -50,7 +50,7 @@
             <TextField fx:id="sommeAff" disable="true" layoutX="139.0" layoutY="69.0" prefHeight="26.0" prefWidth="35.0" />
             <Label layoutX="32.0" layoutY="69.0" prefHeight="26.0" prefWidth="106.0" text="Total affecté (eqtd)" wrapText="true" />
          </children></AnchorPane>
-      <Label alignment="CENTER" layoutX="108.0" layoutY="210.0" prefHeight="18.0" prefWidth="238.0" text="PN loacal (nb h tot/etd)" />
+      <Label alignment="CENTER" layoutX="108.0" layoutY="210.0" prefHeight="18.0" prefWidth="238.0" text="PN local (nb h tot/etd)" />
       <CheckBox layoutX="106.0" layoutY="342.0" mnemonicParsing="false" text="Validation" />
       <TableView fx:id="tableView" layoutX="349.0" layoutY="380.0" prefHeight="152.0" prefWidth="558.0" styleClass="tableau" stylesheets="@../../lib/style/Previsionnel.css" />
       <Label alignment="CENTER" layoutX="348.0" layoutY="210.0" prefHeight="18.0" prefWidth="558.0" text="Répartition" />

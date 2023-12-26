@@ -9,14 +9,14 @@ public class GenererHTML
 	{
 		try
 		{
-			ResultSet resultSetInter = null; //Controleur.getIntervenant_final(codInter);
+			ResultSet resultSetInter = Controleur.getInformationsInter(codInter);
 			ResultSet resultSetAffect = Controleur.getModuleParIntervenant(codInter);
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".html") );
 			pw.println ("<!DOCTYPE html>\n" + //
 						"<html lang=\"fr\">\n" + //
 						"\t<head>\n" + //
 						"\t\t<title>Prévisualisation</title>\n" + //
-						"\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"webapp.css\">\n" + //
+						"\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n" + //
 						"\t\t<meta charset=utf-8>\n" + //
 						"\t</head>\n" + //
 						"\t<body>\n" + //

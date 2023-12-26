@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.*;
 import javafx.collections.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.IntegerStringConverter;
 import javafx.event.ActionEvent;
 
 import java.net.URL;
@@ -46,6 +48,7 @@ public class PppControleur implements Initializable
 
 	public static String codes;
 	private HashMap<String, String> map;
+	private boolean etat = false;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { affichageDefaut(); }
@@ -151,9 +154,8 @@ public class PppControleur implements Initializable
 			HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
 			{{
 				put("nbetd", nbEtd);
-				System.out.println(nbEtd.getText());
-				put("nbtp", nbTP);
-				put("nbtd", nbTD);
+				put("nbgrptp", nbTP);
+				put("nbgrptd", nbTD);
 				put("libcourt", libCourt);
 				put("liblong", libLong);
 				put("nbhpncm", nbHPnCM);
@@ -167,7 +169,7 @@ public class PppControleur implements Initializable
 				put("sommeproeqtd", sommeTotPromoEqtd);
 				put("sommepreaffecteqtd", sommeTotAffectEqtd);
 				put("nbhaffecteht", nbHAffecteHT);
-				put("nbhpnTut", nbHPnTut);
+				put("nbhpntutparsemestre", nbHPnTut);
 				put("nbhtut", nbHTut);
 				put("sommetotpromoeqtd", sommeTotPromoEqtd);
 				put("nbhaffectecm", nbHAffecteCM);
@@ -178,7 +180,6 @@ public class PppControleur implements Initializable
 
 			for (String key : this.map.keySet())
 			{
-				System.out.println(this.map.get(key));
 				if(lstButton.containsKey(key))
 					lstButton.get(key).setText(this.map.get(key));
 			}
@@ -193,6 +194,78 @@ public class PppControleur implements Initializable
 	}
 
 	@FXML
+	public void modifier(ActionEvent event)
+	{
+		Affectation affectation = (Affectation) tableView.getSelectionModel().getSelectedItem();
+		int codInter = affectation.getCodInter();
+
+		Controleur.updateAffectation(new Affectation(
+			affectation.getCodMod(),
+			codInter,
+			Controleur.getCodCatHeure(affectation.getType()),
+			affectation.getCommentaire(),
+			affectation.getNom(),
+			affectation.getType(),
+			affectation.getNbSem(),
+			affectation.getNbGrp(),
+			affectation.getTotalEqTd(),
+			affectation.getNbH(),
+			Controleur.anneeActuelle
+		));
+	}
+
+	@FXML
+	public void ajouter(ActionEvent event)
+	{
+		if (etat == false)
+		{
+			tableView.getItems().add(new Affectation(
+				"",
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				"",
+				"",
+				"",
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Controleur.anneeActuelle
+			));
+		}
+		else
+		{
+			int dernier = tableView.getItems().size() - 1;
+			Affectation affectation = (Affectation) tableView.getItems().get(dernier);
+
+			Controleur.insertAffectationRessource(new Affectation(
+				codes,
+				Controleur.getCodInter(affectation.getNom()).get(0),
+				Controleur.getCodCatHeure(affectation.getType()),
+				affectation.getCommentaire(),
+				affectation.getNom(),
+				affectation.getType(),
+				affectation.getNbSem(),
+				affectation.getNbGrp(),
+				affectation.getTotalEqTd(),
+				affectation.getNbH(),
+				Controleur.anneeActuelle
+			));
+		}
+
+		etat = !etat;
+	}
+
+	@FXML
+	public void supprimer(ActionEvent event)
+	{
+		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+		Affectation affectation = (Affectation) tableView.getItems().get(selectedIndex);
+		Controleur.supprAffectation(affectation.getCodMod(), Controleur.anneeActuelle, Controleur.getCodInter(affectation.getNom()).get(0), affectation.getCodCatHeure());
+		tableView.getItems().remove(selectedIndex);
+	}
+
+	@FXML
 	public void enregistrer (ActionEvent event)
 	{
 		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
@@ -201,7 +274,7 @@ public class PppControleur implements Initializable
 		(
 			code.getText(),
 			semestre.getText(),
-			Integer.valueOf(3),
+			Integer.valueOf(4),
 			libLong.getText(),
 			libCourt.getText(),
 			valid.isSelected(),
@@ -229,7 +302,7 @@ public class PppControleur implements Initializable
 		
 		if (map == null)
 		{
-			Controleur.insertModRessources(module);
+			Controleur.insertModPPP(module);
 		}
 		else
 		{

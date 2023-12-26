@@ -139,7 +139,7 @@ public class Exportation implements Initializable
 		if(exportValid)
 		{
 			this.lblErreur.setText("Exportation");
-			GenererHTML.GenererIntervenant("Previsualisation",1);
+			GenererHTML.GenererIntervenant("Previsualisation", Controleur.getCodInter(this.nomInter.getText()).get(0));
 			exportValid = true;
 		}
 		else

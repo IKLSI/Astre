@@ -39,6 +39,7 @@ public class Controleur
 	public static HashMap<String, String>   getPreviModule(String codMod)                        { return Controleur.dataBase.getPreviModule(codMod);}
 	public static ArrayList<String>         getAnnee()                                           { return Controleur.dataBase.getAnnee();}
 	public static Integer                   getCodCatHeure(String nomCatHeure)                   { return Controleur.dataBase.getCodCatHeure(nomCatHeure);}
+	public static ResultSet                 getInformationsInter(int codInter)                   { return Controleur.dataBase.getInformationsInter(codInter);}
 
 	// Insertion
 
