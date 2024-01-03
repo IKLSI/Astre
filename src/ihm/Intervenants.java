@@ -17,7 +17,6 @@ import java.sql.*;
 import controleur.Controleur;
 import metier.Intervenant;
 
-
 public class Intervenants
 {
 	@FXML private ObservableList<ObservableList<String>> data;
@@ -248,6 +247,7 @@ public class Intervenants
 
 				panelCentre.getChildren().clear();
 				new Intervenants(panelCentre);
+				notifications("Intervenant ajouté");
 			}
 		});
 
@@ -400,6 +400,11 @@ public class Intervenants
 			}
 			catch (Exception e)	{ e.printStackTrace(); }
 		}
+
+		if (this.idIntervenant.size() > 1)
+			notifications("Intervenants supprimés");
+		else if (this.idIntervenant.size() == 1)
+			notifications("Intervenant supprimé");
 	}
 
 	@FXML
@@ -415,5 +420,14 @@ public class Intervenants
 
 		Intervenant intervenant = new Intervenant(code, row.get(2), row.get(3), Integer.parseInt(row.get(4)), Integer.parseInt(row.get(5)), Integer.parseInt(row.get(6)));
 		Controleur.updateInter(intervenant);
+	}
+
+	private void notifications(String message)
+	{
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Information");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 }
