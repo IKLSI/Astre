@@ -16,16 +16,12 @@ public class AppControleur implements Initializable
 	public void initialize(URL location, ResourceBundle resources) { affichageDefaut(); }
 
 	// Méthode changement du Panel centre
-	private void affichageDefaut(){ new Previsionnel(this.panelCentre); }
-	
-	@FXML
-	private void afficheParametres(ActionEvent event) { this.chargerOnglet("Parametres"); }
-	@FXML
-	public void affichePrevisionnel(ActionEvent event){ new Previsionnel(this.panelCentre); }
-	@FXML
-	private void afficheIntervenants(ActionEvent event){ new Intervenants(this.panelCentre); }
-	@FXML
-	private void afficheEtats(ActionEvent event){ this.chargerOnglet("Etats"); }
+	private void affichageDefaut(){ new Previsionnel(panelCentre); }
+
+	@FXML private void afficheParametres  (ActionEvent event){ this.chargerOnglet("Parametres"); }
+	@FXML private void affichePrevisionnel(ActionEvent event){ new Previsionnel(panelCentre); }
+	@FXML private void afficheIntervenants(ActionEvent event){ new Intervenants(this.panelCentre); }
+	@FXML private void afficheEtats       (ActionEvent event){ this.chargerOnglet("Etats"); }
 
 	private void chargerOnglet(String nomOnglet)
 	{

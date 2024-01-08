@@ -1,3 +1,4 @@
+package ihm;
 import javafx.event.*;
 import javafx.fxml.*;
 import javafx.scene.control.*;
@@ -161,7 +162,7 @@ public class PrevisionnelController implements Initializable
 		ObservableList<Modules> listeModules = FXCollections.observableArrayList();
 
 		ArrayList<Modules> lst = Controleur.getListModule(this.intitule);
-		
+
 		for (Modules module : lst)
 		{
 			String codMod  = module.getCodMod();
@@ -300,7 +301,7 @@ public class PrevisionnelController implements Initializable
 			module = (Modules) tableViewS4.getSelectionModel().getSelectedItem();
 		else if (this.intitule.equals("S5"))
 			module = (Modules) tableViewS5.getSelectionModel().getSelectedItem();
-		else if (this.intitule.equals("S6")) 
+		else if (this.intitule.equals("S6"))
 			module = (Modules) tableViewS6.getSelectionModel().getSelectedItem();
 
 		// TODO : A mettre dans DB

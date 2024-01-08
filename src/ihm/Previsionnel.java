@@ -1,3 +1,4 @@
+package ihm;
 import javafx.fxml.*;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
@@ -10,7 +11,7 @@ public class Previsionnel
 		{
 			panelCentre.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Previsionnel.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../interface/Previsionnel.fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());

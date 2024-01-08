@@ -48,7 +48,7 @@ public class GenererHTML
 			}
 
 			pw.println ("\t\t\t</tbody>\n" + //
-						"\t\t</table>\n" + 
+						"\t\t</table>\n" +
 						"\t\t<h2>Prévisualisation des affectations</h2>\n" + //
 						"\t\t<table>\n" + //
 						"\t\t\t<thead>\n" + //
@@ -132,7 +132,7 @@ public class GenererHTML
 			}
 
 			pw.println ("\t\t\t</tbody>\n" + //
-						"\t\t</table>\n" + 
+						"\t\t</table>\n" +
 						"\t\t<h2>Prévisualisation des affectations</h2>\n" + //
 						"\t\t<table>\n" + //
 						"\t\t\t<thead>\n" + //
@@ -180,6 +180,9 @@ public class GenererHTML
 					pw.print(",");
 				pw.print(rs.getMetaData().getColumnName(cpt));
 			}
+
+			pw.print("\n");
+
 			while(rs.next())
 			{
 				for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++)

@@ -1,16 +1,5 @@
-./src/PrevisionnelController.java
-./src/RessourceControleur.java
-./src/Ressource.java
-./src/Stages.java
-./src/StageControleur.java
-./src/Sae.java
-./src/SaeControleur.java
-./src/Ppp.java
-./src/PppControleur.java
 ./src/AppControleur.java
 ./src/App.java
-
-./src/Previsionnel.java
 
 ./src/metier/CategorieHeure.java
 ./src/metier/CategorieIntervenant.java
@@ -28,5 +17,15 @@
 ./src/ihm/Etats.java
 ./src/ihm/Exportation.java
 ./src/ihm/Intervenants.java
+./src/ihm/PrevisionnelController.java
+./src/ihm/RessourceControleur.java
+./src/ihm/Ressource.java
+./src/ihm/Stages.java
+./src/ihm/StageControleur.java
+./src/ihm/Sae.java
+./src/ihm/SaeControleur.java
+./src/ihm/Ppp.java
+./src/ihm/PppControleur.java
+./src/ihm/Previsionnel.java
 
 ./src/controleur/Controleur.java

@@ -29,7 +29,7 @@
 
 .tableau .table-row-cell {
 	-fx-padding: 15px;
-	-fx-background-radius: 20px;
+	-fx-background-radius: 10px;
 	-fx-background-color:#dadada;
 	-fx-background-insets: 5px;
 }

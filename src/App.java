@@ -57,8 +57,7 @@ public class App extends Application
 			// Thread qui fait le chargement de la DB
 			Platform.runLater(() -> {
 				Controleur.ouvrirConnection();
-				// Controleur.chargement(1.0);
-				Controleur.setAnneeActuelle();
+				Controleur.chargement(1.0);
 				try
 				{
 					Thread.sleep(1000);
@@ -67,6 +66,8 @@ public class App extends Application
 
 				if(Controleur.connecter)
 				{
+					Controleur.setAnneeActuelle();
+
 					//Ouvre le menu
 					Platform.runLater(() -> {
 						try
@@ -79,12 +80,11 @@ public class App extends Application
 					});
 				}
 				else
-					this.afficherErreur("Connexion échouée", "La connexion à la base de données a échoué.");
+				this.afficherErreur("Connexion échouée", "La connexion à la base de données a échoué.");
 			});
 
 			Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			currentStage.close();
-
 		}
 		catch (Exception e) { e.printStackTrace(); }
 	}

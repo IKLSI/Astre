@@ -1,3 +1,4 @@
+package ihm;
 import javafx.fxml.*;
 import javafx.scene.layout.AnchorPane;
 
@@ -12,7 +13,7 @@ public class Ressource
 		{
 			panelCentre.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Ressource.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../interface/Ressource.fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());

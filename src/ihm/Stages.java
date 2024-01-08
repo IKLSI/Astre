@@ -1,3 +1,4 @@
+package ihm;
 import javafx.fxml.*;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
@@ -17,7 +18,7 @@ public class Stages
 		{
 			panelCentre.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/Stage.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../interface/Stage.fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());

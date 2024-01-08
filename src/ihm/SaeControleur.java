@@ -1,3 +1,4 @@
+package ihm;
 import javafx.event.*;
 import javafx.fxml.*;
 import javafx.scene.control.*;
@@ -102,7 +103,7 @@ public class SaeControleur implements Initializable
 				int codCatHeure = resultSet.getInt("codCatHeure");
 				String commentaire = resultSet.getString("commentaire");
 				int nbH = resultSet.getInt("nbH");
-				
+
 				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
 			}
 
@@ -277,12 +278,12 @@ public class SaeControleur implements Initializable
 
 		etat = !etat;
 	}
-	
+
 	@FXML
 	public void enregistrer (ActionEvent event)
 	{
 		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
-	
+
 		Modules module = new Modules(
 			code.getText(),
 			semestre.getText(),
@@ -321,5 +322,5 @@ public class SaeControleur implements Initializable
 
 		new Previsionnel(PrevisionnelController.panelCentre);
 	}
-	
+
 }

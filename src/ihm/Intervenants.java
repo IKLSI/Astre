@@ -30,7 +30,7 @@ public class Intervenants
 	{
 		try	{ panelCentre.getChildren().clear(); }
 		catch (Exception e)	{ e.printStackTrace(); }
-		
+
 		try
 		{
 			ResultSet resultSet = Controleur.getIntervenant_final();
@@ -163,7 +163,7 @@ public class Intervenants
 			tableView.setRowFactory(tv -> {
 				TableRow<ObservableList<String>> row = new TableRow<>();
 				row.setStyle("-fx-padding: 5px; -fx-background-radius: 20px; -fx-background-color: #dadada; -fx-background-insets: 5px;");
-			
+
 				return row;
 			});
 
@@ -182,7 +182,7 @@ public class Intervenants
 		}
 		catch (Exception e)	{ e.printStackTrace(); }
 	}
-	
+
 	@FXML
 	public void ajouter(ActionEvent event, AnchorPane panelCentre) throws Exception
 	{
@@ -248,7 +248,7 @@ public class Intervenants
 		bouton.setOnMouseEntered(e -> bouton.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
 		bouton.setOnMouseExited(e -> bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
 		bouton.setOnAction((ActionEvent event2) -> {
-			if(regString(nom.getText()) && regString(prenom.getText()) && regInt(nomCat.getText(),"<",6) && 
+			if(regString(nom.getText()) && regString(prenom.getText()) && regInt(nomCat.getText(),"<",6) &&
 			   regInt(hserv.getText(),">",5) && regInt(maxheure.getText(),"<",250) &&
 			   regInt(annee.getText(),">",2022))
 			{
@@ -264,7 +264,7 @@ public class Intervenants
 		//Bouton Annuler
 
 		buttonA.setOnMouseEntered(e -> buttonA.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
-		buttonA.setOnMouseExited(e -> buttonA.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));	
+		buttonA.setOnMouseExited(e -> buttonA.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
 		buttonA.setOnAction((ActionEvent event2) -> {
 			try
 			{
@@ -367,27 +367,33 @@ public class Intervenants
 
 	private boolean regInt(String nbTester, String contrainte,int borne)
 	{
-		if (nbTester.matches("\\d+"))
+		if(this.isStringNumeric(nbTester))
 		{
-			int numericValue = Integer.parseInt(nbTester);
+			int val = Integer.parseInt(nbTester);
+			if(contrainte.equals("<")){
+				if(val < borne) return true;
+			}
+			if(contrainte.equals(">")){
+				if(val > borne) return true;
+			}
 
-			switch (contrainte)
-			{
-				case "<":
-					return numericValue < borne;
-				case ">":
-					return numericValue > borne;
-				default:
-					return false;
+		}
+
+		this.lblErreur.setText(nbTester + " doit être " + contrainte + " " + borne);
+		return false;
+
+	}
+
+	private boolean isStringNumeric(String str) {
+		// Vérifie si tous les caractères de la chaîne sont des chiffres
+		for (char c : str.toCharArray()) {
+			if (!Character.isDigit(c)) {
+				return false;
 			}
 		}
-		else
-		{
-			this.lblErreur.setText(nbTester + " n'est pas valide");
-			return false;
-		}
+		return true;
 	}
-	
+
 	@FXML
 	private void supprimer(ActionEvent event)
 	{

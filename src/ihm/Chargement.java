@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 public class Chargement implements Initializable
 {
 	@FXML private ProgressBar bar;
-	private static double valBar = 0.5;
+	public static double valBar = 0.7;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) { this.bar.setProgress(Chargement.valBar); }

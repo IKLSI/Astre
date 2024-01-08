@@ -1,47 +1,39 @@
+package ihm;
 import javafx.fxml.*;
 import javafx.scene.control.*;
-import java.sql.*;
-import java.util.*;
+import javafx.scene.control.cell.*;
 import javafx.collections.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.converter.IntegerStringConverter;
 import javafx.event.ActionEvent;
+import javafx.util.converter.*;
 
 import java.net.URL;
+import java.sql.*;
+import java.util.*;
 
 import metier.*;
 import controleur.Controleur;
 
-public class PppControleur implements Initializable
+public class StageControleur implements Initializable
 {
 	public static String intitule;
 
-	@FXML public TextField semestre           = new TextField();
 	@FXML public TableView tableView          = new TableView<>();
+	@FXML public TextField semestre           = new TextField();
 	@FXML public TextField nbEtd              = new TextField();
 	@FXML public TextField nbTP               = new TextField();
 	@FXML public TextField nbTD               = new TextField();
 	@FXML public TextField code               = new TextField();
 	@FXML public TextField libCourt           = new TextField();
 	@FXML public TextField libLong            = new TextField();
-	@FXML public TextField nbHPnCM            = new TextField();
-	@FXML public TextField nbHPnTD            = new TextField();
-	@FXML public TextField nbHPnTP            = new TextField();
-	@FXML public TextField nbHParSemaineCM    = new TextField();
-	@FXML public TextField nbHParSemaineTD    = new TextField();
-	@FXML public TextField nbHParSemaineTP    = new TextField();
-	@FXML public TextField hPonctuelle        = new TextField();
-	@FXML public TextField sommeTotPromoEqtd  = new TextField();
-	@FXML public TextField sommeTotAffectEqtd = new TextField();
-	@FXML public TextField nbHAffecteHT       = new TextField();
+	@FXML public TextField nbHPnREH           = new TextField();
 	@FXML public TextField nbHPnTut           = new TextField();
+	@FXML public TextField sommeHPnStage      = new TextField();
+	@FXML public TextField nbHREH             = new TextField();
 	@FXML public TextField nbHTut             = new TextField();
-	@FXML public TextField sommeHeurePnPPP    = new TextField();
-	@FXML public TextField nbHAffecteCM       = new TextField();
-	@FXML public TextField nbHAffecteTD       = new TextField();
-	@FXML public TextField nbHAffecteTP       = new TextField();
-	@FXML public TextField nbHAffecteHP       = new TextField();
+	@FXML public TextField sommeTotPromoEqtd  = new TextField();
+	@FXML public TextField nbHAffecteREH      = new TextField();
+	@FXML public TextField nbHAffecteHT       = new TextField();
+	@FXML public TextField sommeTotAffectEqtd = new TextField();
 	@FXML public TextField codMod             = new TextField();
 	@FXML public CheckBox valid               = new CheckBox();
 
@@ -55,31 +47,30 @@ public class PppControleur implements Initializable
 	@FXML
 	public void affichageDefaut( )
 	{
-		this.semestre.setText(PppControleur.intitule);
+		this.semestre.setText(StageControleur.intitule);
 		chargerRessource(new ActionEvent());
 	}
-
-	@FXML
-	public void chargerRessource(ActionEvent event)
-	{
-		code.setText(PppControleur.codes);
-
-		if (Controleur.getPreviModule(PppControleur.codes) != null)
-			remplirTableau();
-		else
-		{
-			ArrayList<Semestre> lst = Controleur.getSemestre(PppControleur.intitule);
-			nbEtd.setText(String.valueOf(lst.get(0).getNbEtd()));
-			nbTP.setText(String.valueOf(lst.get(0).getNbGrpTP()));
-			nbTD.setText(String.valueOf(lst.get(0).getNbGrpTD()));
-		}
-	}
-
 
 	@FXML
 	public void annuler(ActionEvent event)
 	{
 		new Previsionnel(PrevisionnelController.panelCentre);
+	}
+
+	@FXML
+	public void chargerRessource(ActionEvent event)
+	{
+		code.setText(StageControleur.codes);
+
+		if (Controleur.getPreviModule(StageControleur.codes) != null)
+			remplirTableau();
+		else
+		{
+			ArrayList<Semestre> lst = Controleur.getSemestre(StageControleur.intitule);
+			nbEtd.setText(String.valueOf(lst.get(0).getNbEtd()));
+			nbTP.setText(String.valueOf(lst.get(0).getNbGrpTP()));
+			nbTD.setText(String.valueOf(lst.get(0).getNbGrpTD()));
+		}
 	}
 
 	@FXML
@@ -89,6 +80,7 @@ public class PppControleur implements Initializable
 		tableView.getItems().clear();
 
 		ObservableList<Affectation> listeAffectation = FXCollections.observableArrayList();
+
 		ArrayList<Affectation> lst = new ArrayList<Affectation>();
 
 		try
@@ -107,7 +99,7 @@ public class PppControleur implements Initializable
 				int codCatHeure = resultSet.getInt("codCatHeure");
 				String commentaire = resultSet.getString("commentaire");
 				int nbH = resultSet.getInt("nbH");
-				
+
 				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
 			}
 
@@ -127,59 +119,88 @@ public class PppControleur implements Initializable
 				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
 			}
 
-			// Remplit la table avec les données de la liste
 			TableColumn<Affectation, String> nomCol = new TableColumn<>("Intervenant");
 			nomCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
 
 			TableColumn<Affectation, String> typeCol = new TableColumn<>("Type");
 			typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-			TableColumn<Affectation, Integer> nbHCol = new TableColumn<>("Nb h");
-			nbHCol.setCellValueFactory(new PropertyValueFactory<>("nbH"));
+			TableColumn<Affectation, Integer> nbSemCol = new TableColumn<>("Nb sem");
+			nbSemCol.setCellValueFactory(new PropertyValueFactory<>("nbSem"));
+
+			TableColumn<Affectation, Integer> nbGpCol = new TableColumn<>("Nb Gp / nb h");
+			nbGpCol.setCellValueFactory(new PropertyValueFactory<>("nbGrp"));
 
 			TableColumn<Affectation, Integer> totalEqTdCol = new TableColumn<>("Total eqtd");
 			totalEqTdCol.setCellValueFactory(new PropertyValueFactory<>("totalEqTd"));
 
-			TableColumn<Affectation, Integer> comCol = new TableColumn<>("commentaire");
-			comCol.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
+			TableColumn<Affectation, String> commentaire = new TableColumn<>("Commentaire");
+			commentaire.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
 
-			tableView.getColumns().addAll(nomCol, typeCol, nbHCol, totalEqTdCol, comCol);
+			tableView.getColumns().addAll(nomCol, typeCol, nbSemCol, nbGpCol, totalEqTdCol, commentaire);
 			tableView.setItems(listeAffectation);
 
-			ArrayList<Semestre> lstSem = Controleur.getSemestre(intitule);
+			tableView.setEditable(true);
+			nomCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			nomCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNom(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			typeCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			typeCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setType(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			nbSemCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			nbSemCol.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNbSem(e.getNewValue());
+			});
+
+			nbGpCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			nbGpCol.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNbGrp(e.getNewValue());
+			});
+
+			totalEqTdCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			totalEqTdCol.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setTotalEqTd(e.getNewValue());
+			});
+
+			commentaire.setCellFactory(TextFieldTableCell.forTableColumn());
+			commentaire.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setCommentaire(e.getNewValue());
+				modifier(new ActionEvent());
+			});
 
 			this.map = Controleur.getPreviModule(codes);
 
 			HashMap<String,TextField> lstButton = new HashMap<String,TextField>()
 			{{
-				put("nbetd", nbEtd);
-				put("nbgrptp", nbTP);
-				put("nbgrptd", nbTD);
-				put("libcourt", libCourt);
-				put("liblong", libLong);
-				put("nbhpncm", nbHPnCM);
-				put("nbhpntd", nbHPnTD);
-				put("nbhpntp", nbHPnTP);
-				put("sommeheurepnppp", sommeHeurePnPPP);
-				put("nbhparsemainecm", nbHParSemaineCM);
-				put("nbhparsemainetd", nbHParSemaineTD);
-				put("nbhparsemainetp", nbHParSemaineTP);
-				put("hponctuelle", hPonctuelle);
-				put("sommetotpromoeqtd", sommeTotPromoEqtd);
-				put("sommetotaffecteqtd", sommeTotAffectEqtd);
-				put("nbhaffecteht", nbHAffecteHT);
+				put("nbetd",nbEtd);
+				put("nbgrptp",nbTP);
+				put("nbgrptd",nbTD);
+				put("libcourt",libCourt);
+				put("liblong",libLong);
+				put("nbhpnreh", nbHPnREH);
 				put("nbhpntut", nbHPnTut);
+				put("sommehpnstage", sommeHPnStage);
+				put("nbhreh", nbHREH);
 				put("nbhtut", nbHTut);
-				put("nbhaffectecm", nbHAffecteCM);
-				put("nbhaffectetd", nbHAffecteTD);
-				put("nbhaffectetp", nbHAffecteTP);
-				put("nbhaffectehp", nbHAffecteHP);
+				put("sommetotpromoeqtd", sommeTotPromoEqtd);
+				put("nbhaffectereh", nbHAffecteREH);
+				put("nbhaffecteht", nbHAffecteHT );
+				put("sommetotaffecteqtd", sommeTotAffectEqtd);
 			}};
 
-			for (String key : this.map.keySet())
+			for (String key : map.keySet())
 			{
 				if(lstButton.containsKey(key))
-					lstButton.get(key).setText(this.map.get(key));
+					lstButton.get(key).setText(map.get(key));
 			}
 		}
 		catch (SQLException e) { e.printStackTrace(); }
@@ -267,44 +288,43 @@ public class PppControleur implements Initializable
 	public void enregistrer (ActionEvent event)
 	{
 		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
-	
-		Modules module = new Modules
-		(
+
+		Modules module = new Modules(
 			code.getText(),
 			semestre.getText(),
-			Integer.valueOf(4),
+			Integer.valueOf(3),
 			libLong.getText(),
 			libCourt.getText(),
 			valid.isSelected(),
-			Integer.valueOf(nbHPnCM.getText()),
-			Integer.valueOf(nbHPnTD.getText()),
-			Integer.valueOf(nbHPnTP.getText()),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(nbHParSemaineTD.getText()),
-			Integer.valueOf(nbHParSemaineTP.getText()),
-			Integer.valueOf(nbHParSemaineCM.getText()),
-			Integer.valueOf(hPonctuelle.getText()),
 			Integer.valueOf(0),
 			Integer.valueOf(0),
 			Integer.valueOf(0),
 			Integer.valueOf(0),
 			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(0),
+			Integer.valueOf(nbHPnREH.getText()),
 			Integer.valueOf(nbHPnTut.getText()),
-			Integer.valueOf(0),
+			Integer.valueOf(nbHREH.getText()),
 			Integer.valueOf(nbHTut.getText()),
 			Integer.valueOf(0),
 			Controleur.anneeActuelle
 		);
-		
+
 		if (map == null)
 		{
-			Controleur.insertModPPP(module);
+			Controleur.insertModStage(module);
 		}
 		else
 		{
-			Controleur.updateMod(module, codMod.getText(), codes);
+			Controleur.updateMod(module, codMod.getText(), codes); // Problème codMod.getText() jamais trouvé
 		}
 
 		new Previsionnel(PrevisionnelController.panelCentre);

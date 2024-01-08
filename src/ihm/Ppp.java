@@ -1,20 +1,22 @@
+package ihm;
 import javafx.fxml.*;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
 
-public class Sae
+public class Ppp
 {
 	@FXML private MenuButton menuButton;
 
 	@FXML private AnchorPane panelCentre;
 
-	public Sae(AnchorPane panelCentre)
+	public Ppp(AnchorPane panelCentre)
 	{
+		this.panelCentre = panelCentre;
 		try
 		{
 			panelCentre.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("interface/SAE.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../interface/PPP.fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelCentre.getChildren().setAll(loadedPane.getChildren());

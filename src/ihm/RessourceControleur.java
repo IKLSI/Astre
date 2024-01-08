@@ -1,3 +1,4 @@
+package ihm;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
@@ -12,32 +13,56 @@ import java.util.*;
 import metier.*;
 import controleur.Controleur;
 
-public class StageControleur implements Initializable
+public class RessourceControleur implements Initializable
 {
+
 	public static String intitule;
 
-	@FXML public TableView tableView          = new TableView<>();
-	@FXML public TextField semestre           = new TextField();
-	@FXML public TextField nbEtd              = new TextField();
-	@FXML public TextField nbTP               = new TextField();
-	@FXML public TextField nbTD               = new TextField();
-	@FXML public TextField code               = new TextField();
-	@FXML public TextField libCourt           = new TextField();
-	@FXML public TextField libLong            = new TextField();
-	@FXML public TextField nbHPnREH           = new TextField();
-	@FXML public TextField nbHPnTut           = new TextField();
-	@FXML public TextField sommeHPnStage      = new TextField();
-	@FXML public TextField nbHREH             = new TextField();
-	@FXML public TextField nbHTut             = new TextField();
-	@FXML public TextField sommeTotPromoEqtd  = new TextField();
-	@FXML public TextField nbHAffecteREH      = new TextField();
-	@FXML public TextField nbHAffecteHT       = new TextField();
-	@FXML public TextField sommeTotAffectEqtd = new TextField();
-	@FXML public TextField codMod             = new TextField();
-	@FXML public CheckBox valid               = new CheckBox();
+	@FXML public TableView tableView               = new TableView<>();
+	@FXML public TextField semestre                = new TextField();
+	@FXML public TextField nbEtd                   = new TextField();
+	@FXML public TextField nbTP                    = new TextField();
+	@FXML public TextField nbTD                    = new TextField();
+	@FXML public TextField code                    = new TextField();
+	@FXML public TextField libCourt                = new TextField();
+	@FXML public TextField libLong                 = new TextField();
+	@FXML public TextField nbSemaineCM             = new TextField();
+	@FXML public TextField nbHSemaineCM            = new TextField();
+	@FXML public TextField nbSemaineTD             = new TextField();
+	@FXML public TextField nbHSemaineTD            = new TextField();
+	@FXML public TextField nbSemaineTP             = new TextField();
+	@FXML public TextField nbHSemaineTP            = new TextField();
+	@FXML public TextField nbHPnTD                 = new TextField();
+	@FXML public TextField nbHPnTP                 = new TextField();
+	@FXML public TextField nbHPnCM                 = new TextField();
+	@FXML public TextField promoEqtdTP             = new TextField();
+	@FXML public TextField sommeNbsxNbH            = new TextField();
+	@FXML public TextField promoEqtdHP             = new TextField();
+	@FXML public TextField nbsxNbHTD               = new TextField();
+	@FXML public TextField nbsxNbHCM               = new TextField();
+	@FXML public TextField sommePn                 = new TextField();
+	@FXML public TextField hPonctuelle             = new TextField();
+	@FXML public TextField codMod                  = new TextField();
+	@FXML public TextField promoEqtdTD             = new TextField();
+	@FXML public TextField sommeTotPromoEqtd       = new TextField();
+	@FXML public TextField nbsxNbHTP               = new TextField();
+	@FXML public TextField promoEqtdCM             = new TextField();
+	@FXML public TextField totalEqtdPromoPnCM      = new TextField();
+	@FXML public TextField eqtdTD                  = new TextField();
+	@FXML public TextField sommeTotalEqtdPromoPn   = new TextField();
+	@FXML public TextField totalEqtdPromoPnTD      = new TextField();
+	@FXML public TextField totalEqtdPromoPnTP      = new TextField();
+	@FXML public TextField eqtdCM                  = new TextField();
+	@FXML public TextField eqtdTP                  = new TextField();
+	@FXML public TextField sommeTotalEqtdPromoPnTP = new TextField();
+	@FXML public TextField sommeTotAffectEqtd      = new TextField();
+	@FXML public TextField eqtdHP                  = new TextField();
+	@FXML public TextField annee                   = new TextField();
+	@FXML public CheckBox valid                    = new CheckBox();
 
 	public static String codes;
 	private HashMap<String, String> map;
+	private ArrayList<Integer> lstIntervenant = new ArrayList<Integer>();
 	private boolean etat = false;
 
 	@Override
@@ -46,26 +71,23 @@ public class StageControleur implements Initializable
 	@FXML
 	public void affichageDefaut( )
 	{
-		this.semestre.setText(StageControleur.intitule);
+		this.semestre.setText(RessourceControleur.intitule);
 		chargerRessource(new ActionEvent());
 	}
 
 	@FXML
-	public void annuler(ActionEvent event)
-	{
-		new Previsionnel(PrevisionnelController.panelCentre);
-	}
+	public void annuler(ActionEvent event) { new Previsionnel(PrevisionnelController.panelCentre); }
 
 	@FXML
 	public void chargerRessource(ActionEvent event)
 	{
-		code.setText(StageControleur.codes);
+		code.setText(RessourceControleur.codes);
 
-		if (Controleur.getPreviModule(StageControleur.codes) != null)
+		if (Controleur.getPreviModule(RessourceControleur.codes) != null)
 			remplirTableau();
 		else
 		{
-			ArrayList<Semestre> lst = Controleur.getSemestre(StageControleur.intitule);
+			ArrayList<Semestre> lst = Controleur.getSemestre(RessourceControleur.intitule);
 			nbEtd.setText(String.valueOf(lst.get(0).getNbEtd()));
 			nbTP.setText(String.valueOf(lst.get(0).getNbGrpTP()));
 			nbTD.setText(String.valueOf(lst.get(0).getNbGrpTD()));
@@ -79,7 +101,6 @@ public class StageControleur implements Initializable
 		tableView.getItems().clear();
 
 		ObservableList<Affectation> listeAffectation = FXCollections.observableArrayList();
-		
 		ArrayList<Affectation> lst = new ArrayList<Affectation>();
 
 		try
@@ -88,34 +109,34 @@ public class StageControleur implements Initializable
 
 			while (resultSet.next())
 			{
-				String nom = resultSet.getString("nom");
-				String type = resultSet.getString("nomcatheure");
-				int nbSem = resultSet.getInt("nbsem");
-				int nbGrp = resultSet.getInt("nbgrp");
-				int totalEqTd = resultSet.getInt("tot eqtd");
-				String codMod = resultSet.getString("codMod");
-				int codInter = resultSet.getInt("codInter");
-				int codCatHeure = resultSet.getInt("codCatHeure");
+				String nom         = resultSet.getString("nom");
+				String type        = resultSet.getString("nomcatheure");
+				int nbSem          = resultSet.getInt("nbsem");
+				int nbGrp          = resultSet.getInt("nbgrp");
+				int totalEqTd      = resultSet.getInt("tot eqtd");
+				String codMod      = resultSet.getString("codMod");
+				int codInter       = resultSet.getInt("codInter");
+				int codCatHeure    = resultSet.getInt("codCatHeure");
 				String commentaire = resultSet.getString("commentaire");
-				int nbH = resultSet.getInt("nbH");
-				
-				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
+				int nbH            = resultSet.getInt("nbH");
+
+				lst.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
 			}
 
 			for (Affectation affectation : lst)
 			{
-				String nom = affectation.getNom();
-				String type = affectation.getType();
-				int nbSem = affectation.getNbSem();
-				int nbGrp = affectation.getNbGrp();
-				int totalEqTd = affectation.getTotalEqTd();
-				String codMod = affectation.getCodMod();
-				int codInter = affectation.getCodInter();
-				int codCatHeure = affectation.getCodCatHeure();
+				String nom         = affectation.getNom();
+				String type        = affectation.getType();
+				int nbSem          = affectation.getNbSem();
+				int nbGrp          = affectation.getNbGrp();
+				int totalEqTd      = affectation.getTotalEqTd();
+				String codMod      = affectation.getCodMod();
+				int codInter       = affectation.getCodInter();
+				int codCatHeure    = affectation.getCodCatHeure();
 				String commentaire = affectation.getCommentaire();
-				int nbH = affectation.getNbH();
+				int nbH            = affectation.getNbH();
 
-				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, Controleur.anneeActuelle));
+				listeAffectation.add(new Affectation(codMod, codInter, codCatHeure, commentaire, nom, type, nbSem, nbGrp, totalEqTd, nbH, 2023));
 			}
 
 			TableColumn<Affectation, String> nomCol = new TableColumn<>("Intervenant");
@@ -185,21 +206,43 @@ public class StageControleur implements Initializable
 				put("nbgrptd",nbTD);
 				put("libcourt",libCourt);
 				put("liblong",libLong);
-				put("nbhpnreh", nbHPnREH);
-				put("nbhpntut", nbHPnTut);
-				put("sommehpnstage", sommeHPnStage);
-				put("nbhreh", nbHREH);
-				put("nbhtut", nbHTut);
-				put("sommetotpromoeqtd", sommeTotPromoEqtd);
-				put("nbhaffectereh", nbHAffecteREH);
-				put("nbhaffecteht", nbHAffecteHT );
-				put("sommetotaffecteqtd", sommeTotAffectEqtd);
+				put("nbsemainecm",nbSemaineCM);
+				put("nbhparsemainecm",nbHSemaineCM);
+				put("nbsemainetd",nbSemaineTD);
+				put("nbhparsemainetd",nbHSemaineTD);
+				put("nbsemainetp",nbSemaineTP);
+				put("nbhparsemainetp",nbHSemaineTP);
+				put("nbhpntd",nbHPnTD);
+				put("nbhpntp",nbHPnTP);
+				put("nbhpncm",nbHPnCM);
+				put("promoeqtdtp",promoEqtdTP);
+				put("sommenbsxnbh",sommeNbsxNbH);
+				put("promoeqtdhp",promoEqtdHP);
+				put("nbsxnbhtd",nbsxNbHTD);
+				put("nbsxnbhcm",nbsxNbHCM);
+				put("sommepn",sommePn);
+				put("hponctuelle",hPonctuelle);
+				put("promoeqtdtd",promoEqtdTD);
+				put("sommetotpromoeqtd",sommeTotPromoEqtd);
+				put("nbsxnbhtp",nbsxNbHTP);
+				put("promoeqtdcm",promoEqtdCM);
+				put("totaleqtdpromopncm",totalEqtdPromoPnCM);
+				put("eqtdtd",eqtdTD);
+				put("sommetotaleqtdpromopn",sommeTotalEqtdPromoPn);
+				put("totaleqtdpromopntd",totalEqtdPromoPnTD);
+				put("eqtdcm",eqtdCM);
+				put("eqtdtp",eqtdTP);
+				put("sommetotpromoeqtd",sommeTotalEqtdPromoPnTP);
+				put("sommetotaffecteqtd",sommeTotAffectEqtd);
+				put("totaleqtdpromopntp",totalEqtdPromoPnTP);
+				put("eqtdhp",eqtdHP);
+				put("annee",annee);
 			}};
 
-			for (String key : map.keySet())
+			for (String key : this.map.keySet())
 			{
 				if(lstButton.containsKey(key))
-					lstButton.get(key).setText(map.get(key));
+					lstButton.get(key).setText(this.map.get(key));
 			}
 		}
 		catch (SQLException e) { e.printStackTrace(); }
@@ -287,14 +330,24 @@ public class StageControleur implements Initializable
 	public void enregistrer (ActionEvent event)
 	{
 		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
-	
+
 		Modules module = new Modules(
 			code.getText(),
 			semestre.getText(),
-			Integer.valueOf(3),
+			Integer.valueOf(1),
 			libLong.getText(),
 			libCourt.getText(),
-			valid.isSelected(), 
+			valid.isSelected(),
+			Integer.valueOf(nbHPnCM.getText()),
+			Integer.valueOf(nbHPnTD.getText()),
+			Integer.valueOf(nbHPnTP.getText()),
+			Integer.valueOf(nbSemaineTD.getText()),
+			Integer.valueOf(nbSemaineTP.getText()),
+			Integer.valueOf(nbSemaineCM.getText()),
+			Integer.valueOf(nbHSemaineTD.getText()),
+			Integer.valueOf(nbHSemaineTP.getText()),
+			Integer.valueOf(nbHSemaineCM.getText()),
+			Integer.valueOf(hPonctuelle.getText()),
 			Integer.valueOf(0),
 			Integer.valueOf(0),
 			Integer.valueOf(0),
@@ -303,27 +356,17 @@ public class StageControleur implements Initializable
 			Integer.valueOf(0),
 			Integer.valueOf(0),
 			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0), 
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(nbHPnREH.getText()),
-			Integer.valueOf(nbHPnTut.getText()),
-			Integer.valueOf(nbHREH.getText()),
-			Integer.valueOf(nbHTut.getText()),
 			Integer.valueOf(0),
 			Controleur.anneeActuelle
 		);
-		
+
 		if (map == null)
 		{
-			Controleur.insertModStage(module);
+			Controleur.insertModRessources(module);
 		}
 		else
 		{
-			Controleur.updateMod(module, codMod.getText(), codes); // Problème codMod.getText() jamais trouvé
+			Controleur.updateMod(module, codMod.getText(), codes);
 		}
 
 		new Previsionnel(PrevisionnelController.panelCentre);
