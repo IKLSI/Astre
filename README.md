@@ -10,7 +10,6 @@ Uniquement besoin de lancer le fichier run selon votre système d'exploitation e
 
 # Choses à revoir :
 
-- Soucis PPP il manque des informations de renvoi de la vue en tout cas pas les bonnes choses
 - Mettre des messages d'erreur lorsque saisie fausse dans ajout intervenant --> Par exemple pas dans les bornes pour catégorie
 - Vérifier si il y a des problèmes avec Windows au lancement de mon côté pas de soucis mais pas possibilité de vérifier sur Windows
 - En cas de problème de connexion mettre un message sur la frame car reste bloqué à l'écran de chargement

@@ -163,10 +163,12 @@ VALUES ('S4.ST', 'S4', 3 , 'Stage'                                 , 'Stage'    
        ('R6.1' , 'S6', 3 , 'Stage'                                 , 'Stage'    ,false ,10,2, NULL, NULL, 2023);
 
 -- Insertion de données dans la table Module PPP
-INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHPnHTut, annee)
-VALUES ('P3.01', 'S3', 4 , 'Portfolio'                 , 'Portfolio' ,false , 1, 1, 1, 2, 4, 0, 1, 4, 2023),
-       ('P1.02', 'S4', 4 , 'Portfolio'                 , 'Portfolio', false , 1, 4, 2, 2, 4, 0, 1, 4, 2023);
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbhpntut, nbHTut, annee)
+VALUES ('P3.01', 'S3', 4 , 'Portfolio'                 , 'Portfolio' ,false , 1, 1, 1, 2, 4, 0, 1, 4, 4, 2023),
+       ('P1.02', 'S4', 4 , 'Portfolio'                 , 'Portfolio', false , 1, 4, 2, 2, 4, 0, 1, 4, 4, 2023);
 
+--UPDATE Module SET nbhpntut = 4 WHERE codMod = 'P3.01';
+--UPDATE Module SET nbhpntut = 4 WHERE codMod = 'P1.02';
 
 -- Insertion de données dans la table Affectation SAE / STAGE / PPP
 INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbH, annee)

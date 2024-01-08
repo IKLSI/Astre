@@ -2,6 +2,7 @@ package metier;
 import java.io.*;
 import java.sql.*;
 import controleur.Controleur;
+import java.io.PrintWriter;
 
 public class GenererHTML
 {
@@ -101,7 +102,7 @@ public class GenererHTML
 						"<html lang=\"fr\">\n" + //
 						"\t<head>\n" + //
 						"\t\t<title>Prévisualisation</title>\n" + //
-						"\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"webapp.css\">\n" + //
+						"\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n" + //
 						"\t\t<meta charset=utf-8>\n" + //
 						"\t</head>\n" + //
 						"\t<body>\n" + //

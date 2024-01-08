@@ -34,7 +34,7 @@
             <Label alignment="CENTER" layoutX="69.0" layoutY="24.0" prefHeight="18.0" prefWidth="35.0" text="CM" />
             <TextField fx:id="nbHPnCM" layoutX="69.0" layoutY="43.0" prefHeight="26.0" prefWidth="35.0" />
             <Label alignment="CENTER" layoutX="219.0" layoutY="24.0" prefHeight="18.0" prefWidth="35.0" text="∑" />
-            <TextField fx:id="sommePn" disable="true" layoutX="219.0" layoutY="43.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField fx:id="sommeHeurePnPPP" disable="true" layoutX="219.0" layoutY="43.0" prefHeight="26.0" prefWidth="35.0" />
             <Label layoutX="3.0" layoutY="41.0" prefHeight="35.0" prefWidth="67.0" text="Total (eqtd) promo" wrapText="true" />
             <Label alignment="CENTER" layoutX="179.0" layoutY="24.0" prefHeight="18.0" prefWidth="35.0" text="h Tut" />
             <TextField fx:id="nbHPnTut" layoutX="179.0" layoutY="43.0" prefHeight="26.0" prefWidth="35.0" />
@@ -55,15 +55,15 @@
             <TextField fx:id="hPonctuelle" layoutX="335.0" layoutY="50.0" prefHeight="26.0" prefWidth="35.0" />
             <TextField fx:id="nbHAffecteHP" disable="true" layoutX="335.0" layoutY="79.0" prefHeight="26.0" prefWidth="35.0" />
             <Label alignment="CENTER" layoutX="508.0" layoutY="30.0" prefHeight="18.0" prefWidth="35.0" text="∑" />
-            <TextField fx:id="sommeHeurePnPPP" disable="true" layoutX="508.0" layoutY="50.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField fx:id="sommeTotPromoEqtd" disable="true" layoutX="508.0" layoutY="50.0" prefHeight="26.0" prefWidth="35.0" />
             <TextField fx:id="sommeTotAffectEqtd" disable="true" layoutX="508.0" layoutY="80.0" prefHeight="26.0" prefWidth="35.0" />
             <Label alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="38.0" layoutY="55.0" prefHeight="18.0" prefWidth="102.0" text="Total promo (eqtd)" wrapText="true" />
             <Label alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="38.0" layoutY="85.0" prefHeight="18.0" prefWidth="102.0" text="Total affecté (eqtd)" wrapText="true" />
             <Label alignment="CENTER" layoutX="256.0" layoutY="29.0" prefHeight="18.0" prefWidth="35.0" text="h Tut" />
             <TextField layoutX="256.0" layoutY="49.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbHTut" />
-            <TextField disable="true" layoutX="256.0" layoutY="79.0" prefHeight="26.0" prefWidth="35.0" />
+            <TextField disable="true" layoutX="256.0" layoutY="79.0" prefHeight="26.0" prefWidth="35.0" fx:id="nbHAffecteHT"/>
          </children></AnchorPane>
-      <Label alignment="CENTER" layoutX="113.0" layoutY="201.0" prefHeight="18.0" prefWidth="238.0" text="PN loacal (nb h tot/etd)" />
+      <Label alignment="CENTER" layoutX="113.0" layoutY="201.0" prefHeight="18.0" prefWidth="238.0" text="PN local (nb h tot/etd)" />
       <CheckBox layoutX="111.0" layoutY="333.0" mnemonicParsing="false" text="Validation" />
       <TableView fx:id="tableView" layoutX="354.0" layoutY="371.0" prefHeight="152.0" prefWidth="558.0" styleClass="tableau" stylesheets="@../../lib/style/Previsionnel.css" />
       <Label alignment="CENTER" layoutX="567.0" layoutY="201.0" prefHeight="18.0" prefWidth="344.0" text="Répartition" />

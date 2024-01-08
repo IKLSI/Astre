@@ -13,19 +13,59 @@ import controleur.Controleur;
 import metier.*;
 public class Parametres implements Initializable
 {
+	//attributs d'instance
 	@FXML private TableView tableView = new TableView<>();
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) { categorieHeure(); }
+	//charge par défaut le tableau de catégorie d'heure
+	@Override public void initialize(URL location, ResourceBundle resources) { categorieHeure(); }
 
-	public void categorieIntervenants()
+	//changement de tableau
+	@FXML private void btnHeure(ActionEvent e){ categorieHeure(); }
+	@FXML private void btnIntervenant(ActionEvent e) { categorieIntervenants(); }
+
+	//remplissage du tableau de catégorie d'heure
+	public void categorieHeure()
 	{
+		//vide le tableau
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
 
-		ObservableList<CategorieIntervenant> data = FXCollections.observableArrayList();
+		ArrayList<CategorieHeure> tab = Controleur.getCategorieHeure();	//stock toutes les catégories
+		ObservableList<CategorieHeure> data = FXCollections.observableArrayList();	//stock toutes les cat de manière organiser pour les ajouter au tableview
 
-		ArrayList<CategorieIntervenant> tab = new ArrayList<CategorieIntervenant>();
+		//organise les catégorie d'heure
+		for (CategorieHeure c : tab)
+			data.add(new CategorieHeure(c.getCodCatHeure(), c.getNomCatHeure(), c.getCoeffNum(), c.getCoeffDen()));
+		
+		//création de toutes les colonnes
+		TableColumn<ObservableList<String>, String> codCatHeure = new TableColumn<>("Code");
+		codCatHeure.setCellValueFactory(new PropertyValueFactory<>("codCatHeure"));
+
+		TableColumn<ObservableList<String>, String> nomCatHeure = new TableColumn<>("Nom");
+		nomCatHeure.setCellValueFactory(new PropertyValueFactory<>("nomCatHeure"));
+
+		TableColumn<ObservableList<String>, String> coeffNum = new TableColumn<>("Coeff Num");
+		coeffNum.setCellValueFactory(new PropertyValueFactory<>("coeffNum"));
+
+		TableColumn<ObservableList<String>, String> coeffDen = new TableColumn<>("Coeff Den");
+		coeffDen.setCellValueFactory(new PropertyValueFactory<>("coeffDen"));
+
+		//ajoute tout les titres des colonnes au tableView
+		tableView.getColumns().addAll(codCatHeure, nomCatHeure, coeffNum, coeffDen);
+
+		//ajoute toutes les données dans le tableView
+		tableView.setItems(data);
+	}
+
+	//remplissage du tableau de catégorie d'intervenants
+	public void categorieIntervenants()
+	{
+		//vide le tableau
+		tableView.getColumns().clear();
+		tableView.getItems().clear();
+
+		ObservableList<CategorieIntervenant> data = FXCollections.observableArrayList();//stock toutes les catégories
+		ArrayList<CategorieIntervenant> tab = new ArrayList<CategorieIntervenant>();//stock toutes les cat de manière organiser pour les ajouter au tableview
 
 		try
 		{
@@ -43,9 +83,11 @@ public class Parametres implements Initializable
 				tab.add(new CategorieIntervenant(codCatInter, nomCat, service, maxHeure, ratioTPCatInterNum, ratioTPCatInterDen));
 			}
 
+			//organise les catégorie d'heure
 			for (CategorieIntervenant c : tab)
 				data.add(new CategorieIntervenant(c.getCodCatInter(), c.getNomCat(), c.getService(), c.getMaxHeure(), c.getRatioTPCatInterNum(), c.getRatioTPCatInterDen()));
 			
+			//création de toutes les colonnes
 			TableColumn<ObservableList<String>, String> codCatInter = new TableColumn<>("Code");
 			codCatInter.setCellValueFactory(new PropertyValueFactory<>("codCatInter"));
 
@@ -67,40 +109,8 @@ public class Parametres implements Initializable
 			tableView.getColumns().addAll(codCatInter, nomCat, service, maxHeure, ratioTPCatInterNum, ratioTPCatInterDen);
 			tableView.setItems(data);
 		}
-		catch (Exception e) { e.printStackTrace(); }
+		catch (Exception e) {//ajoute toutes les données dans le tableView
+			 e.printStackTrace(); }
 	}
 
-	public void categorieHeure()
-	{
-		tableView.getColumns().clear();
-		tableView.getItems().clear();
-
-		ObservableList<CategorieHeure> data = FXCollections.observableArrayList();
-
-		ArrayList<CategorieHeure> tab = Controleur.getCategorieHeure();
-
-		for (CategorieHeure c : tab)
-			data.add(new CategorieHeure(c.getCodCatHeure(), c.getNomCatHeure(), c.getCoeffNum(), c.getCoeffDen()));
-		
-		TableColumn<ObservableList<String>, String> codCatHeure = new TableColumn<>("Code");
-		codCatHeure.setCellValueFactory(new PropertyValueFactory<>("codCatHeure"));
-
-		TableColumn<ObservableList<String>, String> nomCatHeure = new TableColumn<>("Nom");
-		nomCatHeure.setCellValueFactory(new PropertyValueFactory<>("nomCatHeure"));
-
-		TableColumn<ObservableList<String>, String> coeffNum = new TableColumn<>("Coeff Num");
-		coeffNum.setCellValueFactory(new PropertyValueFactory<>("coeffNum"));
-
-		TableColumn<ObservableList<String>, String> coeffDen = new TableColumn<>("Coeff Den");
-		coeffDen.setCellValueFactory(new PropertyValueFactory<>("coeffDen"));
-
-		tableView.getColumns().addAll(codCatHeure, nomCatHeure, coeffNum, coeffDen);
-		tableView.setItems(data);
-	}
-
-	@FXML
-	private void btnIntervenant(ActionEvent e) { categorieIntervenants(); }
-
-	@FXML
-	private void btnHeure(ActionEvent e){ categorieHeure(); }
 }

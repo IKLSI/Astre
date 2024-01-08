@@ -63,6 +63,7 @@ public class Intervenants
 
 			Label lbl = new Label("Liste des intervenants :");
 			lbl.setStyle("-fx-font-weight: bold");
+			lbl.setStyle("-fx-font-size: 20px;");
 
 			Button bouton = new Button("Ajouter");
 			bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;");
@@ -116,16 +117,16 @@ public class Intervenants
 				catch (Exception e)	{ e.printStackTrace(); }
 			});
 
-			AnchorPane.setTopAnchor(bouton, 390.0);
+			AnchorPane.setTopAnchor(bouton, 610.0);
 			AnchorPane.setLeftAnchor(bouton, 20.0);
 
-			AnchorPane.setTopAnchor(bouton2, 390.0);
+			AnchorPane.setTopAnchor(bouton2, 610.0);
 			AnchorPane.setLeftAnchor(bouton2, 110.0);
 
-			AnchorPane.setTopAnchor(boutonE, 440.0);
+			AnchorPane.setTopAnchor(boutonE, 660.0);
 			AnchorPane.setLeftAnchor(boutonE, 20.0);
 
-			AnchorPane.setTopAnchor(buttonA, 440.0);
+			AnchorPane.setTopAnchor(buttonA, 660.0);
 			AnchorPane.setLeftAnchor(buttonA, 110.0);
 
 			AnchorPane.setTopAnchor(lbl, 20.0);
@@ -133,7 +134,8 @@ public class Intervenants
 			tableView = new TableView<>();
 			AnchorPane.setTopAnchor(tableView, 80.0);
 			AnchorPane.setLeftAnchor(tableView, 20.0);
-			tableView.setPrefSize(630, 300);
+			tableView.setPrefSize(970, 500);
+			tableView.setStyle("-fx-background-color: rgba(150, 81, 180, 0.0); -fx-text-fill: #333333; -fx-font-weight: bold; -fx-border-color: rgba(150, 81, 180, 0.0);");
 
 			for (int i = 0; i < columnCount; i++)
 			{
@@ -154,8 +156,16 @@ public class Intervenants
 					});
 				}
 
+				column.setStyle("-fx-alignment: CENTER;");
 				tableView.getColumns().add(column);
 			}
+
+			tableView.setRowFactory(tv -> {
+				TableRow<ObservableList<String>> row = new TableRow<>();
+				row.setStyle("-fx-padding: 5px; -fx-background-radius: 20px; -fx-background-color: #dadada; -fx-background-insets: 5px;");
+			
+				return row;
+			});
 
 			tableView.setEditable(true);
 			tableView.getSelectionModel().setCellSelectionEnabled(true);

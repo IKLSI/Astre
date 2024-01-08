@@ -388,8 +388,7 @@ SELECT DISTINCT m.annee,m.codMod,i.codInter,i.nom,c.nomCatHeure,
 		END *(c.coeffNum::NUMERIC/c.coeffDen::NUMERIC),1) AS "tot eqtd"
 FROM Affectation a JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
 				   JOIN Module      m    ON a.codMod      = m.codMod
-				   JOIN Intervenant i    ON i.codInter    = a.codInter
-GROUP BY m.annee;
+				   JOIN Intervenant i    ON i.codInter    = a.codInter;
 
 CREATE OR REPLACE VIEW inter AS
 SELECT DISTINCT i.annee,i.nom,s.codSem,
@@ -504,7 +503,7 @@ SELECT DISTINCT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nb
 	   --POUR LES STAGE.
 	   --Heure pn 
 	   CASE WHEN t.nomTypMod = 'Stage' 							          THEN nbHPnREH 			                            END AS nbHPnREH,
-	   CASE WHEN t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP'	THEN nbHPnTut 			                            END AS nbHPnTut,
+	   CASE WHEN t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP'	THEN nbHPnTut END AS nbHPnTut,
 	   CASE WHEN t.nomTypMod = 'Stage' 							          THEN COALESCE(nbHPnREH,0)+COALESCE(nbHPnTut,0) 	END AS sommeHPnStage,
 	   
 	   --Repartition premiere ligne 
@@ -516,7 +515,7 @@ SELECT DISTINCT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nb
 
 	   --POUR LES PPP.
 	   --Heure pn ??
-	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(nbHPnCM,0)+COALESCE(nbHPnTD,0)+COALESCE(nbHPnTP,0)+COALESCE(nbHPnTut,0) END AS sommeHeurePnPPP,
+	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(nbHPnCM,0)+COALESCE(nbHPnTD,0)+COALESCE(nbHPnTP,0)+COALESCE(nbhpntut,0) END AS sommeHeurePnPPP,
 	   	-- Répartition 1 ??
 	   	-- Répartition 2 EFFECTUER ??
 	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'CM'),0) END AS nbHAffecteCM,
@@ -526,8 +525,7 @@ SELECT DISTINCT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nb
 	   
 	   m.valid
 FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
-			  JOIN Semestre   s ON s.codSem    = m.codSem
-GROUP BY m.annee;;
+			  JOIN Semestre   s ON s.codSem    = m.codSem;
 
 
 CREATE OR REPLACE VIEW liste_module AS 
