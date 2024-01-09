@@ -53,10 +53,10 @@ public class Exportation implements Initializable
 		nomInter.setPrefWidth(200);
 		nomInter.setPrefHeight(28);
 
-		if(this.btnCSV.isSelected()){
+		if(this.btnCSV.isSelected())
 			this.nomInter.setPromptText("Entrez le nom du fichier");
-		}
-		else{
+		else
+		{
 			this.nomInter.setPromptText("Entrez le nom de l'intervenant");
 
 			this.prenomInter = new TextField();
@@ -76,7 +76,8 @@ public class Exportation implements Initializable
 		if(this.panelSaisie.getChildren().contains(this.prenomInter))
 			this.panelSaisie.getChildren().remove(this.prenomInter);
 
-		if(!this.btnCSV.isSelected()){
+		if(!this.btnCSV.isSelected())
+		{
 			AnchorPane.setTopAnchor(prenomInter, 62.0);
 			AnchorPane.setLeftAnchor(prenomInter, 20.0);
 			panelSaisie.getChildren().add(prenomInter);
@@ -87,12 +88,12 @@ public class Exportation implements Initializable
 
 	public void initialisationModule()
 	{
-		ArrayList<String> lstElement = new ArrayList<String>(); //Stock les modules
+		ArrayList<String> lstElement = new ArrayList<String>(); // Stock les modules
 
 		//Déchargement du Panel Droit
 		try
 		{
-			this.btnCSV.setDisable(true);	//permet d'exporter en csv
+			this.btnCSV.setDisable(true); // Permet d'exporter en csv
 			this.btnCSV.setSelected(false);
 			// Retire les textfield
 			this.panelSaisie.getChildren().remove(this.nomInter);
@@ -100,12 +101,12 @@ public class Exportation implements Initializable
 		}
 		catch (Exception e) { e.printStackTrace(); }
 
-		lstElement = Controleur.getNomModule();	//chargement des modules dans la liste
+		lstElement = Controleur.getNomModule(); // Chargement des modules dans la liste
 
 		//Création
 
 		this.lst = new ComboBox<String>();
-		this.lst.getItems().addAll(FXCollections.observableArrayList(lstElement)); //place le contenu de la liste dans le cbBox
+		this.lst.getItems().addAll(FXCollections.observableArrayList(lstElement)); // Place le contenu de la liste dans le cbBox
 		this.lst.setPrefWidth(200);
 		this.lst.setPrefHeight(28);
 
@@ -139,6 +140,18 @@ public class Exportation implements Initializable
 				}
 			}
 		}
+		else
+		{
+			try
+			{
+				if(lst.getValue().equals(null));
+			}
+			catch (Exception e)
+			{
+				exportValid = false;
+				this.lblErreur.setText("Aucun module sélectionné");	//affiche une erreur
+			}
+		}
 	}
 
 	// Exportation
@@ -157,13 +170,13 @@ public class Exportation implements Initializable
 				{
 					//test si on doit générer un intervenant html
 					if(btnIntervenants.isSelected())
-						GenererHTML.GenererIntervenant("Previsualisation", Controleur.getCodInter(this.nomInter.getText()).get(0));
-					
+						GenererHTML.GenererIntervenant(this.nomInter.getText(), Controleur.getCodInter(this.nomInter.getText()).get(0)); //TEST!!
+
 					//test si on doit générer un module html
 					if(btnModule.isSelected())
 					{
 						String tab[] = this.lst.getValue().split(" "); //récupère le code module
-						GenererHTML.GenererModule("Previsualisation", tab[0]);
+						GenererHTML.GenererModule(tab[0], tab[0]);
 					}
 				}
 
@@ -173,6 +186,6 @@ public class Exportation implements Initializable
 			exportValid = false;//remet l'exportation à faux une fois exporté
 		}
 		else
-			this.lblErreur.setText("Impossible d'exporter vous n'avez pas valider");	//Export sans valider
+			this.lblErreur.setText("Vous n'avez pas valider");	//Export sans valider
 	}
 }

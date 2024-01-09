@@ -11,7 +11,7 @@
    <children>
       <AnchorPane layoutX="77.0" layoutY="78.0" prefHeight="227.0" prefWidth="274.0" styleClass="panel" stylesheets="@../../lib/style/Etats.css">
          <children>
-            <RadioButton layoutX="23.0" layoutY="91.0" mnemonicParsing="false" onAction="#afficheIntervenants" prefHeight="28.0" prefWidth="149.0" selected="true" styleClass="radiobtn" stylesheets="@../../lib/style/Etats.css" text="Intervenants" fx:id="btnIntervenants">
+            <RadioButton fx:id="btnIntervenants" layoutX="23.0" layoutY="91.0" mnemonicParsing="false" onAction="#afficheIntervenants" prefHeight="28.0" prefWidth="149.0" selected="true" styleClass="radiobtn" stylesheets="@../../lib/style/Etats.css" text="Intervenants">
                <toggleGroup>
                   <ToggleGroup fx:id="btnGrp" />
                </toggleGroup>
@@ -19,7 +19,7 @@
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </RadioButton>
-            <RadioButton contentDisplay="CENTER" layoutX="23.0" layoutY="130.0" mnemonicParsing="false" onAction="#afficheModule" prefHeight="28.0" prefWidth="111.0" styleClass="radiobtn" stylesheets="@../../lib/style/Etats.css" text="Modules" toggleGroup="$btnGrp" fx:id="btnModule">
+            <RadioButton fx:id="btnModule" contentDisplay="CENTER" layoutX="23.0" layoutY="130.0" mnemonicParsing="false" onAction="#afficheModule" prefHeight="28.0" prefWidth="111.0" styleClass="radiobtn" stylesheets="@../../lib/style/Etats.css" text="Modules" toggleGroup="$btnGrp">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
@@ -56,11 +56,6 @@
       <AnchorPane fx:id="panelSaisie" layoutX="440.0" layoutY="81.0" prefHeight="407.0" prefWidth="504.0" styleClass="panel" stylesheets="@../../lib/style/Etats.css">
          <children>
             <Button layoutX="398.0" layoutY="307.0" mnemonicParsing="false" onAction="#exportation" prefHeight="70.0" prefWidth="70.0" styleClass="btnExport" stylesheets="@../../lib/style/Etats.css" />
-            <Label alignment="CENTER" layoutX="59.0" layoutY="311.0" prefHeight="72.0" prefWidth="279.0" text="EXPORTATION" textFill="#7f23a7">
-               <font>
-                  <Font name="Arial Bold" size="32.0" />
-               </font>
-            </Label>
             <Button layoutX="343.0" layoutY="35.0" mnemonicParsing="false" onAction="#verification" prefHeight="54.0" prefWidth="117.0" style="-fx-background-color: #7F23A7; -fx-background-radius: 15px;" text="Valider" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="16.0" />
@@ -71,6 +66,11 @@
                   <Font name="Arial Bold" size="12.0" />
                </font>
             </Label>
+            <Button layoutX="80.0" layoutY="307.0" mnemonicParsing="false" onAction="#exportation" prefHeight="70.0" prefWidth="234.0" styleClass="exp" stylesheets="@../../lib/style/Etats.css" text="EXPORTATION" textFill="#7f23a7">
+               <font>
+                  <Font name="Arial Bold" size="27.0" />
+               </font>
+            </Button>
          </children></AnchorPane>
    </children>
 </AnchorPane>

@@ -3,6 +3,7 @@ import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -35,6 +36,7 @@ public class App extends Application
 
 			// Positionnement
 			this.frameAppli.setScene(scene);
+			this.frameAppli.getIcons().add(new Image("interface/logo/logo.png"));
 			this.frameAppli.show();
 		}
 		catch (Exception e) { e.printStackTrace(); }
@@ -52,6 +54,8 @@ public class App extends Application
 			Scene scene = new Scene(panelAppli, 1200, 750);
 			this.frameAppli.setScene(scene);
 			this.frameAppli.setTitle("ASTRE");
+			this.frameAppli.setResizable(false);
+			this.frameAppli.getIcons().add(new Image("interface/logo/logo.png"));
 			this.frameAppli.show();
 
 			// Thread qui fait le chargement de la DB
@@ -84,6 +88,7 @@ public class App extends Application
 			});
 
 			Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
 			currentStage.close();
 		}
 		catch (Exception e) { e.printStackTrace(); }

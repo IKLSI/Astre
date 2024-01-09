@@ -319,13 +319,9 @@ public class StageControleur implements Initializable
 		);
 
 		if (map == null)
-		{
 			Controleur.insertModStage(module);
-		}
 		else
-		{
 			Controleur.updateMod(module, codMod.getText(), codes); // Problème codMod.getText() jamais trouvé
-		}
 
 		new Previsionnel(PrevisionnelController.panelCentre);
 	}

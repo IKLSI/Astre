@@ -143,7 +143,7 @@ public class Intervenants
 				final int colIndex = i;
 				column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(colIndex)));
 
-				if (i < 5)
+				if (i < 5 && i >= 3)
 				{
 					column.setEditable(true);
 					column.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -162,7 +162,7 @@ public class Intervenants
 
 			tableView.setRowFactory(tv -> {
 				TableRow<ObservableList<String>> row = new TableRow<>();
-				row.setStyle("-fx-padding: 5px; -fx-background-radius: 20px; -fx-background-color: #dadada; -fx-background-insets: 5px;");
+				row.setStyle("\t-fx-padding: 5px; -fx-background-radius: 7px; -fx-background-color: #dadada; -fx-background-insets: 5px;");
 
 				return row;
 			});
@@ -248,9 +248,9 @@ public class Intervenants
 		bouton.setOnMouseEntered(e -> bouton.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
 		bouton.setOnMouseExited(e -> bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
 		bouton.setOnAction((ActionEvent event2) -> {
-			if(regString(nom.getText()) && regString(prenom.getText()) && regInt(nomCat.getText(),"<",6) &&
+			if(regString(nom.getText(),true) && regString(prenom.getText(),true) && regInt(nomCat.getText(),"<",6) &&
 			   regInt(hserv.getText(),">",5) && regInt(maxheure.getText(),"<",250) &&
-			   regInt(annee.getText(),">",2022))
+			   regInt(annee.getText(),"=",Controleur.anneeActuelle))
 			{
 				Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getText()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()), Integer.parseInt(annee.getText()));
 				Controleur.insertIntervenant(intervenant);
@@ -349,8 +349,12 @@ public class Intervenants
 
 	}
 
-	private boolean regString(String messageTester)
+	private boolean regString(String messageTester,boolean message)
 	{
+		if(!message){
+			this.lblErreur = new Label("");
+		}
+
 		String regex = "^[a-zA-Z]+$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(messageTester);
@@ -361,7 +365,9 @@ public class Intervenants
 			return true;
 		}
 
-		this.lblErreur.setText(messageTester + "n'est pas valide");
+		if(message){
+			this.lblErreur.setText(messageTester + " n'est pas valide");
+		}
 		return false;
 	}
 
@@ -376,6 +382,10 @@ public class Intervenants
 			if(contrainte.equals(">")){
 				if(val > borne) return true;
 			}
+			if(contrainte.equals("=")){
+				if(val == borne) return true;
+			}
+
 
 		}
 
@@ -397,11 +407,14 @@ public class Intervenants
 	@FXML
 	private void supprimer(ActionEvent event)
 	{
-		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
-		this.idIntervenant.put(Integer.valueOf(tableView.getItems().get(selectedIndex).get(1)), Integer.valueOf(tableView.getItems().get(selectedIndex).get(0)));
+		try {
+			int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+			this.idIntervenant.put(Integer.valueOf(tableView.getItems().get(selectedIndex).get(1)), Integer.valueOf(tableView.getItems().get(selectedIndex).get(0)));
 
-		if (selectedIndex >= 0)
-			tableView.getItems().remove(selectedIndex);
+			if (selectedIndex >= 0)
+				tableView.getItems().remove(selectedIndex);
+
+		} catch (Exception e) {Intervenants.notifications("Impossible de supprimer cet intervenant");	}
 	}
 
 	@FXML
@@ -416,11 +429,6 @@ public class Intervenants
 			}
 			catch (Exception e)	{ e.printStackTrace(); }
 		}
-
-		if (this.idIntervenant.size() > 1)
-			notifications("Intervenants supprimés");
-		else if (this.idIntervenant.size() == 1)
-			notifications("Intervenant supprimé");
 	}
 
 	@FXML
@@ -430,15 +438,19 @@ public class Intervenants
 		String newValue = event.getNewValue();
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		int index = event.getTablePosition().getColumn();
-		int code = Integer.parseInt(row.get(0));
+		int code = Integer.parseInt(row.get(1));
 
 		row.set(index, newValue);
-
-		Intervenant intervenant = new Intervenant(code, row.get(2), row.get(3), Integer.parseInt(row.get(4)), Integer.parseInt(row.get(5)), Integer.parseInt(row.get(6)));
-		Controleur.updateInter(intervenant);
+		if(regString(row.get(3),false) && regString(row.get(4),false)){
+			Intervenant intervenant = new Intervenant(code, row.get(3), row.get(4), Integer.parseInt(row.get(5)), Integer.parseInt(row.get(6)), Integer.parseInt(row.get(0)));
+			Controleur.updateInter(intervenant);
+		}
+		else{
+			Intervenants.notifications("Un ou des caractères incorrects");
+		}
 	}
 
-	private void notifications(String message)
+	public static void notifications(String message)
 	{
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("Information");

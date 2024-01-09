@@ -9,6 +9,7 @@ public class Affectation
 	private Integer codCatHeure;
 	private String commentaire;
 	private String nom;
+	//private String prenom;
 	private String type;
 	private Integer nbSem;
 	private Integer nbGrp;

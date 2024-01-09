@@ -9,6 +9,7 @@ public class Ressource
 	public Ressource(AnchorPane panelCentre)
 	{
 		this.panelCentre = panelCentre;
+
 		try
 		{
 			panelCentre.getChildren().clear();

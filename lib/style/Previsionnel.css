@@ -66,6 +66,7 @@
 	-fx-border-width: 0;
 }
 .tableau .table-column {
+	-fx-pref-width : 215px;
 	-fx-alignment: CENTER;
 }
 
@@ -95,4 +96,54 @@
 
 .conteneur{
 	-fx-background-color: rgba(150, 81, 180, 0.0);
+}
+
+.petitTab{
+	-fx-background-color: rgba(150, 81, 180, 0.0);
+	-fx-text-fill: #333333;
+	-fx-font-weight: bold;
+	-fx-border-color: rgba(150, 81, 180, 0.0);
+}
+
+.petitTab .table-row-cell {
+	-fx-padding: 5px;
+	-fx-background-radius: 7px;
+	-fx-background-color:#dadada;
+	-fx-background-insets: 5px;
+}
+.petitTab .table-row-cell:hover {
+	-fx-background-color:#D09AE8;
+}
+.petitTab .table-row-cell:selected {
+	-fx-background-color:#7F23A7;
+	-fx-text-fill: #ffffff;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+.petitTab .table-row-cell:empty {
+    -fx-background-color: rgba(150, 81, 180, 0.0);
+}
+
+.petitTab .table-cell {
+	-fx-border-width: 0;
+}
+.petitTab .table-column {
+	-fx-alignment: CENTER;
+}
+
+.petitTab .scroll-bar:vertical {
+	-fx-background-color: rgba(150, 81, 180, 0.0);
+	-fx-background-insets: 0;
+}
+.petitTab .scroll-bar:vertical .thumb {
+	-fx-background-color: #7F23A7;
+	-fx-background-radius: 10px;
+}
+
+.petitTab .scroll-bar:horizontal {
+	-fx-background-color: rgba(150, 81, 180, 0.0);
+	-fx-background-insets: 0;
+}
+.petitTab .scroll-bar:horizontal .thumb {
+	-fx-background-color: #7F23A7;
+	-fx-background-radius: 10px;
 }

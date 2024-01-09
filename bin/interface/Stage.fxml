@@ -52,11 +52,11 @@
          </children></AnchorPane>
       <Label alignment="CENTER" layoutX="112.0" layoutY="179.0" prefHeight="18.0" prefWidth="238.0" text="PN local (nb h tot/etd)" />
       <CheckBox layoutX="110.0" layoutY="311.0" mnemonicParsing="false" text="Validation" />
-      <TableView fx:id="tableView" layoutX="353.0" layoutY="349.0" prefHeight="152.0" prefWidth="558.0" styleClass="tableau" stylesheets="@../../lib/style/Previsionnel.css" />
+      <TableView fx:id="tableView" layoutX="353.0" layoutY="349.0" prefHeight="152.0" prefWidth="558.0" styleClass="petitTab" stylesheets="@../../lib/style/Previsionnel.css" />
       <Label alignment="CENTER" layoutX="352.0" layoutY="179.0" prefHeight="18.0" prefWidth="558.0" text="Répartition" />
-      <Button layoutX="354.0" layoutY="508.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="ajouter" onAction="#ajouter" />
-      <Button layoutX="433.0" layoutY="508.0" mnemonicParsing="false" styleClass="btn" stylesheets="@../../lib/style/module.css" text="supprimer" onAction="#supprimer" />
-      <Button layoutX="111.0" layoutY="545.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Enregistrer" onAction="#enregistrer" />
+      <Button layoutX="354.0" layoutY="508.0" mnemonicParsing="false" onAction="#ajouter" prefHeight="26.0" prefWidth="70.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="ajouter" />
+      <Button layoutX="433.0" layoutY="508.0" mnemonicParsing="false" onAction="#supprimer" styleClass="btn" stylesheets="@../../lib/style/module.css" text="supprimer" />
+      <Button layoutX="111.0" layoutY="545.0" mnemonicParsing="false" onAction="#enregistrer" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Enregistrer" />
       <Button layoutX="209.0" layoutY="545.0" mnemonicParsing="false" onAction="#annuler" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Annuler" />
    </children>
 </AnchorPane>

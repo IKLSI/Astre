@@ -249,10 +249,7 @@ public class RessourceControleur implements Initializable
 	}
 
 	@FXML
-	public void valid(ActionEvent event)
-	{
-		Controleur.updateBool(("f").equals(this.map.get("valid")), code.getText());
-	}
+	public void valid(ActionEvent event) { Controleur.updateBool(("f").equals(this.map.get("valid")), code.getText()); }
 
 	@FXML
 	public void modifier(ActionEvent event)
@@ -329,46 +326,44 @@ public class RessourceControleur implements Initializable
 	@FXML
 	public void enregistrer (ActionEvent event)
 	{
-		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
+		try {
+			HashMap<String, String> map = Controleur.getPreviModule(code.getText());
 
-		Modules module = new Modules(
-			code.getText(),
-			semestre.getText(),
-			Integer.valueOf(1),
-			libLong.getText(),
-			libCourt.getText(),
-			valid.isSelected(),
-			Integer.valueOf(nbHPnCM.getText()),
-			Integer.valueOf(nbHPnTD.getText()),
-			Integer.valueOf(nbHPnTP.getText()),
-			Integer.valueOf(nbSemaineTD.getText()),
-			Integer.valueOf(nbSemaineTP.getText()),
-			Integer.valueOf(nbSemaineCM.getText()),
-			Integer.valueOf(nbHSemaineTD.getText()),
-			Integer.valueOf(nbHSemaineTP.getText()),
-			Integer.valueOf(nbHSemaineCM.getText()),
-			Integer.valueOf(hPonctuelle.getText()),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Controleur.anneeActuelle
-		);
+			Modules module = new Modules(
+				code.getText(),
+				semestre.getText(),
+				Integer.valueOf(1),
+				libLong.getText(),
+				libCourt.getText(),
+				valid.isSelected(),
+				Integer.valueOf(nbHPnCM.getText()),
+				Integer.valueOf(nbHPnTD.getText()),
+				Integer.valueOf(nbHPnTP.getText()),
+				Integer.valueOf(nbSemaineTD.getText()),
+				Integer.valueOf(nbSemaineTP.getText()),
+				Integer.valueOf(nbSemaineCM.getText()),
+				Integer.valueOf(nbHSemaineTD.getText()),
+				Integer.valueOf(nbHSemaineTP.getText()),
+				Integer.valueOf(nbHSemaineCM.getText()),
+				Integer.valueOf(hPonctuelle.getText()),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Controleur.anneeActuelle
+			);
 
-		if (map == null)
-		{
-			Controleur.insertModRessources(module);
-		}
-		else
-		{
-			Controleur.updateMod(module, codMod.getText(), codes);
-		}
+			if (map == null)
+				Controleur.insertModRessources(module);
+			else
+				Controleur.updateMod(module, codMod.getText(), codes);
 
-		new Previsionnel(PrevisionnelController.panelCentre);
+			new Previsionnel(PrevisionnelController.panelCentre);
+		} catch (Exception e) {Intervenants.notifications("Impossible de supprimer cet intervenant");}
 	}
 }

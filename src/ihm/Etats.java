@@ -9,17 +9,17 @@ import javafx.scene.layout.AnchorPane;
 
 public class Etats implements Initializable
 {
-	//panel qui contient les onglets
+	// Panel qui contient les onglets
 	@FXML private AnchorPane panelEtats;
 
-	//changement d'onglet
-	@FXML private void afficheExportation(ActionEvent event){this.changerOnglet("Exportation");}
-	@FXML private void afficheAnnees(ActionEvent event){this.changerOnglet("Annees");}
+	// Changement d'onglet
+	@FXML private void afficheExportation(ActionEvent event){ this.changerOnglet("Exportation"); }
+	@FXML private void afficheAnnees(ActionEvent event){ this.changerOnglet("Annees"); }
 
-	//onglet par défaut 
-	@Override public void initialize(URL location, ResourceBundle resources) { this.changerOnglet("Exportation");}
+	// Onglet par défaut
+	@Override public void initialize(URL location, ResourceBundle resources) { this.changerOnglet("Exportation"); }
 
-	//méthode pour changer les onglets
+	// Méthode pour changer les onglets
 	private void changerOnglet(String nomOnglet)
 	{
 		try

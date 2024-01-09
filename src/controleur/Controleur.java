@@ -1,4 +1,5 @@
 package controleur;
+
 import metier.*;
 import ihm.*;
 
@@ -26,7 +27,7 @@ public class Controleur
 	public static ResultSet 				getIntervenant_final() 					             { return Controleur.dataBase.getIntervenant_final(); }
 	public static ResultSet 				getCategorieInter()						             { return Controleur.dataBase.getCategorieInter(); }
 	public static ArrayList<CategorieHeure> getCategorieHeure()						             { return Controleur.dataBase.getCategorieHeure(); }
-	public static ArrayList<Integer> 		getCodInter(String nomInter)			             { return Controleur.dataBase.getCodInter(nomInter); }
+	public static ArrayList<Integer> 		getCodInter(String nomInter)		                 { return Controleur.dataBase.getCodInter(nomInter); }
 	public static ArrayList<Semestre> 		getSemestre(String nomSem) 				             { return Controleur.dataBase.getSemestre(nomSem); }
 	public static ArrayList<TypeModule> 	getNomCategorieModules() 				             { return Controleur.dataBase.getNomCategorieModules(); }
 	public static ArrayList<Modules> 		getListModule(String semestre)			             { return Controleur.dataBase.getListModule(semestre);}
@@ -40,6 +41,7 @@ public class Controleur
 	public static ArrayList<String>         getAnnee()                                           { return Controleur.dataBase.getAnnee();}
 	public static Integer                   getCodCatHeure(String nomCatHeure)                   { return Controleur.dataBase.getCodCatHeure(nomCatHeure);}
 	public static ResultSet                 getInformationsInter(int codInter)                   { return Controleur.dataBase.getInformationsInter(codInter);}
+	public static ResultSet                 getNomTypeMod(String codMod)                         { return Controleur.dataBase.getNomTypeMod(codMod);}
 
 	// Insertion
 
@@ -64,6 +66,7 @@ public class Controleur
 	public static void supprInter(Integer codInter, Integer annee)                                           { Controleur.dataBase.supprInter(codInter, annee); }
 	public static void supprMod(String codMod, Integer annee)                                                { Controleur.dataBase.supprMod(codMod, annee); }
 	public static void supprAffectation(String codMod, Integer annee, Integer codInter, Integer codCatHeure) { Controleur.dataBase.supprAffectation(codMod, annee, codInter, codCatHeure); }
+	public static void supprimerAnnee(Integer annee)                                                             { Controleur.dataBase.supprimerAnnee(annee); }
 
 	// AUTRE
 

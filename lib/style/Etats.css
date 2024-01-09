@@ -11,6 +11,15 @@
 	-fx-text-fill:white;
 }
 
+
+.exp{
+	-fx-text-fill:#7F23A7;
+	-fx-background-color : rgba(150, 81, 180, 0.0);
+}
+.exp:hover{
+	-fx-text-fill:white;
+}
+
 .radiobtn:hover{
 	-fx-text-fill:#7F23A7;
 }
@@ -28,7 +37,7 @@
 	-fx-background-color : rgba(150, 81, 180, 0.0);
 	-fx-background-image: url("../img/Exportation.png");
     -fx-background-size: cover;
-    -fx-background-position: center; 
+    -fx-background-position: center;
 }
 .btnExport:hover{
 	-fx-background-color : rgba(150, 81, 180, 0.0);

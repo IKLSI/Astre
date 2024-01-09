@@ -28,8 +28,8 @@
 }
 
 .tableau .table-row-cell {
-	-fx-padding: 15px;
-	-fx-background-radius: 10px;
+	-fx-padding: 5px;
+	-fx-background-radius: 7px;
 	-fx-background-color:#dadada;
 	-fx-background-insets: 5px;
 }
@@ -50,6 +50,7 @@
 }
 .tableau .table-column {
 	-fx-alignment: CENTER;
+	-fx-pref-width : 140px;
 }
 
 .tableau .scroll-bar:vertical {

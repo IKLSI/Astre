@@ -56,10 +56,7 @@ public class SaeControleur implements Initializable
 	}
 
 	@FXML
-	public void annuler(ActionEvent event)
-	{
-		new Previsionnel(PrevisionnelController.panelCentre);
-	}
+	public void annuler(ActionEvent event) { new Previsionnel(PrevisionnelController.panelCentre); }
 
 	@FXML
 	public void chargerRessource(ActionEvent event)
@@ -211,10 +208,7 @@ public class SaeControleur implements Initializable
 	}
 
 	@FXML
-	public void valid(ActionEvent event)
-	{
-		Controleur.updateBool(("f").equals(this.map.get("valid")), code.getText());
-	}
+	public void valid(ActionEvent event) { Controleur.updateBool(("f").equals(this.map.get("valid")), code.getText()); }
 
 	@FXML
 	public void modifier(ActionEvent event)
@@ -314,13 +308,10 @@ public class SaeControleur implements Initializable
 		);
 
 		if (map == null)
-		{
 			Controleur.insertModSAE(module);
-		}
 		else
 			Controleur.updateMod(module, codMod.getText(), codes);
 
 		new Previsionnel(PrevisionnelController.panelCentre);
 	}
-
 }

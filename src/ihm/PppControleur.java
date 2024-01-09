@@ -141,11 +141,42 @@ public class PppControleur implements Initializable
 			TableColumn<Affectation, Integer> totalEqTdCol = new TableColumn<>("Total eqtd");
 			totalEqTdCol.setCellValueFactory(new PropertyValueFactory<>("totalEqTd"));
 
-			TableColumn<Affectation, Integer> comCol = new TableColumn<>("commentaire");
+			TableColumn<Affectation, String> comCol = new TableColumn<>("commentaire");
 			comCol.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
 
 			tableView.getColumns().addAll(nomCol, typeCol, nbHCol, totalEqTdCol, comCol);
 			tableView.setItems(listeAffectation);
+
+			tableView.setEditable(true);
+			nomCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			nomCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNom(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			typeCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			typeCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setType(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			nbHCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			nbHCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNbH(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			totalEqTdCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			totalEqTdCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setTotalEqTd(e.getNewValue());
+				modifier(new ActionEvent());
+			});
+
+			comCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			comCol.setOnEditCommit(e -> {
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setCommentaire(e.getNewValue());
+				modifier(new ActionEvent());
+			});
 
 			ArrayList<Semestre> lstSem = Controleur.getSemestre(intitule);
 
@@ -300,13 +331,9 @@ public class PppControleur implements Initializable
 		);
 
 		if (map == null)
-		{
 			Controleur.insertModPPP(module);
-		}
 		else
-		{
 			Controleur.updateMod(module, codMod.getText(), codes);
-		}
 
 		new Previsionnel(PrevisionnelController.panelCentre);
 	}

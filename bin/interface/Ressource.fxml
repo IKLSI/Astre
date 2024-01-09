@@ -94,10 +94,10 @@
          </children></AnchorPane>
       <Label alignment="CENTER" layoutX="110.0" layoutY="207.0" prefHeight="18.0" prefWidth="238.0" text="PN local (nb h tot/etd)" />
       <CheckBox fx:id="valid" layoutX="108.0" layoutY="339.0" mnemonicParsing="false" text="Validation" />
-      <TableView fx:id="tableView" layoutX="351.0" layoutY="377.0" prefHeight="152.0" prefWidth="558.0" styleClass="tableau" stylesheets="@../../lib/style/Previsionnel.css" />
+      <TableView fx:id="tableView" layoutX="351.0" layoutY="377.0" prefHeight="152.0" prefWidth="558.0" styleClass="petitTab" stylesheets="@../../lib/style/Previsionnel.css" />
       <Label alignment="CENTER" layoutX="564.0" layoutY="207.0" prefHeight="18.0" prefWidth="344.0" text="Répartition" />
       <Button layoutX="352.0" layoutY="536.0" mnemonicParsing="false" onAction="#ajouter" prefHeight="26.0" prefWidth="70.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="ajouter" />
-      <Button layoutX="431.0" layoutY="536.0" mnemonicParsing="false" styleClass="btn" stylesheets="@../../lib/style/module.css" text="supprimer" onAction="#supprimer" />
+      <Button layoutX="431.0" layoutY="536.0" mnemonicParsing="false" onAction="#supprimer" styleClass="btn" stylesheets="@../../lib/style/module.css" text="supprimer" />
       <Button layoutX="109.0" layoutY="573.0" mnemonicParsing="false" onAction="#enregistrer" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Enregistrer" />
       <Button layoutX="207.0" layoutY="573.0" mnemonicParsing="false" onAction="#annuler" prefHeight="26.0" prefWidth="90.0" styleClass="btn" stylesheets="@../../lib/style/module.css" text="Annuler" />
    </children>

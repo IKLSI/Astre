@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.event.ActionEvent;
 
 import controleur.Controleur;
+
 public class Annees implements Initializable
 {
 	@FXML private ComboBox<String> lstAnnee;
@@ -22,18 +23,46 @@ public class Annees implements Initializable
 	@FXML
 	private void dupliquerAnnee(ActionEvent event)
 	{
-		Controleur.clonage(2023,2022); // A changé
+		try
+		{
+			this.lstAnnee.getValue().equals(null);
+
+			Controleur.clonage(Integer.parseInt(lstAnnee.getValue()),Controleur.anneeActuelle + 1);
+			Intervenants.notifications("Année dupliquée");
+		}
+		catch (Exception e) { Intervenants.notifications("Aucune année sélectionnée"); }
+
+		ArrayList<String> lst = Controleur.getAnnee();
+		this.lstAnnee.getItems().clear();
+		this.lstAnnee.getItems().addAll(FXCollections.observableArrayList(lst));
 	}
 
 	@FXML
-	private void supprimerAnnee(ActionEvent event)
-	{
-		System.out.println("supprimer");
+	private void supprimerAnnee(ActionEvent event) {
+		try
+		{
+			this.lstAnnee.getValue().equals(null);
+
+			Controleur.supprimerAnnee(Integer.parseInt(lstAnnee.getValue()));
+			Intervenants.notifications("Année supprimé");
+		}
+		catch (Exception e) { Intervenants.notifications("Aucune année sélectionnée"); }
+
+		ArrayList<String> lst = Controleur.getAnnee();
+		this.lstAnnee.getItems().clear();
+		this.lstAnnee.getItems().addAll(FXCollections.observableArrayList(lst));
 	}
 
 	@FXML
 	private void valider(ActionEvent event)
 	{
-		System.out.println("valider");
+		try
+		{
+			this.lstAnnee.getValue().equals(null);
+
+			Controleur.anneeActuelle = Integer.parseInt(lstAnnee.getValue());
+			Intervenants.notifications("Vous avez choisi l'année " + lstAnnee.getValue());
+		}
+		catch (Exception e) { Intervenants.notifications("Aucune année sélectionnée"); }
 	}
 }

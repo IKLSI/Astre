@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import controleur.Controleur;
 
 import metier.*;
+
 public class Parametres implements Initializable
 {
 	//attributs d'instance
@@ -33,10 +34,9 @@ public class Parametres implements Initializable
 		ArrayList<CategorieHeure> tab = Controleur.getCategorieHeure();	//stock toutes les catégories
 		ObservableList<CategorieHeure> data = FXCollections.observableArrayList();	//stock toutes les cat de manière organiser pour les ajouter au tableview
 
-		//organise les catégorie d'heure
 		for (CategorieHeure c : tab)
 			data.add(new CategorieHeure(c.getCodCatHeure(), c.getNomCatHeure(), c.getCoeffNum(), c.getCoeffDen()));
-		
+
 		//création de toutes les colonnes
 		TableColumn<ObservableList<String>, String> codCatHeure = new TableColumn<>("Code");
 		codCatHeure.setCellValueFactory(new PropertyValueFactory<>("codCatHeure"));
@@ -48,7 +48,7 @@ public class Parametres implements Initializable
 		coeffNum.setCellValueFactory(new PropertyValueFactory<>("coeffNum"));
 
 		TableColumn<ObservableList<String>, String> coeffDen = new TableColumn<>("Coeff Den");
-		coeffDen.setCellValueFactory(new PropertyValueFactory<>("coeffDen"));
+		coeffDen.setCellValueFactory(new PropertyValueFactory<>("coeffDen"));;
 
 		//ajoute tout les titres des colonnes au tableView
 		tableView.getColumns().addAll(codCatHeure, nomCatHeure, coeffNum, coeffDen);
@@ -86,7 +86,7 @@ public class Parametres implements Initializable
 			//organise les catégorie d'heure
 			for (CategorieIntervenant c : tab)
 				data.add(new CategorieIntervenant(c.getCodCatInter(), c.getNomCat(), c.getService(), c.getMaxHeure(), c.getRatioTPCatInterNum(), c.getRatioTPCatInterDen()));
-			
+
 			//création de toutes les colonnes
 			TableColumn<ObservableList<String>, String> codCatInter = new TableColumn<>("Code");
 			codCatInter.setCellValueFactory(new PropertyValueFactory<>("codCatInter"));
@@ -109,8 +109,6 @@ public class Parametres implements Initializable
 			tableView.getColumns().addAll(codCatInter, nomCat, service, maxHeure, ratioTPCatInterNum, ratioTPCatInterDen);
 			tableView.setItems(data);
 		}
-		catch (Exception e) {//ajoute toutes les données dans le tableView
-			 e.printStackTrace(); }
+		catch (Exception e) { e.printStackTrace(); }
 	}
-
 }

@@ -41,13 +41,13 @@ public class PrevisionnelController implements Initializable
 	@FXML private TextField nbGrpTDS6 = new TextField();
 	@FXML private TextField nbEtdS6 = new TextField();
 	@FXML private TextField nbSemainesS6 = new TextField();
-	private String intitule = "S1";
 	@FXML private TableView tableView;
 	@FXML private TableView tableViewS2 = new TableView();
 	@FXML private TableView tableViewS3 = new TableView();
 	@FXML private TableView tableViewS4 = new TableView();
 	@FXML private TableView tableViewS5 = new TableView();
 	@FXML private TableView tableViewS6 = new TableView();
+	private String intitule = "S1";
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) { chargementBtn(); }
@@ -69,6 +69,7 @@ public class PrevisionnelController implements Initializable
 					case "PPP"        -> affichePPP();
 				}
 			});
+
 			nouveauItem.setStyle("-fx-text-fill : #000000;");
 			menuButton.getItems().add(nouveauItem);
 		}
@@ -274,23 +275,61 @@ public class PrevisionnelController implements Initializable
 		String    textFieldId = textField.getId();
 		textFieldId = textFieldId.substring(0, textFieldId.length() - 2);
 
-		Controleur.updateSem(textFieldId, this.intitule, Integer.parseInt(textField.getText()));
+		if(regInt(textField.getText(), ">", 0)){
+			Controleur.updateSem(textFieldId, this.intitule, Integer.parseInt(textField.getText()));
+		}
+		else{
+			Intervenants.notifications("Entrez une valeur numérique > 0");
+		}
+	}
+
+	private boolean regInt(String nbTester, String contrainte,int borne)
+	{
+		if(this.isStringNumeric(nbTester))
+		{
+			int val = Integer.parseInt(nbTester);
+
+			if(contrainte.equals("<"))
+				if(val < borne) return true;
+
+			if(contrainte.equals(">"))
+				if(val > borne) return true;
+		}
+
+		return false;
+	}
+
+	private boolean isStringNumeric(String str)
+	{
+		for (char c : str.toCharArray())
+		{
+			if (!Character.isDigit(c))
+				return false;
+		}
+
+		return true;
 	}
 
 	@FXML
 	private void supprimer(ActionEvent event)
 	{
-		Modules module = (Modules) tableView.getSelectionModel().getSelectedItem();
-		System.out.println(module.getCodMod());
+		try
+		{
+			tableView.getSelectionModel().getSelectedItem().equals(null);
 
-		Controleur.supprMod(module.getCodMod(),module.getAnnee());
-		remplirTableau();
+			Modules module = (Modules) tableView.getSelectionModel().getSelectedItem();
+
+			Controleur.supprMod(module.getCodMod(), Controleur.anneeActuelle);
+			remplirTableau();
+		}
+		catch (Exception e) { Intervenants.notifications("Aucun module sélectionné"); }
 	}
 
 	@FXML
 	private void modifier( )
 	{
 		Modules module = null;
+
 		if (this.intitule.equals("S1"))
 			module = (Modules) tableView.getSelectionModel().getSelectedItem();
 		else if (this.intitule.equals("S2"))
@@ -304,14 +343,9 @@ public class PrevisionnelController implements Initializable
 		else if (this.intitule.equals("S6"))
 			module = (Modules) tableViewS6.getSelectionModel().getSelectedItem();
 
-		// TODO : A mettre dans DB
 		try
 		{
-			Class.forName("org.postgresql.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/lk210125","lk210125","Kyliann.0Bado");
-			Statement stmt = conn.createStatement();
-			stmt.executeQuery("Select nomTypMod From TypeModule t Join Module m on t.codTypMod = m.codTypMod Where codMod = '" + module.getCodMod() + "';");
-			ResultSet rs = stmt.getResultSet();
+			ResultSet rs =  Controleur.getNomTypeMod(module.getCodMod());
 			while (rs.next())
 			{
 				switch (rs.getString(1))
@@ -339,7 +373,7 @@ public class PrevisionnelController implements Initializable
 				}
 			}
 		}
-		catch (Exception e) { e.printStackTrace(); }
+		catch (Exception e) { Intervenants.notifications("Aucun module sélectionné"); }
 	}
 
 	@FXML

@@ -9,7 +9,7 @@ public class Modules
 	private boolean valid;
 	private String libCourt;
 	private Integer nbHPnCM;
-	private Integer nbHPnTD;	
+	private Integer nbHPnTD;
 	private Integer nbHPnTP;
 	private Integer nbSemaineTD;
 	private Integer nbSemaineTP;
@@ -49,7 +49,7 @@ public class Modules
 	}
 
 	//Constructeur global
-	public Modules (String codMod, String codSem, Integer codTypMod, String libLong, String libCourt, boolean valid, Integer nbHPnCM, 
+	public Modules (String codMod, String codSem, Integer codTypMod, String libLong, String libCourt, boolean valid, Integer nbHPnCM,
 					Integer nbHPnTD, Integer nbHPnTP, Integer nbSemaineTD, Integer nbSemaineTP, Integer nbSemaineCM, Integer nbHParSemaineTD,
 					Integer nbHParSemaineTP, Integer nbHParSemaineCM, Integer hPonctuelle, Integer nbHPnSaeParSemestre, Integer nbHPnTutParSemestre,
 					Integer nbHSaeParSemestre, Integer nbHTutParSemestre, Integer nbHPnREH, Integer nbHPnTut, Integer nbHREH, Integer nbHTut,
@@ -138,4 +138,9 @@ public class Modules
 	public Integer getNbHPnHTut() { return this.nbHPnHTut; }
 	public Integer getCodTypMod() { return this.codTypMod; }
 	public Integer getAnnee() { return this.annee;}
+
+	public String toString()
+	{
+		return "Modules : " + this.codMod + " " + this.libLong + " " + this.hAP + " " + this.valid + " " + this.codSem + " " + this.libCourt + " " + this.nbHPnCM + " " + this.nbHPnTD + " " + this.nbHPnTP + " " + this.nbSemaineTD + " " + this.nbSemaineTP + " " + this.nbSemaineCM + " " + this.nbHParSemaineTD + " " + this.nbHParSemaineTP + " " + this.nbHParSemaineCM + " " + this.hPonctuelle + " " + this.nbHPnSaeParSemestre + " " + this.nbHPnTutParSemestre + " " + this.nbHSaeParSemestre + " " + this.nbHTutParSemestre + " " + this.nbHPnREH + " " + this.nbHPnTut + " " + this.nbHREH + " " + this.nbHTut + " " + this.nbHPnHTut + " " + this.codTypMod + " " + this.annee;
+	}
 }
