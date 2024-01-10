@@ -9,10 +9,10 @@ import javafx.scene.layout.AnchorPane;
 
 public class Etats implements Initializable
 {
-	// Panel qui contient les onglets
 	@FXML private AnchorPane panelEtats;
 
 	// Changement d'onglet
+
 	@FXML private void afficheExportation(ActionEvent event){ this.changerOnglet("Exportation"); }
 	@FXML private void afficheAnnees(ActionEvent event){ this.changerOnglet("Annees"); }
 
@@ -26,7 +26,7 @@ public class Etats implements Initializable
 		{
 			panelEtats.getChildren().clear();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../interface/"+ nomOnglet +".fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../interface/" + nomOnglet +".fxml"));
 			AnchorPane loadedPane = loader.load();
 
 			panelEtats.getChildren().setAll(loadedPane.getChildren());

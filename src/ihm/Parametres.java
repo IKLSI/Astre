@@ -16,26 +16,25 @@ import metier.*;
 
 public class Parametres implements Initializable
 {
-	//attributs d'instance
-	@FXML private TableView tableView = new TableView<>();
+	// Attributs d'instance
+
+	@FXML private TableView tableView = new TableView();
 	@FXML private Button btnAjouter;
 	@FXML private Button btnSuppr;
 	private boolean etat = false;
 	private String nomCat;
 
-	//charge par défaut le tableau de catégorie d'heure
+	// Charge par défaut le tableau de catégorie d'heure
 	@Override public void initialize(URL location, ResourceBundle resources) { categorieHeure(); }
 
-	//changement de tableau
+	// Changement de tableau
 	@FXML private void btnHeure(ActionEvent e){ categorieHeure(); }
 	@FXML private void btnIntervenant(ActionEvent e) { categorieIntervenants(); }
 
 	@FXML private void ajouter(ActionEvent e)
 	{
 		if (etat == false)
-		{
 			tableView.getItems().add(new CategorieIntervenant(0, "", 0, 0, 0, 0));
-		}
 		else
 		{
 			int dernier = tableView.getItems().size() - 1;
@@ -48,26 +47,27 @@ public class Parametres implements Initializable
 
 	@FXML private void supprimer(ActionEvent e)
 	{
-		try {
-			int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+		try
+		{
 			CategorieIntervenant catInter = (CategorieIntervenant) tableView.getSelectionModel().getSelectedItem();
 			Controleur.supprimerCategorieIntervenant(catInter.getNomCat());
 			categorieIntervenants();
-		} catch (Exception m) {Intervenants.notifications("Aucune catégorie sélectionnée");}
+		}
+		catch (Exception m) {Intervenants.notifications("Aucune catégorie sélectionnée");}
 	}
 
-	//remplissage du tableau de catégorie d'heure
+	// Remplissage du tableau de catégorie d'heure
+
 	public void categorieHeure()
 	{
-
-		//vide le tableau
+		// Vide le tableau
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
 		this.btnAjouter.setVisible(false);
 		this.btnSuppr.setVisible(false);
 
-		ArrayList<CategorieHeure> tab = Controleur.getCategorieHeure();	//stock toutes les catégories
-		ObservableList<CategorieHeure> data = FXCollections.observableArrayList();	//stock toutes les cat de manière organiser pour les ajouter au tableview
+		ArrayList<CategorieHeure> tab = Controleur.getCategorieHeure(); // Stock toutes les catégories
+		ObservableList<CategorieHeure> data = FXCollections.observableArrayList(); // Stock toutes les cat de manière organiser pour les ajouter au tableview
 
 		for (CategorieHeure c : tab)
 			data.add(new CategorieHeure(c.getCodCatHeure(), c.getNomCatHeure(), c.getCoeffNum(), c.getCoeffDen()));
@@ -81,10 +81,10 @@ public class Parametres implements Initializable
 		TableColumn<ObservableList<String>, String> coeffDen = new TableColumn<>("Coeff Den");
 		coeffDen.setCellValueFactory(new PropertyValueFactory<>("coeffDen"));;
 
-		//ajoute tout les titres des colonnes au tableView
+		// Ajoute tout les titres des colonnes au tableView
 		tableView.getColumns().addAll(nomCatHeure, coeffNum, coeffDen);
 
-		//ajoute toutes les données dans le tableView
+		// Ajoute toutes les données dans le tableView
 		tableView.setItems(data);
 	}
 
@@ -96,8 +96,8 @@ public class Parametres implements Initializable
 		this.btnAjouter.setVisible(true);
 		this.btnSuppr.setVisible(true);
 
-		ObservableList<CategorieIntervenant> data = FXCollections.observableArrayList();//stock toutes les catégories
-		ArrayList<CategorieIntervenant> tab = new ArrayList<CategorieIntervenant>();//stock toutes les cat de manière organiser pour les ajouter au tableview
+		ObservableList<CategorieIntervenant> data = FXCollections.observableArrayList(); // Stock toutes les catégories
+		ArrayList<CategorieIntervenant> tab = new ArrayList<CategorieIntervenant>(); // Stock toutes les cat de manière organiser pour les ajouter au tableview
 
 		try
 		{
@@ -177,7 +177,6 @@ public class Parametres implements Initializable
 	@FXML
 	public void modifier(ActionEvent event)
 	{
-		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		CategorieIntervenant catInter = (CategorieIntervenant) tableView.getSelectionModel().getSelectedItem();
 		this.nomCat = catInter.getNomCat();
 	}

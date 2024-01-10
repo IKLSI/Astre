@@ -38,7 +38,8 @@ public class Annees implements Initializable
 	}
 
 	@FXML
-	private void supprimerAnnee(ActionEvent event) {
+	private void supprimerAnnee(ActionEvent event)
+	{
 		try
 		{
 			this.lstAnnee.getValue().equals(null);

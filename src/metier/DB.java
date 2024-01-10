@@ -749,10 +749,9 @@ public class DB
 			this.psUpdateInter.setInt(5, nomCat);
 			this.psUpdateInter.setInt(6, nouveauInter.getcodInter());
 			this.psUpdateInter.setInt(7, nouveauInter.getAnnee());
-			System.out.println(this.psUpdateInter);
 			this.psUpdateInter.executeUpdate();
 		}
-		catch (SQLException e) { e.printStackTrace(); }
+		catch (SQLException e) { Intervenants.notifications("Erreur de saisie dans l'intervenant"); }
 	}
 
 	public void updateBool(boolean newVal, String codMod)

@@ -24,33 +24,57 @@ done
 
 # Téléchargement du dossier final sur GitHub
 
+if [ -d "SAE_3.01" ]; then
+	rm -rf SAE_3.01
+	mkdir SAE_3.01
+fi
+
 echo "Téléchargement du dossier GitHub..."
 git clone https://github.com/IKLSI/SAE_3.01.git
 
 if [ $? -eq 0 ]; then
-    echo "Téléchargement réussi."
+	echo "Téléchargement réussi."
 else
-    echo "Échec du téléchargement. Veuillez vérifier votre connexion Internet ou l'URL du dépôt."
-    exit -1
+	echo "Échec du téléchargement. Veuillez vérifier votre connexion Internet ou l'URL du dépôt."
+	exit -1
 fi
 
 install=$(pwd)/SAE_3.01
 
-mkdir $install/config
+# Si le dossier config existe déjà, on le supprime puis on le crée à nouveau sinon on le crée directement
+
+if [ -d "$install/config" ]; then
+	rm -rf $install/config
+	mkdir $install/config
+else
+	mkdir $install/config
+fi
 
 # Ajout du fichier login.dat dans le dossier config
 
 echo "$user" > $install/config/login.data
 echo "$pwd" >> $install/config/login.data
 
+# Téléchargement et placement de la bibliothèque JavaFX 17 dans le dossier lib
+
+echo "Téléchargement de JavaFX 17..."
+wget https://download2.gluonhq.com/openjfx/17.0.9/openjfx-17.0.9_linux-x64_bin-sdk.zip
+unzip openjfx-17.0.9_linux-x64_bin-sdk.zip -d $install/lib
+
+# Nettoyage des fichiers temporaires
+
+rm openjfx-17.0.9_linux-x64_bin-sdk.zip
+
+chmod +x $install/*.sh
+
 touch $HOME/Bureau/ASTRE.desktop
 
 # création du raccourci sur le bureau
-echo "[Desktop Entry]" > $HOME/Bureau/Astre.desktop
+echo "[Desktop Entry]" > $HOME/Bureau/ASTRE.desktop
 echo "Type=Application" >> $HOME/Bureau/ASTRE.desktop
 echo "Name=Astre" >> $HOME/Bureau/ASTRE.desktop
 echo "Exec=$install/iut.sh" >> $HOME/Bureau/ASTRE.desktop
-echo "Icon=$install/lib/LogoIUT.png" >> $HOME/Bureau/ASTRE.desktop
+echo "Icon=$install/lib/img/LogoIUT.png" >> $HOME/Bureau/ASTRE.desktop
 echo "Path=$install" >> $HOME/Bureau/ASTRE.desktop
 echo "Terminal=false" >> $HOME/Bureau/ASTRE.desktop
 echo "StartupNotify=false" >> $HOME/Bureau/ASTRE.desktop

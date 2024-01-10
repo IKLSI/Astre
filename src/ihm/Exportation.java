@@ -18,6 +18,7 @@ public class Exportation implements Initializable
 	@FXML private AnchorPane panelSaisie;
 	@FXML private Label lblErreur;
 	@FXML private RadioButton btnCSV;
+	@FXML private RadioButton btnHTML;
 	@FXML private RadioButton btnIntervenants;
 	@FXML private RadioButton btnModule;
 
@@ -34,16 +35,16 @@ public class Exportation implements Initializable
 	@FXML public void afficheModule(ActionEvent event)      { initialisationModule();}
 	@FXML public void afficheCSV(ActionEvent event)         { initialisationInter(); }
 
+	// Panel Droit pour exporter les Intervenants
 
-	/*Panel Droit pour exporter les Intervenants*/
 	public void initialisationInter()
 	{
 		//Déchargement du Panel Droit
 
 		try
 		{
-			this.btnCSV.setDisable(false);	//permet d'exporter en csv
-			this.panelSaisie.getChildren().remove(this.lst);	//on retire le comboBox pour mettre des fields
+			this.btnCSV.setDisable(false);
+			this.panelSaisie.getChildren().remove(this.lst);
 		}
 		catch (Exception e) { e.printStackTrace(); }
 
@@ -95,6 +96,7 @@ public class Exportation implements Initializable
 		{
 			this.btnCSV.setDisable(true); // Permet d'exporter en csv
 			this.btnCSV.setSelected(false);
+			this.btnHTML.setSelected(true);
 			// Retire les textfield
 			this.panelSaisie.getChildren().remove(this.nomInter);
 			this.panelSaisie.getChildren().remove(this.prenomInter);
@@ -142,10 +144,7 @@ public class Exportation implements Initializable
 		}
 		else
 		{
-			try
-			{
-				if(lst.getValue().equals(null));
-			}
+			try { if(lst.getValue().equals(null)); }
 			catch (Exception e)
 			{
 				exportValid = false;
@@ -158,21 +157,22 @@ public class Exportation implements Initializable
 	@FXML
 	public void exportation(ActionEvent event)
 	{
-		//vérifie qu'on a bien validé
+		//Vérifie qu'on a bien validé
+	
 		if(exportValid)
 		{
-			try {
-				//test si on doit générer un csv
-				if(this.btnCSV.isSelected()){
+			try
+			{
+				// Test si on doit générer un csv
+				if(this.btnCSV.isSelected())
 					GenererHTML.genererCSV(this.nomInter.getText());
-				}
 				else
 				{
-					//test si on doit générer un intervenant html
+					// Test si on doit générer un intervenant html
 					if(btnIntervenants.isSelected())
-						GenererHTML.GenererIntervenant(this.nomInter.getText(), Controleur.getCodInter(this.nomInter.getText()).get(0)); //TEST!!
+						GenererHTML.GenererIntervenant(this.nomInter.getText(), Controleur.getCodInter(this.nomInter.getText()).get(0));
 
-					//test si on doit générer un module html
+					// Test si on doit générer un module html
 					if(btnModule.isSelected())
 					{
 						String tab[] = this.lst.getValue().split(" "); //récupère le code module
@@ -180,12 +180,12 @@ public class Exportation implements Initializable
 					}
 				}
 
-				this.lblErreur.setText("Exportation");	//prévient qu'on a exporté
-			} catch (Exception e){this.lblErreur.setText("Erreur d'exportation");}	//gestion d'erreur
+				this.lblErreur.setText("Exportation"); // Prévient qu'on a exporté
+			} catch (Exception e){this.lblErreur.setText("Erreur d'exportation");}
 
-			exportValid = false;//remet l'exportation à faux une fois exporté
+			exportValid = false; // Remet l'exportation à faux une fois exporté
 		}
 		else
-			this.lblErreur.setText("Vous n'avez pas valider");	//Export sans valider
+			this.lblErreur.setText("Vous n'avez pas valider");
 	}
 }

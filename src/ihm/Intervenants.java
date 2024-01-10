@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 import java.sql.*;
 
 import controleur.Controleur;
-import metier.CategorieHeure;
 import metier.Intervenant;
 
 public class Intervenants
@@ -23,6 +22,7 @@ public class Intervenants
 	@FXML private ObservableList<ObservableList<String>> data;
 	@FXML private TableView<ObservableList<String>> tableView;
 	@FXML private ScrollPane scrollPane;
+	@FXML private AnchorPane panelCentre;
 	private Label lblErreur;
 
 	private HashMap<Integer, Integer> idIntervenant = new HashMap<Integer, Integer>();
@@ -180,6 +180,7 @@ public class Intervenants
 			panelCentre.getChildren().add(buttonA);
 
 			resultSet.close();
+			this.panelCentre = panelCentre;
 		}
 		catch (Exception e)	{ e.printStackTrace(); }
 	}
@@ -249,8 +250,8 @@ public class Intervenants
 		bouton.setOnMouseEntered(e -> bouton.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
 		bouton.setOnMouseExited(e -> bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
 		bouton.setOnAction((ActionEvent event2) -> {
-
-			try {
+			try
+			{
 				nomCat.getValue().equals(null);
 
 				int numCat = Controleur.getCodCatInter(nomCat.getValue());
@@ -269,7 +270,8 @@ public class Intervenants
 					new Intervenants(panelCentre);
 				}
 
-			} catch (Exception e) { e.printStackTrace();Intervenants.notifications("Aucune catégorie sélectionnée");}
+			}
+			catch (Exception e) { Intervenants.notifications("Aucune catégorie sélectionnée"); }
 		});
 
 		//Bouton Annuler
@@ -375,9 +377,9 @@ public class Intervenants
 			return true;
 		}
 
-		if(message){
+		if(message)
 			this.lblErreur.setText(messageTester + " n'est pas valide");
-		}
+
 		return false;
 	}
 
@@ -386,51 +388,47 @@ public class Intervenants
 		if(this.isStringNumeric(nbTester))
 		{
 			int val = Integer.parseInt(nbTester);
-			if(contrainte.equals("<")){
+
+			if(contrainte.equals("<"))
 				if(val < borne) return true;
-			}
-			if(contrainte.equals("<=")){
+			if(contrainte.equals("<="))
 				if(val <= borne) return true;
-			}
-			if(contrainte.equals(">")){
+			if(contrainte.equals(">"))
 				if(val > borne) return true;
-			}
-			if(contrainte.equals(">=")){
+			if(contrainte.equals(">="))
 				if(val >= borne) return true;
-			}
-			if(contrainte.equals("=")){
+			if(contrainte.equals("="))
 				if(val == borne) return true;
-			}
-
-
 		}
 
 		this.lblErreur.setText(nbTester + " doit être " + contrainte + " " + borne);
 		return false;
-
 	}
 
-	private boolean isStringNumeric(String str) {
-		// Vérifie si tous les caractères de la chaîne sont des chiffres
-		for (char c : str.toCharArray()) {
-			if (!Character.isDigit(c)) {
+	private boolean isStringNumeric(String str)
+	{
+		for (char c : str.toCharArray())
+		{
+			if (!Character.isDigit(c))
 				return false;
-			}
 		}
+
 		return true;
 	}
 
 	@FXML
 	private void supprimer(ActionEvent event)
 	{
-		try {
+		try
+		{
 			int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 			this.idIntervenant.put(Integer.valueOf(tableView.getItems().get(selectedIndex).get(1)), Integer.valueOf(tableView.getItems().get(selectedIndex).get(0)));
 
 			if (selectedIndex >= 0)
 				tableView.getItems().remove(selectedIndex);
 
-		} catch (Exception e) {Intervenants.notifications("Impossible de supprimer cet intervenant");	}
+		}
+		catch (Exception e) { Intervenants.notifications("Impossible de supprimer cet intervenant"); }
 	}
 
 	@FXML
@@ -452,18 +450,24 @@ public class Intervenants
 	{
 		ObservableList<String> row = event.getRowValue();
 		String newValue = event.getNewValue();
-		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		int index = event.getTablePosition().getColumn();
 		int code = Integer.parseInt(row.get(1));
 
 		row.set(index, newValue);
+
 		if(regString(row.get(3),false) && regString(row.get(4),false))
 		{
 			Intervenant intervenant = new Intervenant(code, row.get(3), row.get(4), Integer.parseInt(row.get(5)), Integer.parseInt(row.get(6)), Integer.parseInt(row.get(0)));
-			Controleur.updateInter(intervenant, Controleur.getCodCatInter(row.get(2)));
+
+			if (Controleur.getNomCatInter().contains(row.get(2)))
+				Controleur.updateInter(intervenant, Controleur.getCodCatInter(row.get(2)));
+			else
+				Intervenants.notifications("La catégorie " + row.get(2) + " n'existe pas");
 		}
 		else
 			Intervenants.notifications("Un ou des caractères incorrects");
+
+		new Intervenants(this.panelCentre);
 	}
 
 	public static void notifications(String message)
