@@ -750,6 +750,7 @@ public class DB
 			this.psUpdateInter.setInt(6, nouveauInter.getcodInter());
 			this.psUpdateInter.setInt(7, nouveauInter.getAnnee());
 			this.psUpdateInter.executeUpdate();
+			Intervenants.notifications("Intervenant " + nouveauInter.getPrenom() + " " + nouveauInter.getNom() + " modifié");
 		}
 		catch (SQLException e) { Intervenants.notifications("Erreur de saisie dans l'intervenant"); }
 	}
@@ -899,7 +900,7 @@ public class DB
 			this.psDeleteInter.executeUpdate();
 			Intervenants.notifications("Intervenant " + codInter + " supprimé");
 		}
-		catch (SQLException e) { Intervenants.notifications("Impossible de supprimer l'intervenant " + codInter); }
+		catch (SQLException e) { Intervenants.notifications("Impossible de supprimer l'intervenant " + codInter + " car il possède des affectations liés à lui"); }
 	}
 
 	public void supprMod(String codMod, Integer annee)
@@ -909,6 +910,7 @@ public class DB
 			this.psDeleteMod.setString(1,codMod);
 			this.psDeleteMod.setInt(2,annee);
 			this.psDeleteMod.executeUpdate();
+			Intervenants.notifications("Module " + codMod + " supprimé");
 		}
 		catch (SQLException e) { Intervenants.notifications("Impossible de supprimer " + codMod + " car il est dépendant"); }
 	}
