@@ -172,7 +172,7 @@ public class GenererHTML
 	{
 		try
 		{
-			ResultSet rs = Controleur.getIntervenant_final();
+			ResultSet rs = Controleur.getIntervenant_complet();
 			PrintWriter pw = new PrintWriter( new FileOutputStream(nom+".csv") );
 			for(int cpt = 1; cpt <= rs.getMetaData().getColumnCount(); cpt++)
 			{

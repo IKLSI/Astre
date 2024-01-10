@@ -260,7 +260,7 @@ public class RessourceControleur implements Initializable
 		Controleur.updateAffectation(new Affectation(
 			affectation.getCodMod(),
 			codInter,
-			Controleur.getCodCatHeure(affectation.getType()),
+			Controleur.getCodCatInter(affectation.getType()),
 			affectation.getCommentaire(),
 			affectation.getNom(),
 			affectation.getType(),
@@ -299,7 +299,7 @@ public class RessourceControleur implements Initializable
 			Controleur.insertAffectationRessource(new Affectation(
 				codes,
 				Controleur.getCodInter(affectation.getNom()).get(0),
-				Controleur.getCodCatHeure(affectation.getType()),
+				Controleur.getCodCatInter(affectation.getType()),
 				affectation.getCommentaire(),
 				affectation.getNom(),
 				affectation.getType(),
@@ -317,10 +317,14 @@ public class RessourceControleur implements Initializable
 	@FXML
 	public void supprimer(ActionEvent event)
 	{
-		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
-		Affectation affectation = (Affectation) tableView.getItems().get(selectedIndex);
-		Controleur.supprAffectation(affectation.getCodMod(), Controleur.anneeActuelle, Controleur.getCodInter(affectation.getNom()).get(0), affectation.getCodCatHeure());
-		tableView.getItems().remove(selectedIndex);
+
+		try{
+			int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+			Affectation affectation = (Affectation) tableView.getItems().get(selectedIndex);
+			Controleur.supprAffectation(affectation.getCodMod(), Controleur.anneeActuelle, Controleur.getCodInter(affectation.getNom()).get(0), affectation.getCodCatHeure());
+			tableView.getItems().remove(selectedIndex);
+
+		} catch (Exception e) {Intervenants.notifications("Il n'y a plus aucun intervenant a supprimé");}
 	}
 
 	@FXML

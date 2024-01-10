@@ -228,20 +228,23 @@ public class PppControleur implements Initializable
 	{
 		Affectation affectation = (Affectation) tableView.getSelectionModel().getSelectedItem();
 		int codInter = affectation.getCodInter();
+		try {
+			Controleur.updateAffectation(new Affectation(
+				affectation.getCodMod(),
+				codInter,
+				Controleur.getCodCatInter(affectation.getType()),
+				affectation.getCommentaire(),
+				affectation.getNom(),
+				affectation.getType(),
+				affectation.getNbSem(),
+				affectation.getNbGrp(),
+				affectation.getTotalEqTd(),
+				affectation.getNbH(),
+				Controleur.anneeActuelle
+			));
 
-		Controleur.updateAffectation(new Affectation(
-			affectation.getCodMod(),
-			codInter,
-			Controleur.getCodCatHeure(affectation.getType()),
-			affectation.getCommentaire(),
-			affectation.getNom(),
-			affectation.getType(),
-			affectation.getNbSem(),
-			affectation.getNbGrp(),
-			affectation.getTotalEqTd(),
-			affectation.getNbH(),
-			Controleur.anneeActuelle
-		));
+		} catch (Exception e) {Intervenants.notifications("Erreur de saisie valeur erronée");}
+
 	}
 
 	@FXML
@@ -271,7 +274,7 @@ public class PppControleur implements Initializable
 			Controleur.insertAffectationRessource(new Affectation(
 				codes,
 				Controleur.getCodInter(affectation.getNom()).get(0),
-				Controleur.getCodCatHeure(affectation.getType()),
+				Controleur.getCodCatInter(affectation.getType()),
 				affectation.getCommentaire(),
 				affectation.getNom(),
 				affectation.getType(),
@@ -291,8 +294,11 @@ public class PppControleur implements Initializable
 	{
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		Affectation affectation = (Affectation) tableView.getItems().get(selectedIndex);
-		Controleur.supprAffectation(affectation.getCodMod(), Controleur.anneeActuelle, Controleur.getCodInter(affectation.getNom()).get(0), affectation.getCodCatHeure());
-		tableView.getItems().remove(selectedIndex);
+		try {
+			Controleur.supprAffectation(affectation.getCodMod(), Controleur.anneeActuelle, Controleur.getCodInter(affectation.getNom()).get(0), affectation.getCodCatHeure());
+			tableView.getItems().remove(selectedIndex);
+
+		} catch (Exception e) {Intervenants.notifications("Il n'ya plus aucun intervenant a supprimé");}
 	}
 
 	@FXML

@@ -32,12 +32,13 @@ public class DB
 	private PreparedStatement psSelectNomSemestre;
 	private PreparedStatement psSelectNomInter;
 	private PreparedStatement psSelectAnnee;
-	private PreparedStatement psSelectCodCatHeure;
+	private PreparedStatement psSelectCodCatInter;
 	private PreparedStatement psSelectInformationsInter;
 	private PreparedStatement psSelectNomTypeMod;
 	private PreparedStatement psSelecthMin;
 	private PreparedStatement psSelecthMax;
 	private PreparedStatement psSelectNomCatInter;
+	private PreparedStatement psSelectIntervenant_complet;
 
 	// Attribut requête Insert
 
@@ -116,30 +117,31 @@ public class DB
 			this.psClone                       = DB.connec.prepareStatement("SELECT clonage(?,?)");
 			this.psSupprAnnee                  = DB.connec.prepareStatement("SELECT supprimer_annee(?)");
 			this.psAnneeActuelle               = DB.connec.prepareStatement("SELECT MAX(annee) FROM annee");
-			this.psSelectCodCatHeure           = DB.connec.prepareStatement("SELECT codCatHeure FROM CategorieHeure WHERE nomCatHeure = ?");
+			this.psSelectCodCatInter           = DB.connec.prepareStatement("SELECT codCatInter FROM CategorieIntervenant WHERE nomcat = ?");
 			this.psSelectInformationsInter     = DB.connec.prepareStatement("SELECT * FROM Intervenant WHERE codInter = ?");
 			this.psSelectNomTypeMod            = DB.connec.prepareStatement("Select nomTypMod From TypeModule t Join Module m on t.codTypMod = m.codTypMod Where codMod = ?");
 			this.psSelecthMin                  = DB.connec.prepareStatement("SELECT service FROM CategorieIntervenant WHERE codCatInter = ?");
 			this.psSelecthMax                  = DB.connec.prepareStatement("SELECT maxHeure FROM CategorieIntervenant WHERE codCatInter = ?");
 			this.psSelectNomCatInter           = DB.connec.prepareStatement("SELECT nomCat FROM CategorieIntervenant");
+			this.psSelectIntervenant_complet   = DB.connec.prepareStatement("SELECT *      FROM intervenant_complet WHERE annee = ?");
 
 			// Préparation des Insertions
 			this.psInstertIntervenant           = DB.connec.prepareStatement("INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure, annee)  VALUES(?,?,?,?,?,?)");
 			this.psInstertAffectationRessource  = DB.connec.prepareStatement("INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbSem, nbGrp, annee) VALUES(?,?,?,?,?,?,?)");
 			this.psInstertAffectationAutre      = DB.connec.prepareStatement("INSERT INTO Affectation (codMod, codInter, codCatHeure, commentaire, nbH, annee) VALUES(?,?,?,?,?,?)");
-			this.psInsertModRessources          = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			this.psInsertModSAE                 = DB.connec.prepareStatement("INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-			this.psInsertModStage               = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHREH, nbHTut, nbHPnREH, nbHPnTut, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-			this.psInsertModPPP                 = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHPnHTut, nbHTut, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			this.psInsertModRessources          = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valide, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			this.psInsertModSAE                 = DB.connec.prepareStatement("INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valide, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+			this.psInsertModStage               = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valide, nbHREH, nbHTut, nbHPnREH, nbHPnTut, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+			this.psInsertModPPP                 = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valide, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHPnHTut, nbHTut, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			this.psInsertCategorieIntervenant   = DB.connec.prepareStatement("INSERT INTO CategorieIntervenant(nomCat,service,maxHeure,ratioTPCatInterNum,ratioTPCatInterDen) VALUES (?,?,?,?,?);" );
 
 			// Préparation des Updates
-			this.psUpdateInter         = DB.connec.prepareStatement("UPDATE Intervenant SET nom = ?, prenom = ?, hServ = ?, maxHeure = ? WHERE codInter = ? AND annee = ?;");
-			this.psUpdateBool          = DB.connec.prepareStatement("UPDATE Module SET valid = ? WHERE codMod  = ?;");
-			this.psUpdateModRessources = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbSemaineTD = ?, nbSemaineTP = ?, nbSemaineCM = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?  WHERE codMod = ? AND annee = ?");
-			this.psUpdateModSAE 	   = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnSaeParSemestre = ?, nbHPnTutParSemestre = ?, nbHSaeParSemestre = ?, nbHTutParSemestre = ? WHERE codMod = ? AND annee = ?");
-			this.psUpdateModStage      = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnREH = ?, nbHPnTut = ?, nbHREH = ?, nbHTut = ? WHERE codMod = ? AND annee = ?");
-			this.psUpdateModPPP        = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?, nbHPnTut = ?, nbHTut = ?, nbHPnHTut = ? WHERE codMod = ? AND annee = ?");
+			this.psUpdateInter         = DB.connec.prepareStatement("UPDATE Intervenant SET nom = ?, prenom = ?, hServ = ?, maxHeure = ?, codCatInter = ? WHERE codInter = ? AND annee = ?;");
+			this.psUpdateBool          = DB.connec.prepareStatement("UPDATE Module SET valide = ? WHERE codMod  = ?;");
+			this.psUpdateModRessources = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valide = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbSemaineTD = ?, nbSemaineTP = ?, nbSemaineCM = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?  WHERE codMod = ? AND annee = ?");
+			this.psUpdateModSAE 	   = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valide = ?, nbHPnSaeParSemestre = ?, nbHPnTutParSemestre = ?, nbHSaeParSemestre = ?, nbHTutParSemestre = ? WHERE codMod = ? AND annee = ?");
+			this.psUpdateModStage      = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valide = ?, nbHPnREH = ?, nbHPnTut = ?, nbHREH = ?, nbHTut = ? WHERE codMod = ? AND annee = ?");
+			this.psUpdateModPPP        = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valide = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?, nbHPnTut = ?, nbHTut = ?, nbHPnHTut = ? WHERE codMod = ? AND annee = ?");
 			this.psUpdateAffectation   = DB.connec.prepareStatement("UPDATE Affectation SET codCatHeure = ?, commentaire = ?, nbSem = ?, nbGrp = ?, nbH = ? WHERE codInter = ? AND annee = ? AND codMod = ? AND codCatHeure = ?");
 			this.psUpdateCategorieIntervenant = DB.connec.prepareStatement("UPDATE CategorieIntervenant SET nomCat = ?, service = ?, maxHeure = ?, ratioTPCatInterNum = ?, ratioTPCatInterDen = ? WHERE nomCat = ?");
 
@@ -203,17 +205,21 @@ public class DB
 		return rs;
 	}
 
-	public Integer getCodCatHeure(String nomCatHeure)
+	public Integer getCodCatInter(String nomCatInter)
 	{
-		Integer rs =1;
+		int cod = 5;
 		try
 		{
-			this.psSelectCodCatHeure.setString(1, nomCatHeure);
-			this.psSelectCodCatHeure.executeQuery();
+			this.psSelectCodCatInter.setString(1, nomCatInter);
+
+			ResultSet rs = this.psSelectCodCatInter.executeQuery();
+			if (rs.next())
+				cod = rs.getInt("codCatInter");
+
 		}
 		catch (Exception e) { e.printStackTrace(); }
 
-		return rs;
+		return cod;
 	}
 
 	public ResultSet getSemestre()
@@ -295,7 +301,10 @@ public class DB
 	{
 		ResultSet resultSet = null;
 
-		try { resultSet = this.psSelectCategorieIntervenant.executeQuery(); }
+		try {
+			this.psSelectIntervenant_complet.setInt(1, Controleur.anneeActuelle);
+			resultSet = this.psSelectIntervenant_complet.executeQuery();
+			}
 		catch (Exception e) { e.printStackTrace(); }
 
 		return resultSet;
@@ -366,9 +375,9 @@ public class DB
 				String codMod = rs.getString("codMod");
 				String libLong = rs.getString("libLong");
 				String hAP = rs.getString("hAP");
-				boolean valid = rs.getBoolean("valid");
+				boolean valide = rs.getBoolean("valide");
 
-				lstModule.add(new Modules(codSem,codMod,libLong,hAP,valid));
+				lstModule.add(new Modules(codSem,codMod,libLong,hAP,valide));
 			}
 		}
 		catch (Exception e){ e.printStackTrace(); }
@@ -422,14 +431,16 @@ public class DB
 		return lstVal;
 	}
 
-	public ArrayList<String> getNomCatInter(){
+	public ArrayList<String> getNomCatInter()
+	{
 		ArrayList<String> lstNom = new ArrayList<String>();
-		try {
+		try
+		{
 			ResultSet rs = this.psSelectNomCatInter.executeQuery();
-			while (rs.next()) {
+			while (rs.next())
 				lstNom.add(rs.getString("nomCat"));
-			}
-		} catch (SQLException e) {Intervenants.notifications("Il n'y a plus de categorie d'intervenants");}
+
+		} catch (SQLException e) { Intervenants.notifications("Il n'y a plus de categorie d'intervenants"); }
 
 		return lstNom;
 	}
@@ -462,7 +473,8 @@ public class DB
 		return lstSem;
 	}
 
-	public int gethMin(int numCat){
+	public int gethMin(int numCat)
+	{
 		try
 		{
 			this.psSelecthMin.setInt(1,numCat);
@@ -470,11 +482,12 @@ public class DB
 			if(rs.next())
 				return rs.getInt("service");
 		}
-		catch (SQLException e) {e.printStackTrace();}
+		catch (SQLException e) { e.printStackTrace(); }
 		return 0;
 	}
 
-	public int gethMax(int numCat){
+	public int gethMax(int numCat)
+	{
 		try
 		{
 			this.psSelecthMax.setInt(1,numCat);
@@ -679,7 +692,6 @@ public class DB
 			this.psInsertModStage.setInt(9,nouveauModules.getNbHPnREH());
 			this.psInsertModStage.setInt(10,nouveauModules.getNbHPnTut());
 			this.psInsertModStage.setInt(11,nouveauModules.getAnnee());
-			System.out.println(this.psInsertModStage);
 			this.psInsertModStage.executeUpdate();
 		}
 		catch (SQLException e) { Intervenants.notifications("Erreur de saisie dans le module Stage"); }
@@ -726,7 +738,7 @@ public class DB
 
 	// Méthode de mise à jour
 
-	public void updateInter(Intervenant nouveauInter)
+	public void updateInter(Intervenant nouveauInter, Integer nomCat)
 	{
 		try
 		{
@@ -734,8 +746,10 @@ public class DB
 			this.psUpdateInter.setString(2,nouveauInter.getPrenom());
 			this.psUpdateInter.setInt(3,nouveauInter.gethServ());
 			this.psUpdateInter.setInt(4,nouveauInter.getMaxHeure());
-			this.psUpdateInter.setInt(5, nouveauInter.getcodInter());
-			this.psUpdateInter.setInt(6, nouveauInter.getAnnee());
+			this.psUpdateInter.setInt(5, nomCat);
+			this.psUpdateInter.setInt(6, nouveauInter.getcodInter());
+			this.psUpdateInter.setInt(7, nouveauInter.getAnnee());
+			System.out.println(this.psUpdateInter);
 			this.psUpdateInter.executeUpdate();
 		}
 		catch (SQLException e) { e.printStackTrace(); }
@@ -768,7 +782,6 @@ public class DB
 	{
 		try
 		{
-			System.out.println(nomTypMod);
 			switch(nomTypMod)
 			{
 				case "Ressources":
@@ -840,7 +853,7 @@ public class DB
 					break;
 			}
 		}
-		catch (SQLException e) { e.printStackTrace(); }
+		catch (SQLException e) {Intervenants.notifications("Erreur de saisie");}
 	}
 
 	public void updateAffectation(Affectation affec)

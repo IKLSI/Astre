@@ -144,7 +144,7 @@ public class Intervenants
 				final int colIndex = i;
 				column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(colIndex)));
 
-				if (i < 5 && i >= 3)
+				if (i < 5 && i >= 2)
 				{
 					column.setEditable(true);
 					column.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -251,25 +251,25 @@ public class Intervenants
 		bouton.setOnAction((ActionEvent event2) -> {
 
 			try {
-				//test si la cbbox est vide passe dans le catch si c'est le cas
 				nomCat.getValue().equals(null);
 
-				int numCat = Controleur.getCodCatHeure(nomCat.getValue());
+				int numCat = Controleur.getCodCatInter(nomCat.getValue());
 				int hmin = Controleur.gethMin(numCat);
 				int hmax = Controleur.gethMax(numCat);
 
 				if(regString(nom.getText(),true) && regString(prenom.getText(),true) &&
-				regInt(hserv.getText(),">",hmin) && regInt(maxheure.getText(),"<",hmax) &&
+				regInt(hserv.getText(),">",hmin) && regInt(hserv.getText(),"<=",Integer.parseInt(maxheure.getText())) &&
+				regInt(maxheure.getText(),"<",hmax) && regInt(maxheure.getText(),">=",Integer.parseInt(hserv.getText())) &&
 				regInt(annee.getText(),"=",Controleur.anneeActuelle))
 				{
-					Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getValue()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()), Integer.parseInt(annee.getText()));
+					Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), numCat, Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()), Integer.parseInt(annee.getText()));
 					Controleur.insertIntervenant(intervenant);
 
 					panelCentre.getChildren().clear();
 					new Intervenants(panelCentre);
 				}
 
-			} catch (Exception e) {Intervenants.notifications("Aucune catégorie sélectionnée");}
+			} catch (Exception e) { e.printStackTrace();Intervenants.notifications("Aucune catégorie sélectionnée");}
 		});
 
 		//Bouton Annuler
@@ -362,9 +362,8 @@ public class Intervenants
 
 	private boolean regString(String messageTester,boolean message)
 	{
-		if(!message){
+		if(!message)
 			this.lblErreur = new Label("");
-		}
 
 		String regex = "^[a-zA-Z]+$";
 		Pattern pattern = Pattern.compile(regex);
@@ -390,8 +389,14 @@ public class Intervenants
 			if(contrainte.equals("<")){
 				if(val < borne) return true;
 			}
+			if(contrainte.equals("<=")){
+				if(val <= borne) return true;
+			}
 			if(contrainte.equals(">")){
 				if(val > borne) return true;
+			}
+			if(contrainte.equals(">=")){
+				if(val >= borne) return true;
 			}
 			if(contrainte.equals("=")){
 				if(val == borne) return true;
@@ -452,13 +457,13 @@ public class Intervenants
 		int code = Integer.parseInt(row.get(1));
 
 		row.set(index, newValue);
-		if(regString(row.get(3),false) && regString(row.get(4),false)){
+		if(regString(row.get(3),false) && regString(row.get(4),false))
+		{
 			Intervenant intervenant = new Intervenant(code, row.get(3), row.get(4), Integer.parseInt(row.get(5)), Integer.parseInt(row.get(6)), Integer.parseInt(row.get(0)));
-			Controleur.updateInter(intervenant);
+			Controleur.updateInter(intervenant, Controleur.getCodCatInter(row.get(2)));
 		}
-		else{
+		else
 			Intervenants.notifications("Un ou des caractères incorrects");
-		}
 	}
 
 	public static void notifications(String message)

@@ -48,10 +48,12 @@ public class Parametres implements Initializable
 
 	@FXML private void supprimer(ActionEvent e)
 	{
-		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
-		CategorieIntervenant catInter = (CategorieIntervenant) tableView.getSelectionModel().getSelectedItem();
-		Controleur.supprimerCategorieIntervenant(catInter.getNomCat());
-		categorieIntervenants();
+		try {
+			int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+			CategorieIntervenant catInter = (CategorieIntervenant) tableView.getSelectionModel().getSelectedItem();
+			Controleur.supprimerCategorieIntervenant(catInter.getNomCat());
+			categorieIntervenants();
+		} catch (Exception m) {Intervenants.notifications("Aucune catégorie sélectionnée");}
 	}
 
 	//remplissage du tableau de catégorie d'heure
@@ -89,10 +91,8 @@ public class Parametres implements Initializable
 	//remplissage du tableau de catégorie d'intervenants
 	public void categorieIntervenants()
 	{
-		//vide le tableau
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
-
 		this.btnAjouter.setVisible(true);
 		this.btnSuppr.setVisible(true);
 
@@ -187,7 +187,7 @@ public class Parametres implements Initializable
 	{
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 
-		if (selectedIndex >= 0)
+		if (selectedIndex >= 0 && etat == false)
 		{
 			CategorieIntervenant ancienneValeur = (CategorieIntervenant) tableView.getItems().get(selectedIndex);
 
@@ -201,8 +201,7 @@ public class Parametres implements Initializable
 			);
 
 			Controleur.updateCategorieIntervenant(nouvelleValeur, nomCat);
+			categorieIntervenants();
 		}
-
-		categorieIntervenants();
 	}
 }

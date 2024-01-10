@@ -4,3 +4,4 @@ bin/*.class
 bin/metier/*.class
 bin/ihm/*.class
 bin/controleur/*.class
+config/login.data

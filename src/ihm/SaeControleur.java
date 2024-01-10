@@ -219,7 +219,7 @@ public class SaeControleur implements Initializable
 		Controleur.updateAffectation(new Affectation(
 			affectation.getCodMod(),
 			codInter,
-			Controleur.getCodCatHeure(affectation.getType()),
+			Controleur.getCodCatInter(affectation.getType()),
 			affectation.getCommentaire(),
 			affectation.getNom(),
 			affectation.getType(),
@@ -258,7 +258,7 @@ public class SaeControleur implements Initializable
 			Controleur.insertAffectationRessource(new Affectation(
 				codes,
 				Controleur.getCodInter(affectation.getNom()).get(0),
-				Controleur.getCodCatHeure(affectation.getType()),
+				Controleur.getCodCatInter(affectation.getType()),
 				affectation.getCommentaire(),
 				affectation.getNom(),
 				affectation.getType(),

@@ -40,7 +40,8 @@ mkdir $install/config
 
 # Ajout du fichier login.dat dans le dossier config
 
-echo "$user $pwd" > $install/config/login.data
+echo "$user" > $install/config/login.data
+echo "$pwd" >> $install/config/login.data
 
 touch $HOME/Bureau/ASTRE.desktop
 
@@ -48,7 +49,7 @@ touch $HOME/Bureau/ASTRE.desktop
 echo "[Desktop Entry]" > $HOME/Bureau/Astre.desktop
 echo "Type=Application" >> $HOME/Bureau/ASTRE.desktop
 echo "Name=Astre" >> $HOME/Bureau/ASTRE.desktop
-echo "Exec=$install/run.sh" >> $HOME/Bureau/ASTRE.desktop
+echo "Exec=$install/iut.sh" >> $HOME/Bureau/ASTRE.desktop
 echo "Icon=$install/lib/LogoIUT.png" >> $HOME/Bureau/ASTRE.desktop
 echo "Path=$install" >> $HOME/Bureau/ASTRE.desktop
 echo "Terminal=false" >> $HOME/Bureau/ASTRE.desktop

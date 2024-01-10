@@ -39,12 +39,13 @@ public class Controleur
 	public static boolean                   intervenantExist(String nomInter,String prenomInter) { return Controleur.dataBase.intervenantExist(nomInter,prenomInter);}
 	public static HashMap<String, String>   getPreviModule(String codMod)                        { return Controleur.dataBase.getPreviModule(codMod);}
 	public static ArrayList<String>         getAnnee()                                           { return Controleur.dataBase.getAnnee();}
-	public static Integer                   getCodCatHeure(String nomCatHeure)                   { return Controleur.dataBase.getCodCatHeure(nomCatHeure);}
+	public static Integer                   getCodCatInter(String nomCatInter)                   { return Controleur.dataBase.getCodCatInter(nomCatInter);}
 	public static ResultSet                 getInformationsInter(int codInter)                   { return Controleur.dataBase.getInformationsInter(codInter);}
 	public static ResultSet                 getNomTypeMod(String codMod)                         { return Controleur.dataBase.getNomTypeMod(codMod);}
 	public static int                       gethMin(int numCat)                                  { return Controleur.dataBase.gethMin(numCat);}
 	public static int                       gethMax(int numCat)                                  { return Controleur.dataBase.gethMax(numCat);}
 	public static ArrayList<String>         getNomCatInter()                                     { return Controleur.dataBase.getNomCatInter();}
+	public static ResultSet                 getIntervenant_complet()                             { return Controleur.dataBase.getIntervenant_complet(); }
 
 	// Insertion
 
@@ -59,7 +60,7 @@ public class Controleur
 
 	// Modification
 
-	public static void updateInter(Intervenant nouveauInter)						               { Controleur.dataBase.updateInter(nouveauInter); }
+	public static void updateInter(Intervenant nouveauInter, Integer nomCat)						   { Controleur.dataBase.updateInter(nouveauInter, nomCat); }
 	public static void updateSem(String textFieldId, String intitule, int newVal)                  { Controleur.dataBase.updateSem(textFieldId, intitule, newVal); }
 	public static void updateMod(Modules nouveauModules, String nomTypMod, String codMod)          { Controleur.dataBase.updateMod(nouveauModules, nomTypMod, codMod); }
 	public static void updateBool(boolean newVal, String codMod)                                   { Controleur.dataBase.updateBool(newVal, codMod); }
