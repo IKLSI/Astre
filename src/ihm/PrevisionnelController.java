@@ -271,16 +271,18 @@ public class PrevisionnelController implements Initializable
 	@FXML
 	private void modification(ActionEvent event)
 	{
-		TextField textField   = (TextField) event.getSource();
-		String    textFieldId = textField.getId();
-		textFieldId = textFieldId.substring(0, textFieldId.length() - 2);
+		try {
+			TextField textField   = (TextField) event.getSource();
+			String    textFieldId = textField.getId();
+			textFieldId = textFieldId.substring(0, textFieldId.length() - 2);
 
-		if(regInt(textField.getText(), ">", 0)){
-			Controleur.updateSem(textFieldId, this.intitule, Integer.parseInt(textField.getText()));
-		}
-		else{
-			Intervenants.notifications("Entrez une valeur numérique > 0");
-		}
+			if(regInt(textField.getText(), ">", 0)){
+				Controleur.updateSem(textFieldId, this.intitule, Integer.parseInt(textField.getText()));
+			}
+			else{
+				Intervenants.notifications("Entrez une valeur numérique > 0");
+			}
+		} catch (Exception e) {Intervenants.notifications("Aucune valeur entrée");}
 	}
 
 	private boolean regInt(String nbTester, String contrainte,int borne)
@@ -313,16 +315,25 @@ public class PrevisionnelController implements Initializable
 	@FXML
 	private void supprimer(ActionEvent event)
 	{
+		TableView tabAct = new TableView();
+		switch (this.intitule) {
+			case "S1" -> tabAct = this.tableView;
+			case "S2" -> tabAct = this.tableViewS2;
+			case "S3" -> tabAct = this.tableViewS3;
+			case "S4" -> tabAct = this.tableViewS4;
+			case "S5" -> tabAct = this.tableViewS5;
+			case "S6" -> tabAct = this.tableViewS6;
+		}
+
 		try
 		{
-			tableView.getSelectionModel().getSelectedItem().equals(null);
+			tabAct.getSelectionModel().getSelectedItem().equals(null);
 
-			Modules module = (Modules) tableView.getSelectionModel().getSelectedItem();
-
+			Modules module = (Modules) tabAct.getSelectionModel().getSelectedItem();
 			Controleur.supprMod(module.getCodMod(), Controleur.anneeActuelle);
 			remplirTableau();
 		}
-		catch (Exception e) { Intervenants.notifications("Aucun module sélectionné"); }
+		catch (Exception e) {Intervenants.notifications("Aucun module sélectionné");}
 	}
 
 	@FXML

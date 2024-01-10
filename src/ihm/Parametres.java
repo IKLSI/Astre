@@ -21,6 +21,7 @@ public class Parametres implements Initializable
 	@FXML private Button btnAjouter;
 	@FXML private Button btnSuppr;
 	private boolean etat = false;
+	private String nomCat;
 
 	//charge par défaut le tableau de catégorie d'heure
 	@Override public void initialize(URL location, ResourceBundle resources) { categorieHeure(); }
@@ -50,7 +51,7 @@ public class Parametres implements Initializable
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		CategorieIntervenant catInter = (CategorieIntervenant) tableView.getSelectionModel().getSelectedItem();
 		Controleur.supprimerCategorieIntervenant(catInter.getNomCat());
-		tableView.getItems().remove(selectedIndex);
+		categorieIntervenants();
 	}
 
 	//remplissage du tableau de catégorie d'heure
@@ -69,10 +70,6 @@ public class Parametres implements Initializable
 		for (CategorieHeure c : tab)
 			data.add(new CategorieHeure(c.getCodCatHeure(), c.getNomCatHeure(), c.getCoeffNum(), c.getCoeffDen()));
 
-		//création de toutes les colonnes
-		TableColumn<ObservableList<String>, String> codCatHeure = new TableColumn<>("Code");
-		codCatHeure.setCellValueFactory(new PropertyValueFactory<>("codCatHeure"));
-
 		TableColumn<ObservableList<String>, String> nomCatHeure = new TableColumn<>("Nom");
 		nomCatHeure.setCellValueFactory(new PropertyValueFactory<>("nomCatHeure"));
 
@@ -83,7 +80,7 @@ public class Parametres implements Initializable
 		coeffDen.setCellValueFactory(new PropertyValueFactory<>("coeffDen"));;
 
 		//ajoute tout les titres des colonnes au tableView
-		tableView.getColumns().addAll(codCatHeure, nomCatHeure, coeffNum, coeffDen);
+		tableView.getColumns().addAll(nomCatHeure, coeffNum, coeffDen);
 
 		//ajoute toutes les données dans le tableView
 		tableView.setItems(data);
@@ -131,6 +128,7 @@ public class Parametres implements Initializable
 			nomCat.setOnEditCommit(e -> {
 				modifier(new ActionEvent());
 				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNomCat(e.getNewValue());
+				update(new ActionEvent(), this.nomCat);
 			});
 
 			TableColumn<CategorieIntervenant, Integer> service = new TableColumn<>("Service");
@@ -139,6 +137,7 @@ public class Parametres implements Initializable
 			service.setOnEditCommit(e -> {
 				modifier(new ActionEvent());
 				e.getTableView().getItems().get(e.getTablePosition().getRow()).setService(e.getNewValue());
+				update(new ActionEvent(), this.nomCat);
 			});
 
 			TableColumn<CategorieIntervenant, Integer> maxHeure = new TableColumn<>("Max Heure");
@@ -147,6 +146,7 @@ public class Parametres implements Initializable
 			maxHeure.setOnEditCommit(e -> {
 				modifier(new ActionEvent());
 				e.getTableView().getItems().get(e.getTablePosition().getRow()).setMaxHeure(e.getNewValue());
+				update(new ActionEvent(), this.nomCat);
 			});
 
 			TableColumn<CategorieIntervenant, Integer> ratioTPCatInterNum = new TableColumn<>("Ratio TP Num");
@@ -155,6 +155,7 @@ public class Parametres implements Initializable
 			ratioTPCatInterNum.setOnEditCommit(e -> {
 				modifier(new ActionEvent());
 				e.getTableView().getItems().get(e.getTablePosition().getRow()).setRatioTPCatInterNum(e.getNewValue());
+				update(new ActionEvent(), this.nomCat);
 			});
 
 			TableColumn<CategorieIntervenant, Integer> ratioTPCatInterDen = new TableColumn<>("Ratio TP Den");
@@ -164,6 +165,7 @@ public class Parametres implements Initializable
 			ratioTPCatInterDen.setOnEditCommit(e -> {
 				modifier(new ActionEvent());
 				e.getTableView().getItems().get(e.getTablePosition().getRow()).setRatioTPCatInterDen(e.getNewValue());
+				update(new ActionEvent(), this.nomCat);
 			});
 
 			tableView.getColumns().addAll(nomCat, service, maxHeure, ratioTPCatInterNum, ratioTPCatInterDen);
@@ -175,14 +177,32 @@ public class Parametres implements Initializable
 	@FXML
 	public void modifier(ActionEvent event)
 	{
-		System.out.println("modifier");
 		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 		CategorieIntervenant catInter = (CategorieIntervenant) tableView.getSelectionModel().getSelectedItem();
+		this.nomCat = catInter.getNomCat();
+	}
 
-		try
+	@FXML
+	private void update(ActionEvent event, String nomCat)
+	{
+		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+
+		if (selectedIndex >= 0)
 		{
-			Controleur.updateCategorieIntervenant(catInter, catInter.getNomCat());
+			CategorieIntervenant ancienneValeur = (CategorieIntervenant) tableView.getItems().get(selectedIndex);
+
+			CategorieIntervenant nouvelleValeur = new CategorieIntervenant(
+					ancienneValeur.getCodCatInter(),
+					ancienneValeur.getNomCat(),
+					ancienneValeur.getService(),
+					ancienneValeur.getMaxHeure(),
+					ancienneValeur.getRatioTPCatInterNum(),
+					ancienneValeur.getRatioTPCatInterDen()
+			);
+
+			Controleur.updateCategorieIntervenant(nouvelleValeur, nomCat);
 		}
-		catch (Exception e) { e.printStackTrace(); }
+
+		categorieIntervenants();
 	}
 }

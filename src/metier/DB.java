@@ -141,7 +141,7 @@ public class DB
 			this.psUpdateModStage      = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnREH = ?, nbHPnTut = ?, nbHREH = ?, nbHTut = ? WHERE codMod = ? AND annee = ?");
 			this.psUpdateModPPP        = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?, nbHPnTut = ?, nbHTut = ?, nbHPnHTut = ? WHERE codMod = ? AND annee = ?");
 			this.psUpdateAffectation   = DB.connec.prepareStatement("UPDATE Affectation SET codCatHeure = ?, commentaire = ?, nbSem = ?, nbGrp = ?, nbH = ? WHERE codInter = ? AND annee = ? AND codMod = ? AND codCatHeure = ?");
-			this.psUpdateCategorieIntervenant = DB.connec.prepareStatement("UPDATE CategorieIntervenant SET service = ?, maxHeure = ?, ratioTPCatInterNum = ?, ratioTPCatInterDen = ? WHERE nomCat = ?");
+			this.psUpdateCategorieIntervenant = DB.connec.prepareStatement("UPDATE CategorieIntervenant SET nomCat = ?, service = ?, maxHeure = ?, ratioTPCatInterNum = ?, ratioTPCatInterDen = ? WHERE nomCat = ?");
 
 			// Preparation des Deletes
 			this.psDeleteInter = DB.connec.prepareStatement("DELETE FROM Intervenant WHERE codInter = ? AND annee = ?");
@@ -622,7 +622,6 @@ public class DB
 	{
 		try
 		{
-
 			this.psInsertModRessources.setString(1,nouveauModules.getCodMod());
 			this.psInsertModRessources.setString(2,nouveauModules.getCodSem());
 			this.psInsertModRessources.setInt(3,nouveauModules.getCodTypMod());
@@ -762,7 +761,7 @@ public class DB
 			statement.executeUpdate(query);
 			statement.close();
 		}
-		catch (SQLException e) { e.printStackTrace(); }
+		catch (SQLException e) { Intervenants.notifications("La valeur saisie est trop grande !");}
 	}
 
 	public void updateMod(Modules nouveauModules, String nomTypMod, String codMod)
@@ -867,14 +866,15 @@ public class DB
 	{
 		try
 		{
-			this.psUpdateCategorieIntervenant.setInt(1,catInter.getService());
-			this.psUpdateCategorieIntervenant.setInt(2,catInter.getMaxHeure());
-			this.psUpdateCategorieIntervenant.setInt(3,catInter.getRatioTPCatInterNum());
-			this.psUpdateCategorieIntervenant.setInt(4,catInter.getRatioTPCatInterDen());
-			this.psUpdateCategorieIntervenant.setString(5, nomCat);
+			this.psUpdateCategorieIntervenant.setString(1,catInter.getNomCat());
+			this.psUpdateCategorieIntervenant.setInt(2,catInter.getService());
+			this.psUpdateCategorieIntervenant.setInt(3,catInter.getMaxHeure());
+			this.psUpdateCategorieIntervenant.setInt(4,catInter.getRatioTPCatInterNum());
+			this.psUpdateCategorieIntervenant.setInt(5,catInter.getRatioTPCatInterDen());
+			this.psUpdateCategorieIntervenant.setString(6,nomCat);
 			this.psUpdateCategorieIntervenant.executeUpdate();
 		}
-		catch (SQLException e) { e.printStackTrace(); }
+		catch (SQLException e) { Intervenants.notifications("Valeur trop grande ou inférieur à 0 dans la catégorie " + nomCat); }
 	}
 
 	// Méthode de suppression

@@ -51,6 +51,7 @@ public class Annees implements Initializable
 		ArrayList<String> lst = Controleur.getAnnee();
 		this.lstAnnee.getItems().clear();
 		this.lstAnnee.getItems().addAll(FXCollections.observableArrayList(lst));
+		Controleur.setAnneeActuelle();
 	}
 
 	@FXML

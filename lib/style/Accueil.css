@@ -8,8 +8,3 @@
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.018), 10, 20, 0, 0);
 	-fx-background-radius: 15px;
 }
-
-.button {
-	-fx-border-radius: 20px;
-	-fx-background: rgba(217, 217, 217, 0.40);
-}

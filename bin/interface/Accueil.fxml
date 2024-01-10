@@ -16,7 +16,7 @@
       </ImageView>
       <AnchorPane layoutX="400.0" layoutY="316.0" prefHeight="300.0" prefWidth="400.0" styleClass="menu" stylesheets="@../../lib/style/Accueil.css">
          <children>
-            <Button layoutX="120.0" layoutY="219.0" mnemonicParsing="false" onAction="#chargement" opacity="0.85" prefHeight="46.0" prefWidth="160.0" style="-fx-background-radius: 15; -fx-background-color: white;" text="Se Connecter">
+            <Button layoutX="120.0" layoutY="219.0" mnemonicParsing="false" onAction="#chargement" opacity="1" prefHeight="46.0" prefWidth="160.0" style="-fx-background-color: white; -fx-background-radius: 20px;" styleClass="bouton" stylesheets="@../../lib/style/Accueil.css" text="Se Connecter">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
