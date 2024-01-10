@@ -16,7 +16,7 @@ intervenants et les groupes qui leur sont attribués.
 
 ## Comment installer le projet à l'aide de l'installeur
 
-- Pour installer le projet et ses dépendances il suffit de télécharger et de lancer l'installeur ```install.sh``` sous Linux. Pour cela il faut se placer dans le dossier où se trouve le fichier d'installation puis lancer la commande ```chmod +x install.sh``` puis ```./install.sh```. Il faut ensuite suivre les instructions de l'installeur.
+- Pour installer le projet et ses dépendances il suffit de télécharger et de lancer l'installeur ```install.sh``` sous Linux présent dans la branche installeur en cliquant sur code puis ```Download ZIP```. Pour cela il faut se placer dans le dossier où se trouve le fichier d'installation puis lancer la commande ```chmod +x install.sh``` puis ```./install.sh```. Il faut ensuite suivre les instructions de l'installeur.
 
 ## Comment exécuter le projet
 
