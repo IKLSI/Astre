@@ -1,7 +1,0 @@
-lib/javafx-sdk-21.0.1/
-.DS_Store
-bin/*.class
-bin/metier/*.class
-bin/ihm/*.class
-bin/controleur/*.class
-config/login.data
