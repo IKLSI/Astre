@@ -99,7 +99,7 @@ public class Exportation implements Initializable
 			this.panelSaisie.getChildren().remove(this.nomInter);
 			this.panelSaisie.getChildren().remove(this.prenomInter);
 		}
-		catch (Exception e) { e.printStackTrace(); }
+		catch (Exception e) {}
 
 		lstElement = Controleur.getNomModule(); // Chargement des modules dans la liste
 

@@ -42,6 +42,9 @@ public class Controleur
 	public static Integer                   getCodCatHeure(String nomCatHeure)                   { return Controleur.dataBase.getCodCatHeure(nomCatHeure);}
 	public static ResultSet                 getInformationsInter(int codInter)                   { return Controleur.dataBase.getInformationsInter(codInter);}
 	public static ResultSet                 getNomTypeMod(String codMod)                         { return Controleur.dataBase.getNomTypeMod(codMod);}
+	public static int                       gethMin(int numCat)                                  { return Controleur.dataBase.gethMin(numCat);}
+	public static int                       gethMax(int numCat)                                  { return Controleur.dataBase.gethMax(numCat);}
+	public static ArrayList<String>         getNomCatInter()                                     { return Controleur.dataBase.getNomCatInter();}
 
 	// Insertion
 
@@ -52,6 +55,7 @@ public class Controleur
 	public static void insertModSAE(Modules nouveauModules)          { Controleur.dataBase.insertModSAE(nouveauModules); }
 	public static void insertModStage(Modules nouveauModules)        { Controleur.dataBase.insertModStage(nouveauModules); }
 	public static void insertModPPP(Modules nouveauModules)          { Controleur.dataBase.insertModPPP(nouveauModules); }
+	public static void insertCategorieIntervenant(CategorieIntervenant categorie) { Controleur.dataBase.insertCategorieIntervenant(categorie); }
 
 	// Modification
 
@@ -60,6 +64,7 @@ public class Controleur
 	public static void updateMod(Modules nouveauModules, String nomTypMod, String codMod)          { Controleur.dataBase.updateMod(nouveauModules, nomTypMod, codMod); }
 	public static void updateBool(boolean newVal, String codMod)                                   { Controleur.dataBase.updateBool(newVal, codMod); }
 	public static void updateAffectation(Affectation affectation) 								   { Controleur.dataBase.updateAffectation(affectation); }
+	public static void updateCategorieIntervenant(CategorieIntervenant categorie, String nomCat)   { Controleur.dataBase.updateCategorieIntervenant(categorie, nomCat); }
 
 	// Suppression
 
@@ -67,6 +72,7 @@ public class Controleur
 	public static void supprMod(String codMod, Integer annee)                                                { Controleur.dataBase.supprMod(codMod, annee); }
 	public static void supprAffectation(String codMod, Integer annee, Integer codInter, Integer codCatHeure) { Controleur.dataBase.supprAffectation(codMod, annee, codInter, codCatHeure); }
 	public static void supprimerAnnee(Integer annee)                                                             { Controleur.dataBase.supprimerAnnee(annee); }
+	public static void supprimerCategorieIntervenant(String nomCat)                            { Controleur.dataBase.supprCategorieIntervenant(nomCat); }
 
 	// AUTRE
 

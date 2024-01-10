@@ -6,7 +6,7 @@
 -- NB : cela supprime donc les éventuels tuples contenus
 
 -- Table
-DROP TABLE IF EXISTS Annee                  CASCADE ; 
+DROP TABLE IF EXISTS Annee                  CASCADE ;
 DROP TABLE IF EXISTS Intervenant 			CASCADE ;
 DROP TABLE IF EXISTS Module 				CASCADE ;
 DROP TABLE IF EXISTS Semestre 				CASCADE ;
@@ -25,9 +25,9 @@ DROP FUNCTION IF EXISTS getService  (INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS getMaxHeure (INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS verifTypMod (INTEGER) CASCADE;
 
--- Fonction 
+-- Fonction
 DROP FUNCTION IF EXISTS verifHP(INTEGER) CASCADE;
-DROP FUNCTION IF EXISTS calculNbAffect(VARCHAR,VARCHAR) CASCADE;
+DROP FUNCTION IF EXISTS calculNbAffect(VARCHAR,VARCHAR,INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS modif_cat_inter(INTEGER,VARCHAR) CASCADE;
 DROP FUNCTION IF EXISTS default_hServ() CASCADE;
 DROP FUNCTION IF EXISTS default_maxHeure() CASCADE;
@@ -47,7 +47,7 @@ DROP FUNCTION IF EXISTS delModuleTypModFonc() 			CASCADE;
 -- Trigger
 DROP TRIGGER IF EXISTS default_hServ_trigger 	ON Intervenant;
 
--- Trigger 
+-- Trigger
 DROP TRIGGER IF EXISTS default_maxHeure_trigger ON Intervenant;
 
 -- Trigger en cas de suppresion d'une clef primaire
@@ -61,7 +61,7 @@ DROP TRIGGER IF EXISTS delModuleTypMod 			ON TypeModule;
 
 -- Vue
 DROP VIEW IF EXISTS affectation_final 	CASCADE;
-DROP VIEW IF EXISTS inter 				CASCADE;
+DROP VIEW IF EXISTS inter_cat 			CASCADE;
 DROP VIEW IF EXISTS intervenant_final 	CASCADE;
 DROP VIEW IF EXISTS module_final 		CASCADE;
 DROP VIEW IF EXISTS liste_module 		CASCADE;
@@ -78,8 +78,8 @@ CREATE TABLE CategorieIntervenant (
 	nomCat             VARCHAR(20) NOT NULL,
 	service            INTEGER,
 	maxHeure           INTEGER,
-	ratioTPCatInterNum INTEGER,
-	ratioTPCatInterDen INTEGER,
+	ratioTPCatInterNum INTEGER DEFAULT 1,
+	ratioTPCatInterDen INTEGER DEFAULT 1,
 	CONSTRAINT check_coeff CHECK (ratioTPCatInterNum::NUMERIC / ratioTPCatInterDen BETWEEN 0.5 AND 1)
 );
 
@@ -93,10 +93,11 @@ CREATE TABLE Intervenant (
 	hServ       INTEGER,
 	maxHeure    INTEGER,
 	annee INTEGER REFERENCES Annee(annee),
-	PRIMARY KEY(codInter,annee)
+	PRIMARY KEY(codInter,annee),
+	UNIQUE(nom,prenom)
 );
 
-/*Ajout d'un trigger s'executant avant un insert sur Intervenant qui initialise hServ a service de 
+/*Ajout d'un trigger s'executant avant un insert sur Intervenant qui initialise hServ a service de
 sa categorie d'intervenant. Cela sert a mettre service en valeur par defaut de hServ.*/
 
 CREATE OR REPLACE FUNCTION default_hServ()
@@ -113,7 +114,7 @@ CREATE TRIGGER default_hServ_trigger
 BEFORE INSERT ON Intervenant
 FOR EACH ROW EXECUTE FUNCTION default_hServ();
 
-/*Ajout d'un trigger s'executant avant un insert sur Intervenant qui initialise maxHeure a maxHeure de 
+/*Ajout d'un trigger s'executant avant un insert sur Intervenant qui initialise maxHeure a maxHeure de
 sa categorie d'intervenant. Cela sert a mettre service en valeur par defaut de maxHeure.*/
 
 CREATE OR REPLACE FUNCTION default_maxHeure()
@@ -211,14 +212,14 @@ CREATE TABLE Module (
 
 	FOREIGN KEY(codSem,annee) REFERENCES Semestre(codSem,annee),
 	PRIMARY KEY(codMod,annee),
-	
+
 	libLong   VARCHAR(60),
 	libCourt  VARCHAR(30),
 
 	valid BOOLEAN,
 
 	/*Spécifique a ressource*/
-	nbHPnCM   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR verifTypMod(codMod,'PPP') OR nbHPnCM 			= NULL), 
+	nbHPnCM   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR verifTypMod(codMod,'PPP') OR nbHPnCM 			= NULL),
 	nbHPnTD   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR verifTypMod(codMod,'PPP') OR nbHPnTD 			= NULL),
 	nbHPnTP   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR verifTypMod(codMod,'PPP') OR nbHPnTP 			= NULL),
 
@@ -229,7 +230,7 @@ CREATE TABLE Module (
 	nbHParSemaineTD   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR verifTypMod(codMod,'PPP') OR nbHParSemaineTD 	= NULL),
 	nbHParSemaineTP   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR verifTypMod(codMod,'PPP') OR nbHParSemaineTP 	= NULL),
 	nbHParSemaineCM   	INTEGER CHECK (verifTypMod(codMod,'Ressources') OR verifTypMod(codMod,'PPP') OR nbHParSemaineCM 	= NULL),
-	
+
 	hPonctuelle 		INTEGER CHECK (verifTypMod(codMod,'Ressources') OR verifTypMod(codMod,'PPP') OR hPonctuelle 		= NULL),
 
 	/*Spécifique a sae*/
@@ -252,7 +253,7 @@ CREATE TABLE Module (
 CREATE OR REPLACE FUNCTION delModuleTypModFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF EXISTS (SELECT 1 FROM Module WHERE codTypMod = OLD.codTypMod) THEN
+	IF EXISTS (SELECT 1 FROM Module WHERE codTypMod = OLD.codTypMod AND annee = OLD.annee) THEN
 		RAISE EXCEPTION 'Impossible de supprimer le type de module car il existe des modules liés lui.';
 	END IF;
 
@@ -269,7 +270,7 @@ EXECUTE FUNCTION delModuleTypModFonc();
 CREATE OR REPLACE FUNCTION delModuleSemFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF EXISTS (SELECT 1 FROM Module WHERE codSem = OLD.codSem) THEN
+	IF EXISTS (SELECT 1 FROM Module WHERE codSem = OLD.codSem AND annee = OLD.annee) THEN
 		RAISE EXCEPTION 'Impossible de supprimer le semestre car il existe des modules liés lui.';
 	END IF;
 
@@ -296,7 +297,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
--- creation de la table Affectation 
+-- creation de la table Affectation
 
 CREATE TABLE Affectation (
 	codAffec SERIAL,
@@ -323,7 +324,7 @@ CREATE TABLE Affectation (
 CREATE OR REPLACE FUNCTION delAffectationInterFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF EXISTS (SELECT 1 FROM Affectation WHERE codInter = OLD.codInter) THEN
+	IF EXISTS (SELECT 1 FROM Affectation WHERE codInter = OLD.codInter AND annee = OLD.annee) THEN
 		RAISE EXCEPTION 'Impossible de supprimer l''intervenant car il existe des affectations liés lui.';
 	END IF;
 
@@ -340,7 +341,7 @@ EXECUTE FUNCTION delAffectationInterFonc();
 CREATE OR REPLACE FUNCTION delAffectationModFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF EXISTS (SELECT 1 FROM Affectation WHERE codMod = OLD.codMod) THEN
+	IF EXISTS (SELECT 1 FROM Affectation WHERE codMod = OLD.codMod AND annee = OLD.annee) THEN
 		RAISE EXCEPTION 'Impossible de supprimer le module car il existe des affectations liés a lui.';
 	END IF;
 
@@ -357,7 +358,7 @@ EXECUTE FUNCTION delAffectationModFonc();
 CREATE OR REPLACE FUNCTION delAffectationCatHFonc()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF EXISTS (SELECT 1 FROM Affectation WHERE codCatHeure = OLD.codCatHeure) THEN
+	IF EXISTS (SELECT 1 FROM Affectation WHERE codCatHeure = OLD.codCatHeure AND annee = OLD.annee) THEN
 		RAISE EXCEPTION 'Impossible de supprimer la categorie d''heure car il existe des affectations liés a elle.';
 	END IF;
 
@@ -371,14 +372,14 @@ BEFORE DELETE ON CategorieHeure
 FOR EACH ROW
 EXECUTE FUNCTION delAffectationCatHFonc();
 
-CREATE OR REPLACE VIEW affectation_final AS 
+CREATE OR REPLACE VIEW affectation_final AS
 SELECT DISTINCT m.annee,m.codMod,i.codInter,i.nom,c.nomCatHeure,
 		a.nbSem,a.nbGrp, a.commentaire, c.codCatHeure,
 		a.nbH,
 		ROUND(
 		CASE
 			WHEN m.codTypMod = 1 THEN COALESCE(a.nbSem,1)*COALESCE(a.nbGrp,1)*
-				CASE 
+				CASE
 					WHEN c.nomCatHeure =  'TD' THEN m.nbHParSemaineTD
 					WHEN c.nomCatHeure =  'TP' THEN m.nbHParSemaineTP
 					WHEN c.nomCatHeure =  'CM' THEN m.nbHParSemaineCM
@@ -387,20 +388,19 @@ SELECT DISTINCT m.annee,m.codMod,i.codInter,i.nom,c.nomCatHeure,
 			ELSE COALESCE(nbH,1)
 		END *(c.coeffNum::NUMERIC/c.coeffDen::NUMERIC),1) AS "tot eqtd"
 FROM Affectation a JOIN CategorieHeure c ON a.codCatHeure = c.codCatHeure
-				   JOIN Module      m    ON a.codMod      = m.codMod
-				   JOIN Intervenant i    ON i.codInter    = a.codInter;
+				   JOIN Module      m    ON a.codMod      = m.codMod AND a.annee = m.annee
+				   JOIN Intervenant i    ON i.codInter    = a.codInter AND a.annee = i.annee;
 
-CREATE OR REPLACE VIEW inter AS
-SELECT DISTINCT i.annee,i.nom,s.codSem,
-	    ROUND(SUM(CASE WHEN a.nomCatHeure = 'TP' THEN (c.ratioTPCatInterNum::NUMERIC/c.ratioTPCatInterDen::NUMERIC) ELSE 1 END * a."tot eqtd"),1) AS "tot sem"
-FROM affectation_final a JOIN Module            m ON a.codMod      = m.codMod
-						 JOIN Semestre          s ON m.codSem      = s.codSem
-						 JOIN Intervenant i ON i.codInter = a.codInter
+CREATE OR REPLACE VIEW inter_cat AS
+SELECT DISTINCT s.codSem,a.annee,i.nom,ROUND(SUM("tot eqtd")*(c.ratioTPCatInterNum::NUMERIC/c.ratioTPCatInterDen::NUMERIC),1)  AS "tot sem"
+FROM affectation_final a JOIN Module m On a.codMod = m.codMod AND a.annee = m.annee
+						 JOIN Semestre s ON s.annee = a.annee AND m.codSem = s.codSem
+						 JOIN Intervenant i ON i.codInter = a.codInter AND i.annee = a.annee
 						 JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter
-GROUP BY i.annee,i.nom,s.codSem;
+GROUP BY i.nom,a.annee,s.codSem,c.ratioTPCatInterNum,c.ratioTPCatInterDen;
 
 CREATE OR REPLACE VIEW intervenant_final AS
-SELECT DISTINCT i.annee,i.codInter,c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
+SELECT DISTINCT i.annee,i.codInter,c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeure, (ratioTPCatInterNum || '/' || ratioTPCatInterDen)::VARCHAR AS "Coef TP",
 		COALESCE(MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END),0) AS S1,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END),0) AS S3,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END),0) AS S5,
@@ -410,35 +410,35 @@ SELECT DISTINCT i.annee,i.codInter,c.nomCat, i.nom, i.prenom, i.hServ, i.maxHeur
 		COALESCE(MAX(CASE WHEN s.codSem = 'S6' THEN "tot sem" END),0) AS S6,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S2' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S4' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S6' THEN "tot sem" END),0) AS sTotPair,
 		COALESCE(MAX(CASE WHEN s.codSem = 'S1' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S3' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S5' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S2' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S4' THEN "tot sem" END),0)+COALESCE(MAX(CASE WHEN s.codSem = 'S6' THEN "tot sem" END),0) AS Total
-FROM Intervenant i JOIN affectation_final a ON i.codInter    = a.codInter
-				   JOIN Module            m ON a.codMod      = m.codMod
-				   JOIN inter             s ON m.codSem      = s.codSem
+FROM Intervenant i JOIN affectation_final a ON i.codInter    = a.codInter AND i.annee = a.annee
+				   JOIN Module            m ON a.codMod      = m.codMod AND m.annee = i.annee
+				   JOIN inter_cat             s ON m.codSem      = s.codSem AND i.annee = s.annee
 				   JOIN CategorieIntervenant c ON i.codCatInter = c.codCatInter
 GROUP BY i.annee,i.codInter,c.nomCat,i.nom,i.prenom,i.hServ,i.maxHeure,ratioTPCatInterNum,ratioTPCatInterDen
-UNION 
-SELECT i.annee,i.codInter,c.nomCat, i.nom, i.prenom, i.hServ,i.maxHeure,(c.ratioTPCatInterNum || '/' || c.ratioTPCatInterDen)::VARCHAR AS "Coef TP", 
-	   0 AS S1,0 AS S3,0 AS S5,0 AS sTotImpair,0 AS S2,0 AS S4,0 AS S6,0 AS sTotPair,0 AS Total 
-	   FROM Intervenant i JOIN  CategorieIntervenant c ON i.codCatInter = c.codCatInter 
+UNION
+SELECT i.annee,i.codInter,c.nomCat, i.nom, i.prenom, i.hServ,i.maxHeure,(c.ratioTPCatInterNum || '/' || c.ratioTPCatInterDen)::VARCHAR AS "Coef TP",
+	   0 AS S1,0 AS S3,0 AS S5,0 AS sTotImpair,0 AS S2,0 AS S4,0 AS S6,0 AS sTotPair,0 AS Total
+	   FROM Intervenant i JOIN  CategorieIntervenant c ON i.codCatInter = c.codCatInter
 	   WHERE i.codInter NOT IN (SELECT codInter FROM Affectation);
 
 -- creation de la fonction calculNbAffect
-CREATE OR REPLACE FUNCTION calculNbAffect(VARCHAR,VARCHAR)
+CREATE OR REPLACE FUNCTION calculNbAffect(VARCHAR,VARCHAR,INTEGER)
 RETURNS INTEGER AS $$
 DECLARE
 	totH INTEGER;
 BEGIN
 	SELECT SUM("tot eqtd") INTO totH
-	FROM   affectation_final 
-	WHERE  codMod = $1 AND $2 = nomCatHeure;
-	RETURN totH; 
+	FROM   affectation_final
+	WHERE  codMod = $1 AND $2 = nomCatHeure AND $3 = annee;
+	RETURN totH;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE VIEW module_final AS
 SELECT DISTINCT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nbEtd,s.nbGrpTD,s.nbGrpTP,
-	
+
 	   -- POUR LES RESSOURCES.
-	   -- Heure PN 
+	   -- Heure PN
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHPnCM END AS nbHPnCM,
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHPnTD END AS nbHPnTD,
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHPnTP END AS nbHPnTP,
@@ -447,8 +447,8 @@ SELECT DISTINCT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nb
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbHPnTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(s.nbGrpTD,0) END AS totalEqtdPromoPnTd,
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbHPnTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(s.nbGrpTP,0) END AS totalEqtdPromoPnTP,
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbHPnCM,0)*COALESCE(calculCoeff('CM'),3/2)+COALESCE(nbHPnTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(s.nbGrpTD,0)+COALESCE(nbHPnTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(s.nbGrpTP,0) END AS sommeTotalEqtdPromoPn,
-	   
-	   -- Répartition 1 
+
+	   -- Répartition 1
 	   CASE WHEN t.nomTypMod = 'Ressources' 				       THEN nbSemaineCM 		END AS nbSemaineCM,
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHParSemaineCM 	END AS nbHParSemaineCM,
 	   CASE WHEN t.nomTypMod = 'Ressources' 					   THEN nbSemaineTD 		END AS nbSemaineTD,
@@ -456,15 +456,15 @@ SELECT DISTINCT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nb
 	   CASE WHEN t.nomTypMod = 'Ressources' 					   THEN nbSemaineTP 		END AS nbSemaineTP,
 	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN nbHParSemaineTP 	END AS nbHParSemaineTP,
 
-	   -- Repartition 2 
-	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,1)*COALESCE(nbHParSemaineCM,0) END AS nbSXnbHCM, 
-	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTD,1)*COALESCE(nbHParSemaineTD,0) END AS nbSXnbHTD, 	
-	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTP,1)*COALESCE(nbHParSemaineTP,0) END AS nbSXnbHTP, 	 
-	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN hPonctuelle 				 END AS hPonctuelle,      
-  
+	   -- Repartition 2
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,1)*COALESCE(nbHParSemaineCM,0) END AS nbSXnbHCM,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTD,1)*COALESCE(nbHParSemaineTD,0) END AS nbSXnbHTD,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTP,1)*COALESCE(nbHParSemaineTP,0) END AS nbSXnbHTP,
+	   CASE WHEN t.nomTypMod = 'Ressources' OR t.nomTypMod = 'PPP' THEN hPonctuelle 				 END AS hPonctuelle,
+
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,0)*COALESCE(nbHParSemaineCM,0)+COALESCE(nbSemaineTD,0)*COALESCE(nbHParSemaineTD,0)+COALESCE(nbSemaineTP,0)*COALESCE(nbHParSemaineTP,0)+COALESCE(hPonctuelle,0) END AS SommeNbSXnbH,
-	   
-	   --Total promo eqtd 
+
+	   --Total promo eqtd
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineCM,1)*COALESCE(nbHParSemaineCM,0)*COALESCE(calculCoeff('CM'),3/2) 			END AS promoEqtdCM,
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTD,1)*COALESCE(nbHParSemaineTD,0)*COALESCE(calculCoeff('TD'),1)*COALESCE(nbGrpTD,0) 	END AS promoEqtdTD,
 	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(nbSemaineTP,1)*COALESCE(nbHParSemaineTP,0)*COALESCE(calculCoeff('TP'),1)*COALESCE(nbGrpTP,0) 	END AS promoEqtdTP,
@@ -476,66 +476,66 @@ SELECT DISTINCT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nb
 			END AS sommeTotPromoEqtd,
 
 	   --Total affecté eqtd
-	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'CM'),0) END AS eqtdCM,
-	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'TD'),0) END AS eqtdTD,
-	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'TP'),0) END AS eqtdTP,
-	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'HP'),0) END AS eqtdHP,
-	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'CM'),0)+COALESCE(calculNbAffect(m.codMod,'TD'),0)+COALESCE(calculNbAffect(m.codMod,'TP'),0)+COALESCE(calculNbAffect(m.codMod,'HP'),0)
-	   		WHEN t.nomTypMod = 'SAE'        THEN COALESCE(calculNbAffect(m.codMod,'Sae'),0)+COALESCE(calculNbAffect(m.codMod,'HT'),0)
-			WHEN t.nomTypMod = 'Stage' 	    THEN COALESCE(calculNbAffect(m.codMod,'REH'),0)+COALESCE(calculNbAffect(m.codMod,'HT'),0)
-			WHEN t.nomTypMod = 'PPP' 	    THEN COALESCE(calculNbAffect(m.codMod,'CM'),0)+COALESCE(calculNbAffect(m.codMod,'TD'),0)+COALESCE(calculNbAffect(m.codMod,'TP'),0)+COALESCE(calculNbAffect(m.codMod,'HT'),0)+COALESCE(calculNbAffect(m.codMod,'HP') ,0)
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'CM',s.annee),0) END AS eqtdCM,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'TD',s.annee),0) END AS eqtdTD,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'TP',s.annee),0) END AS eqtdTP,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'HP',s.annee),0) END AS eqtdHP,
+	   CASE WHEN t.nomTypMod = 'Ressources' THEN COALESCE(calculNbAffect(m.codMod,'CM',s.annee),0)+COALESCE(calculNbAffect(m.codMod,'TD',s.annee),0)+COALESCE(calculNbAffect(m.codMod,'TP',s.annee),0)+COALESCE(calculNbAffect(m.codMod,'HP',s.annee),0)
+	   		WHEN t.nomTypMod = 'SAE'        THEN COALESCE(calculNbAffect(m.codMod,'Sae',s.annee),0)+COALESCE(calculNbAffect(m.codMod,'HT',s.annee),0)
+			WHEN t.nomTypMod = 'Stage' 	    THEN COALESCE(calculNbAffect(m.codMod,'REH',s.annee),0)+COALESCE(calculNbAffect(m.codMod,'HT',s.annee),0)
+			WHEN t.nomTypMod = 'PPP' 	    THEN COALESCE(calculNbAffect(m.codMod,'CM',s.annee),0)+COALESCE(calculNbAffect(m.codMod,'TD',s.annee),0)+COALESCE(calculNbAffect(m.codMod,'TP',s.annee),0)+COALESCE(calculNbAffect(m.codMod,'HT',s.annee),0)+COALESCE(calculNbAffect(m.codMod,'HP',s.annee) ,0)
 			END AS sommeTotAffectEqtd,
 
 	   --POUR LES SAE.
-	   --Heure pn 
+	   --Heure pn
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnSaeParSemestre 						END AS nbHPnSaeParSemestre,
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnTutParSemestre 						END AS nbHPnTutParSemestre,
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHPnSaeParSemestre+nbHPnTutParSemestre	END AS sommeHPnSAE,
-	   
-	   --Repartition premiere ligne 
+
+	   --Repartition premiere ligne
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHSaeParSemestre 												END AS nbHSaeParSemestre,
 	   CASE WHEN t.nomTypMod = 'SAE' THEN nbHTutParSemestre 												END AS nbHTutParSemestre,
-	   
-	   --Repartition seconde ligne 
-	   CASE WHEN t.nomTypMod = 'SAE'                                                 THEN COALESCE(calculNbAffect(m.codMod,'Sae'),0) END AS nbHAffecteSAE,
-	   CASE WHEN t.nomTypMod = 'SAE' OR t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'HT'),0)  END AS nbHAffecteHT,
+
+	   --Repartition seconde ligne
+	   CASE WHEN t.nomTypMod = 'SAE'                                                 THEN COALESCE(calculNbAffect(m.codMod,'Sae',s.annee),0) END AS nbHAffecteSAE,
+	   CASE WHEN t.nomTypMod = 'SAE' OR t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'HT',s.annee),0)  END AS nbHAffecteHT,
 
 	   --POUR LES STAGE.
-	   --Heure pn 
+	   --Heure pn
 	   CASE WHEN t.nomTypMod = 'Stage' 							          THEN nbHPnREH 			                            END AS nbHPnREH,
 	   CASE WHEN t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP'	THEN nbHPnTut END AS nbHPnTut,
 	   CASE WHEN t.nomTypMod = 'Stage' 							          THEN COALESCE(nbHPnREH,0)+COALESCE(nbHPnTut,0) 	END AS sommeHPnStage,
-	   
-	   --Repartition premiere ligne 
+
+	   --Repartition premiere ligne
 	   CASE WHEN t.nomTypMod = 'Stage' 						            THEN nbHREH END AS nbHREH,
 	   CASE WHEN t.nomTypMod = 'Stage' OR t.nomTypMod = 'PPP' THEN nbHTut END AS nbHTut,
-	   
-	   --Repartition seconde ligne 
-	   CASE WHEN t.nomTypMod = 'Stage' THEN COALESCE(calculNbAffect(m.codMod,'REH'),0) 	END AS nbHAffecteREH,
+
+	   --Repartition seconde ligne
+	   CASE WHEN t.nomTypMod = 'Stage' THEN COALESCE(calculNbAffect(m.codMod,'REH',s.annee),0) 	END AS nbHAffecteREH,
 
 	   --POUR LES PPP.
 	   --Heure pn ??
 	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(nbHPnCM,0)+COALESCE(nbHPnTD,0)+COALESCE(nbHPnTP,0)+COALESCE(nbhpntut,0) END AS sommeHeurePnPPP,
 	   	-- Répartition 1 ??
 	   	-- Répartition 2 EFFECTUER ??
-	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'CM'),0) END AS nbHAffecteCM,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'TD'),0) END AS nbHAffecteTD,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'TP'),0) END AS nbHAffecteTP,
-	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'HP'),0) END AS nbHAffecteHP,
-	   
+	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'CM',s.annee),0) END AS nbHAffecteCM,
+	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'TD',s.annee),0) END AS nbHAffecteTD,
+	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'TP',s.annee),0) END AS nbHAffecteTP,
+	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'HP',s.annee),0) END AS nbHAffecteHP,
+
 	   m.valid
 FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
-			  JOIN Semestre   s ON s.codSem    = m.codSem;
+			  JOIN Semestre   s ON s.codSem    = m.codSem AND m.annee = s.annee;
 
 
-CREATE OR REPLACE VIEW liste_module AS 
+CREATE OR REPLACE VIEW liste_module AS
 SELECT DISTINCT annee,codSem,codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS hAP, valid
 FROM module_final
 ORDER BY codMod;
 
 CREATE OR REPLACE FUNCTION getCatInter(VARCHAR)
 RETURNS INTEGER AS $$
-DECLARE 
+DECLARE
 	res INTEGER;
 BEGIN
 	SELECT codCatInter INTO res FROM CategorieIntervenant WHERE $1 = nomCat;
@@ -544,9 +544,9 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION modif_cat_inter(INTEGER,VARCHAR)
-RETURNS VOID AS $$	
+RETURNS VOID AS $$
 BEGIN
-	UPDATE Intervenant 
+	UPDATE Intervenant
 	SET codCatInter = getCatInter($2)
 	WHERE codInter = $1;
 END;
@@ -578,7 +578,7 @@ FROM intervenant_final f JOIN intervenant i ON f.codInter = i.codInter
 
 CREATE OR REPLACE FUNCTION clonage(annee_source INTEGER, annee_destination INTEGER)
 RETURNS VOID AS $$
-DECLARE	
+DECLARE
 	nbAnnee 		 INTEGER;
 	cloneSemestre 	 RECORD;
 	cloneIntervenant RECORD;
@@ -587,7 +587,7 @@ DECLARE
 BEGIN
 	SELECT COUNT(annee) INTO nbAnnee FROM Annee WHERE annee = annee_destination;
 	/*On test si l'année n'est pas déja crée*/
-	IF 0 != nbAnnee THEN 
+	IF 0 != nbAnnee THEN
 		RETURN;
 	END IF;
 
@@ -613,5 +613,16 @@ BEGIN
 	DROP TABLE IF EXISTS cloneModule CASCADE;
 	DROP TABLE IF EXISTS cloneIntervenant CASCADE;
 	DROP TABLE IF EXISTS cloneSemestre CASCADE;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION supprimer_annee(INTEGER)
+RETURNS VOID AS $$
+BEGIN
+	DELETE FROM Affectation WHERE annee = $1;
+	DELETE FROM Module WHERE annee = $1;
+	DELETE FROM Semestre WHERE annee = $1;
+	DELETE FROM Intervenant WHERE annee = $1;
+	DELETE FROM Annee WHERE annee = $1;
 END;
 $$ LANGUAGE plpgsql;

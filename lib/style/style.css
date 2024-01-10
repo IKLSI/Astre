@@ -1,0 +1,51 @@
+body {
+	font-family: Arial, sans-serif;
+	line-height: 1.6;
+}
+
+/* Page Styles */
+body {
+	max-width: 800px;
+	margin: 20px auto;
+	padding: 20px;
+}
+
+h2 {
+	color: #333;
+	margin-bottom: 10px;
+	margin-top: 50px;
+	text-align: center;
+}
+
+/* Table Styles */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+th, td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+th {
+	background-color: #f2f2f2;
+}
+
+/* Table Header Styles */
+thead {
+	background-color: #333;
+	color: black;
+}
+
+/* Table Body Styles */
+tbody {
+	background-color: #f9f9f9;
+}
+
+/* Alternate row color in the table */
+tbody tr:nth-child(even) {
+	background-color: #e6e6e6;
+}  

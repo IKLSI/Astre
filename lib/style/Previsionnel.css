@@ -27,7 +27,7 @@
 
 .tab .tab-label {
 	-fx-alignment: CENTER;
-   -fx-text-fill: white;
+	-fx-text-fill: white;
 }
 
 .tab-pane .tab:selected {
@@ -46,7 +46,7 @@
 }
 
 .tableau .table-row-cell {
-	-fx-padding: 5px;
+	-fx-padding: 3px;
 	-fx-background-radius: 7px;
 	-fx-background-color:#dadada;
 	-fx-background-insets: 3px;
@@ -106,8 +106,8 @@
 }
 
 .petitTab .table-row-cell {
-	-fx-padding: 5px;
-	-fx-background-radius: 7px;
+	-fx-padding: 2px;
+	-fx-background-radius: 4px;
 	-fx-background-color:#dadada;
 	-fx-background-insets: 5px;
 }

@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1016.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.Parametres">
+<AnchorPane prefHeight="750.0" prefWidth="1016.0" stylesheets="@../../lib/style/Parametre.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.Parametres">
    <children>
-      <TableView fx:id="tableView" layoutX="89.0" layoutY="152.0" prefHeight="544.0" prefWidth="860.0" styleClass="tableau" stylesheets="@../../lib/style/Parametre.css" />
+      <TableView fx:id="tableView" layoutX="89.0" layoutY="152.0" prefHeight="519.0" prefWidth="860.0" styleClass="tableau" stylesheets="@../../lib/style/Parametre.css" />
       <HBox alignment="CENTER" prefHeight="138.0" prefWidth="1032.0">
          <children>
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#categorieHeure" prefHeight="89.0" prefWidth="299.0" styleClass="categorie" stylesheets="@../../lib/style/Parametre.css" text="Catégories Heures">
@@ -36,5 +36,15 @@
             </Button>
          </children>
       </HBox>
+      <Button fx:id="btnAjouter" layoutX="322.0" layoutY="675.0" mnemonicParsing="false" onAction="#ajouter" prefHeight="50.0" prefWidth="150.0" styleClass="btnBas" stylesheets="@../../lib/style/Parametre.css" text="Ajouter">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnSuppr" layoutX="515.0" layoutY="675.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="50.0" prefWidth="150.0" styleClass="btnBas" stylesheets="@../../lib/style/Parametre.css" text="Supprimer">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

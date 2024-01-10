@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import java.util.*;
 import javafx.event.ActionEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -16,6 +18,9 @@ public class Parametres implements Initializable
 {
 	//attributs d'instance
 	@FXML private TableView tableView = new TableView<>();
+	@FXML private Button btnAjouter;
+	@FXML private Button btnSuppr;
+	private boolean etat = false;
 
 	//charge par défaut le tableau de catégorie d'heure
 	@Override public void initialize(URL location, ResourceBundle resources) { categorieHeure(); }
@@ -24,12 +29,39 @@ public class Parametres implements Initializable
 	@FXML private void btnHeure(ActionEvent e){ categorieHeure(); }
 	@FXML private void btnIntervenant(ActionEvent e) { categorieIntervenants(); }
 
+	@FXML private void ajouter(ActionEvent e)
+	{
+		if (etat == false)
+		{
+			tableView.getItems().add(new CategorieIntervenant(0, "", 0, 0, 0, 0));
+		}
+		else
+		{
+			int dernier = tableView.getItems().size() - 1;
+			CategorieIntervenant catInter = (CategorieIntervenant) tableView.getItems().get(dernier);
+			Controleur.insertCategorieIntervenant(catInter);
+		}
+
+		etat = !etat;
+	}
+
+	@FXML private void supprimer(ActionEvent e)
+	{
+		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+		CategorieIntervenant catInter = (CategorieIntervenant) tableView.getSelectionModel().getSelectedItem();
+		Controleur.supprimerCategorieIntervenant(catInter.getNomCat());
+		tableView.getItems().remove(selectedIndex);
+	}
+
 	//remplissage du tableau de catégorie d'heure
 	public void categorieHeure()
 	{
+
 		//vide le tableau
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
+		this.btnAjouter.setVisible(false);
+		this.btnSuppr.setVisible(false);
 
 		ArrayList<CategorieHeure> tab = Controleur.getCategorieHeure();	//stock toutes les catégories
 		ObservableList<CategorieHeure> data = FXCollections.observableArrayList();	//stock toutes les cat de manière organiser pour les ajouter au tableview
@@ -64,6 +96,9 @@ public class Parametres implements Initializable
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
 
+		this.btnAjouter.setVisible(true);
+		this.btnSuppr.setVisible(true);
+
 		ObservableList<CategorieIntervenant> data = FXCollections.observableArrayList();//stock toutes les catégories
 		ArrayList<CategorieIntervenant> tab = new ArrayList<CategorieIntervenant>();//stock toutes les cat de manière organiser pour les ajouter au tableview
 
@@ -83,31 +118,70 @@ public class Parametres implements Initializable
 				tab.add(new CategorieIntervenant(codCatInter, nomCat, service, maxHeure, ratioTPCatInterNum, ratioTPCatInterDen));
 			}
 
-			//organise les catégorie d'heure
 			for (CategorieIntervenant c : tab)
 				data.add(new CategorieIntervenant(c.getCodCatInter(), c.getNomCat(), c.getService(), c.getMaxHeure(), c.getRatioTPCatInterNum(), c.getRatioTPCatInterDen()));
 
-			//création de toutes les colonnes
-			TableColumn<ObservableList<String>, String> codCatInter = new TableColumn<>("Code");
-			codCatInter.setCellValueFactory(new PropertyValueFactory<>("codCatInter"));
+			tableView.setEditable(true);
+			tableView.getSelectionModel().setCellSelectionEnabled(true);
+			tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-			TableColumn<ObservableList<String>, String> nomCat = new TableColumn<>("Nom");
+			TableColumn<CategorieIntervenant, String> nomCat = new TableColumn<>("Nom");
 			nomCat.setCellValueFactory(new PropertyValueFactory<>("nomCat"));
+			nomCat.setCellFactory(TextFieldTableCell.forTableColumn());
+			nomCat.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNomCat(e.getNewValue());
+			});
 
-			TableColumn<ObservableList<String>, String> service = new TableColumn<>("Service");
+			TableColumn<CategorieIntervenant, Integer> service = new TableColumn<>("Service");
 			service.setCellValueFactory(new PropertyValueFactory<>("service"));
+			service.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			service.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setService(e.getNewValue());
+			});
 
-			TableColumn<ObservableList<String>, String> maxHeure = new TableColumn<>("Max Heure");
+			TableColumn<CategorieIntervenant, Integer> maxHeure = new TableColumn<>("Max Heure");
 			maxHeure.setCellValueFactory(new PropertyValueFactory<>("maxHeure"));
+			maxHeure.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			maxHeure.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setMaxHeure(e.getNewValue());
+			});
 
-			TableColumn<ObservableList<String>, String> ratioTPCatInterNum = new TableColumn<>("Ratio TP Num");
+			TableColumn<CategorieIntervenant, Integer> ratioTPCatInterNum = new TableColumn<>("Ratio TP Num");
 			ratioTPCatInterNum.setCellValueFactory(new PropertyValueFactory<>("ratioTPCatInterNum"));
+			ratioTPCatInterNum.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			ratioTPCatInterNum.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setRatioTPCatInterNum(e.getNewValue());
+			});
 
-			TableColumn<ObservableList<String>, String> ratioTPCatInterDen = new TableColumn<>("Ratio TP Den");
+			TableColumn<CategorieIntervenant, Integer> ratioTPCatInterDen = new TableColumn<>("Ratio TP Den");
 			ratioTPCatInterDen.setCellValueFactory(new PropertyValueFactory<>("ratioTPCatInterDen"));
+			ratioTPCatInterDen.setOnEditCommit(event -> event.getRowValue().setRatioTPCatInterDen(event.getNewValue()));
+			ratioTPCatInterDen.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+			ratioTPCatInterDen.setOnEditCommit(e -> {
+				modifier(new ActionEvent());
+				e.getTableView().getItems().get(e.getTablePosition().getRow()).setRatioTPCatInterDen(e.getNewValue());
+			});
 
-			tableView.getColumns().addAll(codCatInter, nomCat, service, maxHeure, ratioTPCatInterNum, ratioTPCatInterDen);
+			tableView.getColumns().addAll(nomCat, service, maxHeure, ratioTPCatInterNum, ratioTPCatInterDen);
 			tableView.setItems(data);
+		}
+		catch (Exception e) { Intervenants.notifications("Erreur lors de l'ajout"); } // Voir la requete bado
+	}
+
+	@FXML
+	public void modifier(ActionEvent event)
+	{
+		System.out.println("modifier");
+		int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+		CategorieIntervenant catInter = (CategorieIntervenant) tableView.getSelectionModel().getSelectedItem();
+
+		try
+		{
+			Controleur.updateCategorieIntervenant(catInter, catInter.getNomCat());
 		}
 		catch (Exception e) { e.printStackTrace(); }
 	}

@@ -20,6 +20,13 @@
 	-fx-background-color: #D09AE8;
 }
 
+
+.btnBas{
+	-fx-background-radius:10px;
+	-fx-background-color : #7F23A7;
+	-fx-text-fill : white;
+}
+
 .tableau{
 	-fx-background-color: rgba(150, 81, 180, 0.0);
 	-fx-text-fill: #333333;
@@ -28,7 +35,7 @@
 }
 
 .tableau .table-row-cell {
-	-fx-padding: 5px;
+	-fx-padding: 3px;
 	-fx-background-radius: 7px;
 	-fx-background-color:#dadada;
 	-fx-background-insets: 5px;
@@ -50,7 +57,7 @@
 }
 .tableau .table-column {
 	-fx-alignment: CENTER;
-	-fx-pref-width : 140px;
+	-fx-pref-width : 168px;
 }
 
 .tableau .scroll-bar:vertical {

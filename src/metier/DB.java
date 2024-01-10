@@ -35,6 +35,9 @@ public class DB
 	private PreparedStatement psSelectCodCatHeure;
 	private PreparedStatement psSelectInformationsInter;
 	private PreparedStatement psSelectNomTypeMod;
+	private PreparedStatement psSelecthMin;
+	private PreparedStatement psSelecthMax;
+	private PreparedStatement psSelectNomCatInter;
 
 	// Attribut requête Insert
 
@@ -45,12 +48,14 @@ public class DB
 	private PreparedStatement psInsertModSAE;
 	private PreparedStatement psInsertModStage;
 	private PreparedStatement psInsertModPPP;
+	private PreparedStatement psInsertCategorieIntervenant;
 
 	// Attribut requête Delete
 
 	private PreparedStatement psDeleteInter;
 	private PreparedStatement psDeleteMod;
 	private PreparedStatement psDeleteAffectation;
+	private PreparedStatement psDeleteCategorieIntervenant;
 
 	// Attribut requête Update
 
@@ -61,6 +66,7 @@ public class DB
 	private PreparedStatement psUpdateModStage;
 	private PreparedStatement psUpdateModPPP;
 	private PreparedStatement psUpdateAffectation;
+	private PreparedStatement psUpdateCategorieIntervenant;
 
 	// Autre
 
@@ -113,7 +119,9 @@ public class DB
 			this.psSelectCodCatHeure           = DB.connec.prepareStatement("SELECT codCatHeure FROM CategorieHeure WHERE nomCatHeure = ?");
 			this.psSelectInformationsInter     = DB.connec.prepareStatement("SELECT * FROM Intervenant WHERE codInter = ?");
 			this.psSelectNomTypeMod            = DB.connec.prepareStatement("Select nomTypMod From TypeModule t Join Module m on t.codTypMod = m.codTypMod Where codMod = ?");
-
+			this.psSelecthMin                  = DB.connec.prepareStatement("SELECT service FROM CategorieIntervenant WHERE codCatInter = ?");
+			this.psSelecthMax                  = DB.connec.prepareStatement("SELECT maxHeure FROM CategorieIntervenant WHERE codCatInter = ?");
+			this.psSelectNomCatInter           = DB.connec.prepareStatement("SELECT nomCat FROM CategorieIntervenant");
 
 			// Préparation des Insertions
 			this.psInstertIntervenant           = DB.connec.prepareStatement("INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure, annee)  VALUES(?,?,?,?,?,?)");
@@ -123,6 +131,7 @@ public class DB
 			this.psInsertModSAE                 = DB.connec.prepareStatement("INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 			this.psInsertModStage               = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHREH, nbHTut, nbHPnREH, nbHPnTut, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 			this.psInsertModPPP                 = DB.connec.prepareStatement("INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbHPnHTut, nbHTut, annee) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			this.psInsertCategorieIntervenant   = DB.connec.prepareStatement("INSERT INTO CategorieIntervenant(nomCat,service,maxHeure,ratioTPCatInterNum,ratioTPCatInterDen) VALUES (?,?,?,?,?);" );
 
 			// Préparation des Updates
 			this.psUpdateInter         = DB.connec.prepareStatement("UPDATE Intervenant SET nom = ?, prenom = ?, hServ = ?, maxHeure = ? WHERE codInter = ? AND annee = ?;");
@@ -132,11 +141,13 @@ public class DB
 			this.psUpdateModStage      = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnREH = ?, nbHPnTut = ?, nbHREH = ?, nbHTut = ? WHERE codMod = ? AND annee = ?");
 			this.psUpdateModPPP        = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valid = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?, nbHPnTut = ?, nbHTut = ?, nbHPnHTut = ? WHERE codMod = ? AND annee = ?");
 			this.psUpdateAffectation   = DB.connec.prepareStatement("UPDATE Affectation SET codCatHeure = ?, commentaire = ?, nbSem = ?, nbGrp = ?, nbH = ? WHERE codInter = ? AND annee = ? AND codMod = ? AND codCatHeure = ?");
+			this.psUpdateCategorieIntervenant = DB.connec.prepareStatement("UPDATE CategorieIntervenant SET service = ?, maxHeure = ?, ratioTPCatInterNum = ?, ratioTPCatInterDen = ? WHERE nomCat = ?");
 
 			// Preparation des Deletes
 			this.psDeleteInter = DB.connec.prepareStatement("DELETE FROM Intervenant WHERE codInter = ? AND annee = ?");
 			this.psDeleteMod   = DB.connec.prepareStatement("DELETE FROM Module WHERE codMod = ? AND annee = ?");
 			this.psDeleteAffectation = DB.connec.prepareStatement("DELETE FROM Affectation WHERE codMod = ? AND annee = ? AND codInter = ? AND codCatHeure = ?");
+			this.psDeleteCategorieIntervenant = DB.connec.prepareStatement("DELETE FROM CategorieIntervenant WHERE nomCat = ?");
 		}
 		catch (IOException e) { e.printStackTrace(); }
 		catch (SQLException e) { Controleur.connecter = false; }
@@ -411,6 +422,18 @@ public class DB
 		return lstVal;
 	}
 
+	public ArrayList<String> getNomCatInter(){
+		ArrayList<String> lstNom = new ArrayList<String>();
+		try {
+			ResultSet rs = this.psSelectNomCatInter.executeQuery();
+			while (rs.next()) {
+				lstNom.add(rs.getString("nomCat"));
+			}
+		} catch (SQLException e) {Intervenants.notifications("Il n'y a plus de categorie d'intervenants");}
+
+		return lstNom;
+	}
+
 	public ArrayList<String> getNomModule()
 	{
 		ArrayList<String> lstModule = new ArrayList<String>();
@@ -437,6 +460,30 @@ public class DB
 		catch (SQLException e) {e.printStackTrace();}
 
 		return lstSem;
+	}
+
+	public int gethMin(int numCat){
+		try
+		{
+			this.psSelecthMin.setInt(1,numCat);
+			ResultSet rs = psSelecthMin.executeQuery();
+			if(rs.next())
+				return rs.getInt("service");
+		}
+		catch (SQLException e) {e.printStackTrace();}
+		return 0;
+	}
+
+	public int gethMax(int numCat){
+		try
+		{
+			this.psSelecthMax.setInt(1,numCat);
+			ResultSet rs = psSelecthMax.executeQuery();
+			if(rs.next())
+				return rs.getInt("maxHeure");
+		}
+		catch (SQLException e) {e.printStackTrace();}
+		return 0;
 	}
 
 	public boolean intervenantExist(String nomInter,String prenomInter)
@@ -532,8 +579,12 @@ public class DB
 			this.psInstertIntervenant.setInt(6,inter.getAnnee());
 
 			this.psInstertIntervenant.executeUpdate();
+			Intervenants.notifications("Intervenant ajouté");
 		}
-		catch (SQLException e) { e.printStackTrace(); }
+		catch (SQLException e)
+		{
+			Intervenants.notifications("Impossible l'intervenant " + inter.getPrenom() + " " + inter.getNom() + " existe déjà !");
+		}
 	}
 
 	public void insertAffectationRessource(Affectation affec)
@@ -658,6 +709,20 @@ public class DB
 			this.psInsertModPPP.executeUpdate();
 		}
 		catch (SQLException e) { Intervenants.notifications("Erreur de saisie dans le module PPP"); }
+	}
+
+	public void insertCategorieIntervenant(CategorieIntervenant catInter)
+	{
+		try
+		{
+			this.psInsertCategorieIntervenant.setString(1,catInter.getNomCat());
+			this.psInsertCategorieIntervenant.setInt(2,catInter.getService());
+			this.psInsertCategorieIntervenant.setInt(3,catInter.getMaxHeure());
+			this.psInsertCategorieIntervenant.setInt(4,catInter.getRatioTPCatInterNum());
+			this.psInsertCategorieIntervenant.setInt(5,catInter.getRatioTPCatInterDen());
+			this.psInsertCategorieIntervenant.executeUpdate();
+		}
+		catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	// Méthode de mise à jour
@@ -798,6 +863,20 @@ public class DB
 		catch (SQLException e) { e.printStackTrace(); }
 	}
 
+	public void updateCategorieIntervenant(CategorieIntervenant catInter, String nomCat)
+	{
+		try
+		{
+			this.psUpdateCategorieIntervenant.setInt(1,catInter.getService());
+			this.psUpdateCategorieIntervenant.setInt(2,catInter.getMaxHeure());
+			this.psUpdateCategorieIntervenant.setInt(3,catInter.getRatioTPCatInterNum());
+			this.psUpdateCategorieIntervenant.setInt(4,catInter.getRatioTPCatInterDen());
+			this.psUpdateCategorieIntervenant.setString(5, nomCat);
+			this.psUpdateCategorieIntervenant.executeUpdate();
+		}
+		catch (SQLException e) { e.printStackTrace(); }
+	}
+
 	// Méthode de suppression
 	public void supprInter(Integer codInter, Integer annee)
 	{
@@ -833,6 +912,16 @@ public class DB
 			this.psDeleteAffectation.executeUpdate();
 		}
 		catch (SQLException e) { Intervenants.notifications("Impossible de supprimer l'affectation entre " + codMod + " et " + codInter);}
+	}
+
+	public void supprCategorieIntervenant(String nomCat)
+	{
+		try
+		{
+			this.psDeleteCategorieIntervenant.setString(1,nomCat);
+			this.psDeleteCategorieIntervenant.executeUpdate();
+		}
+		catch (SQLException e) { Intervenants.notifications("Impossible de supprimer la catégorie " + nomCat); }
 	}
 
 	//Autre

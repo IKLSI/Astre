@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import java.sql.*;
 
 import controleur.Controleur;
+import metier.CategorieHeure;
 import metier.Intervenant;
 
 public class Intervenants
@@ -162,7 +163,7 @@ public class Intervenants
 
 			tableView.setRowFactory(tv -> {
 				TableRow<ObservableList<String>> row = new TableRow<>();
-				row.setStyle("\t-fx-padding: 5px; -fx-background-radius: 7px; -fx-background-color: #dadada; -fx-background-insets: 5px;");
+				row.setStyle("\t-fx-padding: 2px; -fx-background-radius: 7px; -fx-background-color: #dadada; -fx-background-insets: 5px;");
 
 				return row;
 			});
@@ -202,8 +203,8 @@ public class Intervenants
 		prenom.setPromptText("Entrez un prénom");
 		prenom.setPrefWidth(200);
 
-		TextField nomCat = new TextField();
-		nomCat.setPromptText("Entrez une catégorie de 1 à 5");
+		ComboBox<String> nomCat = new ComboBox<String>();
+		nomCat.getItems().addAll(Controleur.getNomCatInter());
 		nomCat.setPrefWidth(200);
 
 		TextField hserv = new TextField();
@@ -248,17 +249,27 @@ public class Intervenants
 		bouton.setOnMouseEntered(e -> bouton.setStyle("-fx-background-color: #D09AE8; -fx-text-fill: white;"));
 		bouton.setOnMouseExited(e -> bouton.setStyle("-fx-background-color: #7F23A7; -fx-text-fill: white;"));
 		bouton.setOnAction((ActionEvent event2) -> {
-			if(regString(nom.getText(),true) && regString(prenom.getText(),true) && regInt(nomCat.getText(),"<",6) &&
-			   regInt(hserv.getText(),">",5) && regInt(maxheure.getText(),"<",250) &&
-			   regInt(annee.getText(),"=",Controleur.anneeActuelle))
-			{
-				Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getText()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()), Integer.parseInt(annee.getText()));
-				Controleur.insertIntervenant(intervenant);
 
-				panelCentre.getChildren().clear();
-				new Intervenants(panelCentre);
-				notifications("Intervenant ajouté");
-			}
+			try {
+				//test si la cbbox est vide passe dans le catch si c'est le cas
+				nomCat.getValue().equals(null);
+
+				int numCat = Controleur.getCodCatHeure(nomCat.getValue());
+				int hmin = Controleur.gethMin(numCat);
+				int hmax = Controleur.gethMax(numCat);
+
+				if(regString(nom.getText(),true) && regString(prenom.getText(),true) &&
+				regInt(hserv.getText(),">",hmin) && regInt(maxheure.getText(),"<",hmax) &&
+				regInt(annee.getText(),"=",Controleur.anneeActuelle))
+				{
+					Intervenant intervenant = new Intervenant(nom.getText(), prenom.getText(), Integer.parseInt(nomCat.getValue()), Integer.parseInt(hserv.getText()), Integer.parseInt(maxheure.getText()), Integer.parseInt(annee.getText()));
+					Controleur.insertIntervenant(intervenant);
+
+					panelCentre.getChildren().clear();
+					new Intervenants(panelCentre);
+				}
+
+			} catch (Exception e) {Intervenants.notifications("Aucune catégorie sélectionnée");}
 		});
 
 		//Bouton Annuler
