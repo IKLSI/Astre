@@ -529,7 +529,7 @@ FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
 
 
 CREATE OR REPLACE VIEW liste_module AS
-SELECT DISTINCT annee,codSem,codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS hAP, valid
+SELECT DISTINCT annee,codSem,codMod, libLong, (sommeTotAffectEqtd || '/' || sommeTotPromoEqtd)::VARCHAR AS hAP, valide
 FROM module_final
 ORDER BY codMod;
 
