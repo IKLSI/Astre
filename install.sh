@@ -55,8 +55,8 @@ fi
 echo "$user" > $install/config/login.data
 echo "$pwd" >> $install/config/login.data
 
-echo '\i Astre.sql' | PGPASSWORD=$pwd psql -h woody -d $user -U $user
-echo '\i insert.sql' | PGPASSWORD=$pwd psql -h woody -d $user -U $user
+echo '\i SAE_3.01/sql/Astre.sql' | PGPASSWORD=$pwd psql -h woody -d $user -U $user
+echo '\i SAE_3.01/sql/insert.sql' | PGPASSWORD=$pwd psql -h woody -d $user -U $user
 
 # Téléchargement et placement de la bibliothèque JavaFX 17 dans le dossier lib
 
