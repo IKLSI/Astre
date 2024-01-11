@@ -76,7 +76,7 @@ VALUES('Boukachour' , 'Hadhoum'  , 1, 192, 364, 2023),
       ('Duvallet'   , 'Claude'   , 5, 384, 576, 2023);
 
 -- Insertion de données dans la table Module ressource
-INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, annee)
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valide, nbHPnCM, nbHPnTD, nbHPnTP, nbSemaineTD, nbSemaineTP, nbSemaineCM, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, annee)
 VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'                                 , 'Init Dev'                   , false, 6, 65, 28, 14, 14, 6, 4, 2, 1, 9, 2023),
        ('R1.02', 'S1' , 1, 'Développement interfaces Web'                                , 'Dev Web'                    , false, 6, 65, 28, 14, 14, 6, 4, 2, 1, 9, 2023),
        ('R1.03', 'S1' , 1, 'Introduction Architecture'                                   , 'Archi'                      , false, 6, 65, 28, 14, 14, 6, 4, 2, 1, 9, 2023),
@@ -151,19 +151,19 @@ VALUES ('R1.01', 'S1' , 1, 'Initiation au développement'                       
 
 
 -- Insertion de données dans la table Module SAÉ
-INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valid, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre, annee)
+INSERT INTO Module (codMod, codTypMod, codSem, libLong, libCourt, valide, nbHPnSaeParSemestre, nbHPnTutParSemestre, nbHSaeParSemestre, nbHTutParSemestre, annee)
 VALUES ('S1.1', 2, 'S1' , 'Implémentation d''un besoin client'    , 'SAE-01'   , false,  6,  0,  6,  0, 2023),
        ('S2.2', 2, 'S2' , 'Développement d''une application'      , 'SAE-02'   , false,  8,  0,  8,  8, 2023),
        ('S3.1', 2, 'S3' , 'Développement d''une application'      , 'Dev appli', false, 40, 38, 40, 38, 2023);
 
 
 -- Insertion de données dans la table Module stage
-INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHREH, nbHTut, nbHPnREH, nbHPnTut, annee)
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valide, nbHREH, nbHTut, nbHPnREH, nbHPnTut, annee)
 VALUES ('S4.ST', 'S4', 3 , 'Stage'                                 , 'Stage'    ,false ,52,0,   52,    0, 2023),
        ('R6.1' , 'S6', 3 , 'Stage'                                 , 'Stage'    ,false ,10,2, NULL, NULL, 2023);
 
 -- Insertion de données dans la table Module PPP
-INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valid, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbhpntut, nbHTut, annee)
+INSERT INTO Module (codMod, codSem, codTypMod, libLong, libCourt, valide, nbHPnCM, nbHPnTD, nbHPnTP, nbHParSemaineTD, nbHParSemaineTP, nbHParSemaineCM, hPonctuelle, nbhpntut, nbHTut, annee)
 VALUES ('P3.01', 'S3', 4 , 'Portfolio'                 , 'Portfolio' ,false , 1, 1, 1, 2, 4, 0, 1, 4, 4, 2023),
        ('P1.02', 'S4', 4 , 'Portfolio'                 , 'Portfolio', false , 1, 4, 2, 2, 4, 0, 1, 4, 4, 2023);
 
