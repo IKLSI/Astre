@@ -135,9 +135,9 @@ public class Parametres implements Initializable
 			service.setCellValueFactory(new PropertyValueFactory<>("service"));
 			service.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 			service.setOnEditCommit(e -> {
-				modifier(new ActionEvent());
-				e.getTableView().getItems().get(e.getTablePosition().getRow()).setService(e.getNewValue());
-				update(new ActionEvent(), this.nomCat);
+					modifier(new ActionEvent());
+					e.getTableView().getItems().get(e.getTablePosition().getRow()).setService(e.getNewValue());
+					update(new ActionEvent(), this.nomCat);
 			});
 
 			TableColumn<CategorieIntervenant, Integer> maxHeure = new TableColumn<>("Max Heure");

@@ -287,42 +287,44 @@ public class StageControleur implements Initializable
 	@FXML
 	public void enregistrer (ActionEvent event)
 	{
-		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
+		try {
+			HashMap<String, String> map = Controleur.getPreviModule(code.getText());
 
-		Modules module = new Modules(
-			code.getText(),
-			semestre.getText(),
-			Integer.valueOf(3),
-			libLong.getText(),
-			libCourt.getText(),
-			valid.isSelected(),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(nbHPnREH.getText()),
-			Integer.valueOf(nbHPnTut.getText()),
-			Integer.valueOf(nbHREH.getText()),
-			Integer.valueOf(nbHTut.getText()),
-			Integer.valueOf(0),
-			Controleur.anneeActuelle
-		);
+			Modules module = new Modules(
+				code.getText(),
+				semestre.getText(),
+				Integer.valueOf(3),
+				libLong.getText(),
+				libCourt.getText(),
+				valid.isSelected(),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(nbHPnREH.getText()),
+				Integer.valueOf(nbHPnTut.getText()),
+				Integer.valueOf(nbHREH.getText()),
+				Integer.valueOf(nbHTut.getText()),
+				Integer.valueOf(0),
+				Controleur.anneeActuelle
+			);
 
-		if (map == null)
-			Controleur.insertModStage(module);
-		else
-			Controleur.updateMod(module, codMod.getText(), codes); // Problème codMod.getText() jamais trouvé
+			if (map == null)
+				Controleur.insertModStage(module);
+			else
+				Controleur.updateMod(module, codMod.getText(), codes); // Problème codMod.getText() jamais trouvé
 
-		new Previsionnel(PrevisionnelController.panelCentre);
+			new Previsionnel(PrevisionnelController.panelCentre);
+		} catch (Exception e) {Intervenants.notifications("Un ou des champs incomplets ou erronés !");}
 	}
 }

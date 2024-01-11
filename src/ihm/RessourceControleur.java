@@ -368,6 +368,6 @@ public class RessourceControleur implements Initializable
 				Controleur.updateMod(module, codMod.getText(), codes);
 
 			new Previsionnel(PrevisionnelController.panelCentre);
-		} catch (Exception e) {Intervenants.notifications("Impossible de supprimer cet intervenant");}
+		} catch (Exception e) {Intervenants.notifications("Un ou des champs incomplets ou erronés !");}
 	}
 }

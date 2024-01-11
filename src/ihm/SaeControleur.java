@@ -276,42 +276,45 @@ public class SaeControleur implements Initializable
 	@FXML
 	public void enregistrer (ActionEvent event)
 	{
-		HashMap<String, String> map = Controleur.getPreviModule(code.getText());
+		try {
+			HashMap<String, String> map = Controleur.getPreviModule(code.getText());
 
-		Modules module = new Modules(
-			code.getText(),
-			semestre.getText(),
-			Integer.valueOf(2),
-			libLong.getText(),
-			libCourt.getText(),
-			valid.isSelected(),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(nbHSaePN.getText()),
-			Integer.valueOf(nbHTutPN.getText()),
-			Integer.valueOf(nbHSaeProm.getText()),
-			Integer.valueOf(nbHTutProm.getText()),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Integer.valueOf(0),
-			Controleur.anneeActuelle
-		);
+			Modules module = new Modules(
+				code.getText(),
+				semestre.getText(),
+				Integer.valueOf(2),
+				libLong.getText(),
+				libCourt.getText(),
+				valid.isSelected(),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(nbHSaePN.getText()),
+				Integer.valueOf(nbHTutPN.getText()),
+				Integer.valueOf(nbHSaeProm.getText()),
+				Integer.valueOf(nbHTutProm.getText()),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Integer.valueOf(0),
+				Controleur.anneeActuelle
+			);
 
-		if (map == null)
-			Controleur.insertModSAE(module);
-		else
-			Controleur.updateMod(module, codMod.getText(), codes);
+			if (map == null)
+				Controleur.insertModSAE(module);
+			else
+				Controleur.updateMod(module, codMod.getText(), codes);
 
-		new Previsionnel(PrevisionnelController.panelCentre);
+			new Previsionnel(PrevisionnelController.panelCentre);
+
+		} catch (Exception e) {Intervenants.notifications("Un ou des champs incomplets ou erronés !");}
 	}
 }
