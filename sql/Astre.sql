@@ -216,7 +216,7 @@ CREATE TABLE Module (
 	libLong   VARCHAR(60),
 	libCourt  VARCHAR(30),
 
-	valid BOOLEAN,
+	valide BOOLEAN,
 
 	/*Spécifique a ressource*/
 	nbHPnCM   			INTEGER CHECK (verifTypMod(codMod,'Ressources') OR verifTypMod(codMod,'PPP') OR nbHPnCM 			= NULL),
@@ -523,7 +523,7 @@ SELECT DISTINCT m.annee,t.nomTypMod, s.codSem,m.codMod,m.libLong,m.libCourt,s.nb
 	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'TP',s.annee),0) END AS nbHAffecteTP,
 	   CASE WHEN t.nomTypMod = 'PPP' THEN COALESCE(calculNbAffect(m.codMod,'HP',s.annee),0) END AS nbHAffecteHP,
 
-	   m.valid
+	   m.valide
 FROM Module m JOIN TypeModule t ON t.codTypMod = m.codTypMod
 			  JOIN Semestre   s ON s.codSem    = m.codSem AND m.annee = s.annee;
 
