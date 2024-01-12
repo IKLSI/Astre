@@ -12,6 +12,7 @@ import java.util.*;
 
 import metier.*;
 import controleur.Controleur;
+import java.io.BufferedReader;
 
 public class RessourceControleur implements Initializable
 {
@@ -185,12 +186,6 @@ public class RessourceControleur implements Initializable
 				e.getTableView().getItems().get(e.getTablePosition().getRow()).setNbGrp(e.getNewValue());
 			});
 
-			totalEqTdCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-			totalEqTdCol.setOnEditCommit(e -> {
-				modifier(new ActionEvent());
-				e.getTableView().getItems().get(e.getTablePosition().getRow()).setTotalEqTd(e.getNewValue());
-			});
-
 			commentaire.setCellFactory(TextFieldTableCell.forTableColumn());
 			commentaire.setOnEditCommit(e -> {
 				e.getTableView().getItems().get(e.getTablePosition().getRow()).setCommentaire(e.getNewValue());
@@ -260,7 +255,7 @@ public class RessourceControleur implements Initializable
 		Controleur.updateAffectation(new Affectation(
 			affectation.getCodMod(),
 			codInter,
-			Controleur.getCodCatInter(affectation.getType()),
+			Controleur.getCodCatHeure(affectation.getType()),
 			affectation.getCommentaire(),
 			affectation.getNom(),
 			affectation.getType(),

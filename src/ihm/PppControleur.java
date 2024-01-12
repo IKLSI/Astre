@@ -166,12 +166,6 @@ public class PppControleur implements Initializable
 				modifier(new ActionEvent());
 			});
 
-			totalEqTdCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-			totalEqTdCol.setOnEditCommit(e -> {
-				e.getTableView().getItems().get(e.getTablePosition().getRow()).setTotalEqTd(e.getNewValue());
-				modifier(new ActionEvent());
-			});
-
 			comCol.setCellFactory(TextFieldTableCell.forTableColumn());
 			comCol.setOnEditCommit(e -> {
 				e.getTableView().getItems().get(e.getTablePosition().getRow()).setCommentaire(e.getNewValue());
@@ -232,7 +226,7 @@ public class PppControleur implements Initializable
 			Controleur.updateAffectation(new Affectation(
 				affectation.getCodMod(),
 				codInter,
-				Controleur.getCodCatInter(affectation.getType()),
+				Controleur.getCodCatHeure(affectation.getType()),
 				affectation.getCommentaire(),
 				affectation.getNom(),
 				affectation.getType(),

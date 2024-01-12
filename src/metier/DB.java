@@ -39,6 +39,7 @@ public class DB
 	private PreparedStatement psSelecthMax;
 	private PreparedStatement psSelectNomCatInter;
 	private PreparedStatement psSelectIntervenant_complet;
+	private PreparedStatement psSelectCategorieHeureSpe;
 
 	// Attribut requête Insert
 
@@ -124,6 +125,7 @@ public class DB
 			this.psSelecthMax                  = DB.connec.prepareStatement("SELECT maxHeure FROM CategorieIntervenant WHERE codCatInter = ?");
 			this.psSelectNomCatInter           = DB.connec.prepareStatement("SELECT nomCat FROM CategorieIntervenant");
 			this.psSelectIntervenant_complet   = DB.connec.prepareStatement("SELECT *      FROM intervenant_complet WHERE annee = ?");
+			this.psSelectCategorieHeureSpe     = DB.connec.prepareStatement("SELECT codCatHeure FROM CategorieHeure WHERE nomCatHeure = ?");
 
 			// Préparation des Insertions
 			this.psInstertIntervenant           = DB.connec.prepareStatement("INSERT INTO Intervenant (nom, prenom, codCatInter, hServ, maxHeure, annee)  VALUES(?,?,?,?,?,?)");
@@ -142,7 +144,7 @@ public class DB
 			this.psUpdateModSAE 	   = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valide = ?, nbHPnSaeParSemestre = ?, nbHPnTutParSemestre = ?, nbHSaeParSemestre = ?, nbHTutParSemestre = ? WHERE codMod = ? AND annee = ?");
 			this.psUpdateModStage      = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valide = ?, nbHPnREH = ?, nbHPnTut = ?, nbHREH = ?, nbHTut = ? WHERE codMod = ? AND annee = ?");
 			this.psUpdateModPPP        = DB.connec.prepareStatement("UPDATE Module SET codMod = ?, libLong = ?, libCourt = ?, valide = ?, nbHPnCM = ?, nbHPnTD = ?, nbHPnTP = ?, nbHParSemaineTD = ?, nbHParSemaineTP = ?, nbHParSemaineCM = ?, hPonctuelle = ?, nbHPnTut = ?, nbHTut = ?, nbHPnHTut = ? WHERE codMod = ? AND annee = ?");
-			this.psUpdateAffectation   = DB.connec.prepareStatement("UPDATE Affectation SET codCatHeure = ?, commentaire = ?, nbSem = ?, nbGrp = ?, nbH = ? WHERE codInter = ? AND annee = ? AND codMod = ? AND codCatHeure = ?");
+			this.psUpdateAffectation   = DB.connec.prepareStatement("UPDATE Affectation SET codCatHeure = ?, commentaire = ?, nbSem = ?, nbGrp = ?, nbH = ? WHERE codInter = ? AND annee = ? AND codMod = ?");
 			this.psUpdateCategorieIntervenant = DB.connec.prepareStatement("UPDATE CategorieIntervenant SET nomCat = ?, service = ?, maxHeure = ?, ratioTPCatInterNum = ?, ratioTPCatInterDen = ? WHERE nomCat = ?");
 
 			// Preparation des Deletes
@@ -868,7 +870,7 @@ public class DB
 			this.psUpdateAffectation.setInt(6,affec.getCodInter());
 			this.psUpdateAffectation.setInt(7,affec.getAnnee());
 			this.psUpdateAffectation.setString(8,affec.getCodMod());
-			this.psUpdateAffectation.setInt(9,affec.getCodCatHeure());
+			System.out.println(this.psUpdateAffectation);
 
 			this.psUpdateAffectation.executeUpdate();
 		}
@@ -972,5 +974,20 @@ public class DB
 		catch (SQLException e) { Intervenants.notifications("Il n'exite aucune année"); }
 
 		return anneActuelle;
+	}
+
+	public Integer getCodCatHeure(String nomCatHeure) 
+	{
+		Integer codCatHeure = 1;
+		try
+		{
+			this.psSelectCategorieHeureSpe.setString(1,nomCatHeure);
+			ResultSet rs = this.psSelectCategorieHeureSpe.executeQuery();
+			rs.next();
+			codCatHeure = rs.getInt("codCatHeure");
+		}
+		catch (SQLException e) { e.printStackTrace();Intervenants.notifications("Impossible"); }
+		
+		return codCatHeure;
 	}
 }

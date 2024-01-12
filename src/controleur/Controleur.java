@@ -46,6 +46,7 @@ public class Controleur
 	public static int                       gethMax(int numCat)                                  { return Controleur.dataBase.gethMax(numCat);}
 	public static ArrayList<String>         getNomCatInter()                                     { return Controleur.dataBase.getNomCatInter();}
 	public static ResultSet                 getIntervenant_complet()                             { return Controleur.dataBase.getIntervenant_complet(); }
+	public static Integer                   getCodCatHeure(String nomCatHeure)                   { return Controleur.dataBase.getCodCatHeure(nomCatHeure);}
 
 	// Insertion
 
