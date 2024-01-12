@@ -94,7 +94,7 @@ CREATE TABLE Intervenant (
 	maxHeure    INTEGER,
 	annee INTEGER REFERENCES Annee(annee),
 	PRIMARY KEY(codInter,annee),
-	UNIQUE(nom,prenom)
+	UNIQUE(nom,prenom,annee)
 );
 
 /*Ajout d'un trigger s'executant avant un insert sur Intervenant qui initialise hServ a service de
