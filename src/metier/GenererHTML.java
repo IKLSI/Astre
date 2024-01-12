@@ -128,7 +128,34 @@ public class GenererHTML
 						"<html lang=\"fr\">\n" + //
 						"\t<head>\n" + //
 						"\t\t<title>Prévisualisation</title>\n" + //
-						"\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"../lib/style/style.css\">\n" + //
+						"\t\t<style>\n" + //
+						"\t\t\tbody {\n" + //
+						"\t\t\t\tmax-width: 800px;\n" + //
+						"\t\t\t\tmargin: 20px auto;\n" + //
+						"\t\t\t\tpadding: 20px;\n" + //
+						"\t\t\t\tfont-family: Arial, sans-serif;\n" + //
+						"\t\t\t\tline-height: 1.6;\n" + //
+						"\t\t\t}\n" + //
+						"\t\t\ttable {\n" + //
+						"\t\t\t\twidth: 100%;\n" + //
+						"\t\t\t\tborder-collapse: collapse;\n" + //
+						"\t\t\t\tmargin-top: 10px;\n" + //
+						"\t\t\t}\n" + //
+						"\t\t\tth, td {\n" + //
+						"\t\t\t\tborder: 1px solid #ddd;\n" + //
+						"\t\t\t\tpadding: 8px;\n" + //
+						"\t\t\t\ttext-align: left;\n" + //
+						"\t\t\t}\n" + //
+						"\t\t\tth {\n" + //
+						"\t\t\t\tbackground-color: #f2f2f2;\n" + //
+						"\t\t\t}\n" + //
+						"\t\t\th2 {\n" + //
+						"\t\t\t\tcolor: #333;\n" + //
+						"\t\t\t\tmargin-bottom: 10px;\n" + //
+						"\t\t\t\tmargin-top: 50px;\n" + //
+						"\t\t\t\ttext-align: center;\n" + //
+						"\t\t\t}\n" + //
+						"\t\t</style>\n" + //
 						"\t\t<meta charset=utf-8>\n" + //
 						"\t</head>\n" + //
 						"\t<body>\n" + //
