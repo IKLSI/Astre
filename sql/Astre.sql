@@ -177,10 +177,10 @@ $$ LANGUAGE plpgsql;
 
 CREATE TABLE Semestre (
 	codSem     VARCHAR(2),
-	nbGrpTD    INTEGER,
-	nbGrpTP    INTEGER,
-	nbEtd      INTEGER,
-	nbSemaines INTEGER,
+	nbGrpTD    INTEGER CHECK (nbGrpTD < 10),
+	nbGrpTP    INTEGER CHECK (nbGrpTP < 20),
+	nbEtd      INTEGER CHECK (nbEtd < 200),
+	nbSemaines INTEGER CHECK (nbSemaines < 27),
 	annee INTEGER REFERENCES Annee(annee),
 	PRIMARY KEY(codSem,annee)
 );
