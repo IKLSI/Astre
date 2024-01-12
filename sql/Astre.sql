@@ -76,8 +76,8 @@ CREATE TABLE Annee (
 CREATE TABLE CategorieIntervenant (
 	codCatInter        SERIAL PRIMARY KEY,
 	nomCat             VARCHAR(20) NOT NULL,
-	service            INTEGER,
-	maxHeure           INTEGER,
+	service            INTEGER CHECK (service < maxHeure),
+	maxHeure           INTEGER CHECK (service < maxHeure),
 	ratioTPCatInterNum INTEGER DEFAULT 1,
 	ratioTPCatInterDen INTEGER DEFAULT 1,
 	CONSTRAINT check_coeff CHECK (ratioTPCatInterNum::NUMERIC / ratioTPCatInterDen BETWEEN 0.5 AND 1)
