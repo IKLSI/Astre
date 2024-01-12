@@ -268,7 +268,7 @@ public class PppControleur implements Initializable
 			Controleur.insertAffectationRessource(new Affectation(
 				codes,
 				Controleur.getCodInter(affectation.getNom()).get(0),
-				Controleur.getCodCatInter(affectation.getType()),
+				Controleur.getCodCatHeure(affectation.getType()),
 				affectation.getCommentaire(),
 				affectation.getNom(),
 				affectation.getType(),
