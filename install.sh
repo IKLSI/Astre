@@ -30,7 +30,7 @@ if [ -d "SAE_3.01" ]; then
 fi
 
 echo "Téléchargement du dossier GitHub..."
-git clone https://github.com/IKLSI/SAE_3.01.git
+git clone https://github.com/IKLSI/Astre.git
 
 if [ $? -eq 0 ]; then
 	echo "Téléchargement réussi."
